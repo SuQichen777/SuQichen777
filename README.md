@@ -17,5 +17,4 @@ Here are some ideas to get you started:
     - Personal Email: hdredbean123123123@outlook.com
 - 😄 Pronouns: I go by she/her!
 - 🎮 Video Games(?): Find me on [Steam](https://steamcommunity.com/profiles/76561198874496444)!
-- ⚡ Fun fact: My dog's name is MaTuan麻团!  
-  ![MaTuan](MaTuan.jpg)
+- ⚡ Fun fact: My dog's name is [MaTuan麻团](MaTuan.jpg), Click on the link to see his image 🐶!
