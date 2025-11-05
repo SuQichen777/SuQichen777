@@ -8,7 +8,7 @@ Here are some ideas to get you started:
 -->
 
 - 🔭 I’m currently working on research and development on [DPUs with DPDK](https://github.com/SuQichen777/DPDK-Dev).
-- 📻 I'm also working on a music journaling web app on [While-Listening-to-Albums] (https://github.com/SuQichen777/While-Listening-to-Albums). It's still under the brainstorming stage though.
+- 📻 I'm also working on a music journaling web app on [While-Listening-to-Albums](https://github.com/SuQichen777/While-Listening-to-Albums). It's still under the brainstorming stage though.
 <!-- - 🌱 I’m currently learning ... -->
 <!-- - 👯 I’m looking to collaborate on ...
 - 🤔 I’m looking for help with ...
