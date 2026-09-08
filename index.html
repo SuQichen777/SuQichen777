@@ -1,20 +1,654 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jiaxi Zhang | My Home Page</title>
+  <title>Jiaxi Zhang | Home Page</title>
+  <meta name="description" content="Jiaxi Zhang (Amelia) — MS student at Carnegie Mellon INI, working on distributed systems, high-performance networking, and backend infrastructure." />
   <link rel="stylesheet" href="style.css" />
+  <script>
+    // Pick the language before first paint so there is no flash of the wrong one.
+    (function () {
+      var l = null;
+      try { l = localStorage.getItem('lang'); } catch (e) {}
+      if (l !== 'en' && l !== 'zh') {
+        l = (navigator.language || 'en').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
+      }
+      document.documentElement.setAttribute('data-lang', l);
+      document.documentElement.setAttribute('lang', l === 'zh' ? 'zh-Hans' : 'en');
+    })();
+  </script>
 </head>
 <body>
-  <img src="Jiaxi.jpg" alt="Avatar">
-  <h1>Jiaxi Zhang</h1>
-  <p>Hello! 👋 I'm Jiaxi — a developer passionate about systems programming, networking, and distributed systems.
-    I go by she/her, you can call me Amelia as well.
-  </p>
-  <div class="links">
-    <a href="https://github.com/SuQichen777">GitHub</a>
-    <a href="mailto:jz5751@nyu.edu">jz5751@nyu.edu</a>
+
+<div class="topbar">
+  <nav class="section-nav" aria-label="Sections">
+    <button type="button" data-goto="education"><span lang="en">Education</span><span lang="zh">教育经历</span></button>
+    <button type="button" data-goto="skills"><span lang="en">Skills</span><span lang="zh">技术栈</span></button>
+    <button type="button" data-goto="experience"><span lang="en">Experience</span><span lang="zh">工作与研究</span></button>
+    <button type="button" data-goto="projects"><span lang="en">Projects</span><span lang="zh">项目</span></button>
+  </nav>
+  <div class="lang-switch">
+    <button type="button" data-set-lang="en" class="active">EN</button>
+    <button type="button" data-set-lang="zh">中文</button>
   </div>
+</div>
+
+
+<div class="page">
+
+  <aside class="profile">
+    <div class="avatar-wrap">
+      <img src="Jiaxi.jpg" alt="Portrait of Jiaxi Zhang">
+    </div>
+    <h1><span lang="en">Jiaxi Zhang</span><span lang="zh">张嘉曦</span></h1>
+    <p class="tagline">
+      <span lang="en">Distributed Systems &amp; High-Performance Networking</span>
+      <span lang="zh">分布式系统与高性能网络</span>
+    </p>
+
+    <p class="bio">
+      <span lang="en">Hello! I'm Jiaxi (she/her). You can call me Amelia as well. I work on consensus protocols, kernel-bypass
+      networking, and the backend infrastructure &amp; system development.</span>
+      <span lang="zh">哈喽！我是张嘉曦，你也可以叫我 Amelia。我目前在卡内基梅隆大学攻读信息网络理学硕士，本科毕业于上海纽约大学计算机科学专业。我的研究与工作集中在共识协议、
+      内核旁路网络，以及后端基础设施与系统开发。</span>
+    </p>
+
+    <ul class="contact">
+      <li>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <a href="https://github.com/SuQichen777">github.com/SuQichen777</a>
+      </li>
+      <li>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.6 5.2H.9V16h2.7V5.2ZM2.2 0a1.6 1.6 0 1 0 0 3.2 1.6 1.6 0 0 0 0-3.2ZM16 9.9c0-3.2-1.7-4.7-4-4.7-1.9 0-2.7 1-3.2 1.8V5.2H6.1c0 .8 0 10.8 0 10.8h2.7v-6c0-.3 0-.6.1-.8.3-.6.8-1.3 1.8-1.3 1.3 0 1.8 1 1.8 2.4V16H16V9.9Z"/></svg>
+        <a href="https://www.linkedin.com/in/jiaxi-zhang-421524296/">LinkedIn</a>
+      </li>
+      <li>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 2h13c.8 0 1.5.7 1.5 1.5v9c0 .8-.7 1.5-1.5 1.5h-13C.7 14 0 13.3 0 12.5v-9C0 2.7.7 2 1.5 2Zm.3 1.5L8 8.1l6.2-4.6H1.8Zm12.7 1.2L8.4 9.6a.7.7 0 0 1-.8 0L1.5 4.7v7.8h13V4.7Z"/></svg>
+        <a href="mailto:jiaxizha@andrew.cmu.edu">jiaxizha@andrew.cmu.edu</a>
+      </li>
+    </ul>
+
+    <div class="side-block">
+      <h2><span lang="en">Languages</span><span lang="zh">语言</span></h2>
+      <p class="meta">
+        <span lang="en">English &middot; Mandarin (native) &middot; Japanese (JLPT N3)</span>
+        <span lang="zh">英语 &middot; 中文（母语） &middot; 日语（JLPT N3）</span>
+      </p>
+    </div>
+  </aside>
+
+  <main class="content">
+
+    <!-- ---------- Education ---------- -->
+    <section id="education">
+      <h2><span lang="en">Education</span><span lang="zh">教育经历</span></h2>
+
+      <article class="card" id="edu-cmu">
+        <h3>
+          <span lang="en">Carnegie Mellon University, Information Networking Institute</span>
+          <span lang="zh">卡内基梅隆大学 - 信息网络研究所（INI）</span>
+        </h3>
+        <p class="where">
+          <span lang="en">M.S. in Information Networking</span>
+          <span lang="zh">信息网络理学硕士</span>
+        </p>
+        <p class="meta">
+          <span lang="en">Aug 2026 &ndash; Dec 2027 &middot; Pittsburgh, PA</span>
+          <span lang="zh">2026 年 8 月 &ndash; 2027 年 12 月 &middot; 美国匹兹堡</span>
+        </p>
+        <ul>
+          <li>
+            <span lang="en">Relevant coursework: Parallel Computer Architecture and Programming, Distributed Systems, Cloud Infrastructure.</span>
+            <span lang="zh">相关课程：并行计算机体系结构与编程、分布式系统、云基础设施。</span>
+          </li>
+        </ul>
+      </article>
+
+      <article class="card" id="edu-nyush">
+        <h3>
+          <span lang="en">New York University Shanghai</span>
+          <span lang="zh">上海纽约大学</span>
+        </h3>
+        <p class="where">
+          <span lang="en">B.S. in Computer Science</span>
+          <span lang="zh">计算机科学理学学士</span>
+        </p>
+        <p class="meta">
+          <span lang="en">Aug 2022 &ndash; May 2026 &middot; Shanghai, China</span>
+          <span lang="zh">2022 年 8 月 &ndash; 2026 年 5 月 &middot; 中国上海</span>
+        </p>
+        <ul>
+          <li>
+            <span lang="en">GPA 3.9 / 4.0, graduated magna cum laude.</span>
+            <span lang="zh">GPA 3.9 / 4.0，以 Magna Cum Laude荣誉毕业。</span>
+          </li>
+          <li>
+            <span lang="en">Minors in Interactive Media Arts and Data Science.</span>
+            <span lang="zh">辅修交互媒体艺术（IMA）与数据科学。</span>
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- ---------- Technical Skills ---------- -->
+    <section id="skills">
+      <h2><span lang="en">Technical Skills</span><span lang="zh">技术栈</span></h2>
+      <div class="card skills">
+        <p class="skills-hint">
+          <span lang="en">Highlighted skills link to where I used them — click one to jump. The rest come from coursework and personal projects.</span>
+          <span lang="zh">高亮的技能可点击，直接跳转到相关的经历或项目；其余来自课程与个人项目。</span>
+        </p>
+        <dl>
+          <dt><span lang="en">Languages</span><span lang="zh">编程语言</span></dt>
+          <dd class="skill-row">
+            <span class="skill" data-skill="go">Go</span>
+            <span class="skill" data-skill="c-cpp">C/C++</span>
+            <span class="skill" data-skill="python">Python</span>
+            <span class="skill" data-skill="javascript">JavaScript</span>
+            <span class="skill" data-skill="bash">Bash/Shell</span>
+          </dd>
+
+          <dt><span lang="en">Networking &amp; Distributed Systems</span><span lang="zh">网络与分布式系统</span></dt>
+          <dd class="skill-row">
+            <span class="skill" data-skill="dpdk">DPDK</span>
+            <span class="skill" data-skill="rdma">RDMA</span>
+            <span class="skill" data-skill="kernel-bypass">kernel-bypass</span>
+            <span class="skill" data-skill="netlink">Linux Netlink</span>
+            <span class="skill" data-skill="boost-asio">Boost.Asio</span>
+            <span class="skill" data-skill="sockets">TCP/UDP sockets</span>
+            <span class="skill" data-skill="raft">Raft</span>
+            <span class="skill" data-skill="mpi">MPI</span>
+            <span class="skill" data-skill="wal">WAL &amp; snapshotting</span>
+            <span class="skill" data-skill="replication">replication &amp; failover</span>
+          </dd>
+
+          <dt><span lang="en">Backend &amp; APIs</span><span lang="zh">后端与 API</span></dt>
+          <dd class="skill-row">
+            <span class="skill" data-skill="gin">Gin (Go)</span>
+            <span class="skill" data-skill="flask">Flask (Python)</span>
+            <span class="skill" data-skill="express">Express.js (Node.js)</span>
+            <span class="skill" data-skill="grpc">gRPC</span>
+            <span class="skill" data-skill="protobuf">Protobuf</span>
+            <span class="skill" data-skill="rest">RESTful</span>
+          </dd>
+
+          <dt><span lang="en">Data &amp; Messaging</span><span lang="zh">数据与消息中间件</span></dt>
+          <dd class="skill-row">
+            <span class="skill" data-skill="mysql">MySQL</span>
+            <span class="skill" data-skill="mongodb">MongoDB</span>
+            <span class="skill" data-skill="redis">Redis</span>
+            <span class="skill" data-skill="elasticsearch">Elasticsearch</span>
+            <span class="skill" data-skill="kafka">Kafka</span>
+            <span class="skill" data-skill="rabbitmq">RabbitMQ</span>
+          </dd>
+
+          <dt><span lang="en">Infrastructure &amp; Observability</span><span lang="zh">基础设施与可观测性</span></dt>
+          <dd class="skill-row">
+            <span class="skill" data-skill="docker">Docker</span>
+            <span class="skill" data-skill="k8s">Kubernetes</span>
+            <span class="skill" data-skill="minio">MinIO (S3)</span>
+            <span class="skill" data-skill="linux">Linux</span>
+            <span class="skill" data-skill="prometheus">Prometheus</span>
+            <span class="skill" data-skill="loki">Loki</span>
+            <span class="skill" data-skill="grafana">Grafana</span>
+            <span class="skill" data-skill="git">Git</span>
+            <span class="skill" data-skill="cicd">CI/CD</span>
+          </dd>
+        </dl>
+      </div>
+    </section>
+
+    <!-- ---------- Experience ---------- -->
+    <section id="experience">
+      <h2><span lang="en">Experience</span><span lang="zh">工作与研究经历</span></h2>
+
+      <article class="card" id="exp-netelect">
+        <h3>
+          <span lang="en">NetElect: Latency-Aware Distributed Consensus Research</span>
+          <span lang="zh">NetElect：延迟感知的分布式共识研究</span>
+        </h3>
+        <p class="where">
+          <span lang="en">NYU Shanghai &middot; Academic Intern</span>
+          <span lang="zh">上海纽约大学 &middot; 学术实习</span>
+        </p>
+        <p class="meta">
+          <span lang="en">May 2026 &ndash; Jul 2026 &middot; Shanghai, China</span>
+          <span lang="zh">2026 年 5 月 &ndash; 2026 年 7 月 &middot; 中国上海</span>
+        </p>
+        <ul>
+          <li>
+            <span lang="en">Rebuilt NetElect, a network-telemetry-aware variant of Raft, from scratch in Go; under a slow-leader WAN it migrates leadership to low-latency nodes for up to 3.07&times; read-only and +56% mixed-workload throughput over stock Raft on a 5-node CloudLab cluster.</span>
+            <span lang="zh">使用 Go 重构 NetElect，一种融合网络遥测的 Raft 共识协议变体；在主节点链路较慢的广域网场景下，它会将领导权迁移至低延迟节点，在 5 节点 CloudLab 集群上相比原生 Raft 取得最高 3.07 倍的只读吞吐与 +56% 的混合负载吞吐。</span>
+          </li>
+          <li>
+            <span lang="en">Redesigned the petition-based failover path as a timeout-decided handoff after evaluation showed direct re-election provoked split-vote storms, halving worst-run throughput and inflating p99 tail-latency variance.</span>
+            <span lang="zh">将基于 petition 的故障切换路径重新设计为由超时决定的领导权交接：评估表明直接重新选举会引发选票分裂风暴，使最差一轮的吞吐腰斩，并显著放大 p99 尾延迟波动。</span>
+          </li>
+          <li>
+            <span lang="en">Showed an RTT-fitted Jacobson election timeout eliminates stock Raft's multi-second crash-recovery tail (7.3s &rarr; 0.24s worst case) and raises crash-time read throughput 1.6&times; at far lower variance.</span>
+            <span lang="zh">验证了以 RTT 拟合的 Jacobson 选举超时可消除原生 Raft 长达数秒的崩溃恢复尾延迟（最差 7.3 秒 &rarr; 0.24 秒），并将崩溃期间的读吞吐提升 1.6 倍，同时大幅降低波动。</span>
+          </li>
+        </ul>
+        <p class="tags">
+          <span class="tag" data-skill="go">Go</span>
+          <span class="tag" data-skill="raft">Raft</span>
+          <span class="tag" data-skill="replication">replication &amp; failover</span>
+        </p>
+      </article>
+
+      <article class="card" id="exp-bituo">
+        <h3>
+          <span lang="en">Backend Development Intern</span>
+          <span lang="zh">后端开发实习生</span>
+        </h3>
+        <p class="where">
+          <span lang="en">Shanghai Bituo Information Technology</span>
+          <span lang="zh">上海璧拓信息技术有限公司</span>
+        </p>
+        <p class="meta">
+          <span lang="en">Dec 2025 &ndash; May 2026 &middot; Shanghai, China</span>
+          <span lang="zh">2025 年 12 月 &ndash; 2026 年 5 月 &middot; 中国上海</span>
+        </p>
+        <ul>
+          <li>
+            <span lang="en">Architected a unified backend scaffolding framework with pooled resource-reuse wrappers for MySQL, Elasticsearch, MongoDB, Redis, and MinIO, boosting feature delivery velocity by 50%.</span>
+            <span lang="zh">设计并实现统一的后端脚手架框架，为 MySQL、Elasticsearch、MongoDB、Redis 与 MinIO 提供池化的资源复用封装，减少重复开发，将功能交付效率提升 50%。</span>
+          </li>
+          <li>
+            <span lang="en">Maintained and refactored 8 microservices with Docker containerization and inter-service network optimizations; deployed a Promtail + Loki + Grafana log-monitoring stack that reduced error rates by 60%.</span>
+            <span lang="zh">维护并重构 8 个微服务，完成 Docker 容器化部署与服务间网络通信优化；搭建 Promtail + Loki + Grafana 日志监控体系，使错误率下降 60%。</span>
+          </li>
+          <li>
+            <span lang="en">Built backend services for dietary-recommendation, medical-education, and CPR-training systems, using RabbitMQ, HTTP, and Protobuf + gRPC to decouple business logic from LLM inference engines.</span>
+            <span lang="zh">搭建膳食推荐系统、医疗教学考试、CPR教学系统等后端服务，联动LLM算法，根据业务场景实现基于RabbitMQ/HTTP/Protobuf + gRPC的服务间通信方案接口选型与落地，实现业务逻辑与AI解耦。</span>
+          </li>
+        </ul>
+        <p class="tags">
+          <span class="tag" data-skill="go">Go</span>
+          <span class="tag" data-skill="gin">Gin (Go)</span>
+          <span class="tag" data-skill="grpc">gRPC</span>
+          <span class="tag" data-skill="protobuf">Protobuf</span>
+          <span class="tag" data-skill="rest">RESTful</span>
+          <span class="tag" data-skill="mysql">MySQL</span>
+          <span class="tag" data-skill="mongodb">MongoDB</span>
+          <span class="tag" data-skill="redis">Redis</span>
+          <span class="tag" data-skill="elasticsearch">Elasticsearch</span>
+          <span class="tag" data-skill="minio">MinIO (S3)</span>
+          <span class="tag" data-skill="rabbitmq">RabbitMQ</span>
+          <span class="tag" data-skill="docker">Docker</span>
+          <span class="tag" data-skill="prometheus">Prometheus</span>
+          <span class="tag" data-skill="loki">Loki</span>
+          <span class="tag" data-skill="grafana">Grafana</span>
+          <span class="tag" data-skill="git">Git</span>
+          <span class="tag" data-skill="cicd">CI/CD</span>
+        </p>
+      </article>
+
+      <article class="card" id="exp-dpu">
+        <h3>
+          <span lang="en">DPU-Based Distributed Systems &amp; High-Performance Networking Research</span>
+          <span lang="zh">基于 DPU 的分布式系统与高性能网络研究</span>
+        </h3>
+        <p class="where">
+          <span lang="en">NYU Shanghai &middot; Student Research Assistant</span>
+          <span lang="zh">上海纽约大学 &middot; 科研助理</span>
+        </p>
+        <p class="meta">
+          <span lang="en">May 2025 &ndash; Jul 2025 &middot; Shanghai, China</span>
+          <span lang="zh">2025 年 5 月 &ndash; 2025 年 7 月 &middot; 中国上海</span>
+        </p>
+        <ul>
+          <li>
+            <span lang="en">Developed a SENSE telemetry module on the BlueField-2 DPU, collecting control-plane and data-plane metrics through user-space APIs and reducing host CPU utilization by 6%.</span>
+            <span lang="zh">在 BlueField-2 DPU 上开发 SENSE 遥测模块，通过用户态 API 采集控制面与数据面指标，将主机 CPU 占用降低 6%。</span>
+          </li>
+          <li>
+            <span lang="en">Implemented Raft leader election in C with DPDK over TCP/UDP sockets; kernel-bypass networking cut average data-plane latency by 90%, from milliseconds to microseconds.</span>
+            <span lang="zh">使用 C 与 DPDK 在 TCP/UDP socket 之上实现 Raft 领导者选举；引入内核旁路网络，将数据面平均延迟降低 90%（毫秒级 &rarr; 微秒级）。</span>
+          </li>
+          <li>
+            <span lang="en">Ran distributed experiments on a 7-node CloudLab r7525 cluster, automating failover testing with Python and analyzing 10,000+ latency records.</span>
+            <span lang="zh">在 7 节点 CloudLab r7525 集群上开展大规模分布式实验，用 Python 脚本自动化故障切换测试，并采集分析 10,000+ 条延迟数据。</span>
+          </li>
+        </ul>
+        <p class="tags">
+          <span class="tag" data-skill="c-cpp">C/C++</span>
+          <span class="tag" data-skill="dpdk">DPDK</span>
+          <span class="tag" data-skill="kernel-bypass">kernel-bypass</span>
+          <span class="tag" data-skill="sockets">TCP/UDP sockets</span>
+          <span class="tag" data-skill="raft">Raft</span>
+          <span class="tag" data-skill="python">Python</span>
+          <span class="tag" data-skill="bash">Bash/Shell</span>
+          <span class="tag" data-skill="linux">Linux</span>
+        </p>
+      </article>
+    </section>
+
+    <!-- ---------- Projects ---------- -->
+    <section id="projects">
+      <h2><span lang="en">Projects</span><span lang="zh">项目</span></h2>
+
+      <article class="card" id="proj-raft-cpp">
+        <h3><a href="https://github.com/SuQichen777/RAFT-CPP">
+          <span lang="en">Distributed Key-Value Store (C++)</span>
+          <span lang="zh">分布式键值存储（C++）</span>
+        </a></h3>
+        <p class="where">
+          <span lang="en">May 2025 &ndash; Jul 2025</span>
+          <span lang="zh">2025 年 5 月 &ndash; 2025 年 7 月</span>
+        </p>
+        <p>
+          <span lang="en">A highly available distributed KV store built on Raft, with strong-consistency replication and
+          automatic crash recovery. Modular Raft core, write-ahead log, snapshot management, and network
+          transport layers, behind a Redis-compatible GET/SET/DEL interface served over Boost.Asio async I/O.</span>
+          <span lang="zh">基于 Raft 共识算法构建的高可用分布式键值存储，支持强一致性复制与自动崩溃恢复。架构按
+          Raft 核心、预写日志（WAL）、快照管理与网络传输层模块化拆分，并通过 Boost.Asio 异步 I/O
+          对外提供兼容 Redis 的 GET/SET/DEL 接口。</span>
+        </p>
+        <p class="tags">
+          <span class="tag" data-skill="c-cpp">C/C++</span>
+          <span class="tag" data-skill="raft">Raft</span>
+          <span class="tag" data-skill="wal">WAL &amp; snapshotting</span>
+          <span class="tag" data-skill="replication">replication &amp; failover</span>
+          <span class="tag" data-skill="boost-asio">Boost.Asio</span>
+          <span class="tag" data-skill="redis">Redis</span>
+          <span class="link"><a href="https://github.com/SuQichen777/RAFT-CPP">GitHub</a></span>
+        </p>
+      </article>
+
+      <article class="card" id="proj-dpdk-dev">
+        <h3><a href="https://github.com/SuQichen777/DPDK-Dev">DPDK-Dev</a></h3>
+        <p class="where">
+          <span lang="en">DPU &middot; high-performance networking</span>
+          <span lang="zh">DPU &middot; 高性能网络</span>
+        </p>
+        <p>
+          <span lang="en">Research and development work on DPUs with DPDK, including the telemetry and consensus experiments above.</span>
+          <span lang="zh">在 DPU 上使用 DPDK 的研发工作，包含上述遥测与共识实验。</span>
+        </p>
+        <p class="tags">
+          <span class="tag" data-skill="c-cpp">C/C++</span>
+          <span class="tag" data-skill="dpdk">DPDK</span>
+          <span class="tag" data-skill="kernel-bypass">kernel-bypass</span>
+          <span class="link"><a href="https://github.com/SuQichen777/DPDK-Dev">GitHub</a></span>
+        </p>
+      </article>
+
+      <article class="card" id="proj-mine-decorating">
+        <h3><a href="https://github.com/SuQichen777/Mine-Decorating">Mine-Decorating</a></h3>
+        <p class="where">
+          <span lang="en">WebGL room-decorating game</span>
+          <span lang="zh">基于 WebGL 的房间装饰小游戏</span>
+        </p>
+        <p>
+          <span lang="en">A browser-based room-decorating game built on WebGL.</span>
+          <span lang="zh">一个在浏览器中运行、基于 WebGL 的房间装饰小游戏。</span>
+        </p>
+        <p class="tags">
+          <span class="tag" data-skill="javascript">JavaScript</span>
+          <span class="link"><a href="https://github.com/SuQichen777/Mine-Decorating">GitHub</a></span>
+          <span class="link"><a href="https://suqichen777.github.io/Mine-Decorating/"><span lang="en">Live demo</span><span lang="zh">在线演示</span></a></span>
+        </p>
+      </article>
+
+      <article class="card" id="proj-albums">
+        <h3><a href="https://github.com/SuQichen777/While-Listening-to-Albums">While Listening to Albums</a></h3>
+        <p class="where">
+          <span lang="en">Music journaling web app &middot; in progress</span>
+          <span lang="zh">音乐日记 Web 应用 &middot; 开发中</span>
+        </p>
+        <p>
+          <span lang="en">A music journaling web app for writing about records while you listen to them.</span>
+          <span lang="zh">一个音乐日记 Web 应用，让你在听专辑的同时写下当下的感受。</span>
+        </p>
+        <p class="tags">
+          <span class="tag" data-skill="javascript">JavaScript</span>
+          <span class="tag" data-skill="express">Express.js (Node.js)</span>
+          <span class="link"><a href="https://github.com/SuQichen777/While-Listening-to-Albums">GitHub</a></span>
+        </p>
+      </article>
+
+      <article class="card" id="proj-cclab">
+        <h3><a href="https://github.com/SuQichen777/CCLab">
+          <span lang="en">Creative Coding Lab</span>
+          <span lang="zh">Creative Coding Lab 创意编程</span>
+        </a></h3>
+        <p class="where">
+          <span lang="en">Interactive Media Arts</span>
+          <span lang="zh">交互媒体艺术</span>
+        </p>
+        <p>
+          <span lang="en">Generative and interactive art pieces made during NYU Shanghai's Creative Coding Lab.</span>
+          <span lang="zh">在上海纽约大学 Creative Coding Lab 课程中完成的生成艺术与交互作品。</span>
+        </p>
+        <p class="tags">
+          <span class="tag" data-skill="javascript">JavaScript</span>
+          <span class="link"><a href="https://github.com/SuQichen777/CCLab">GitHub</a></span>
+          <span class="link"><a href="https://sites.google.com/nyu.edu/ameliasimasite/cclab"><span lang="en">Portfolio site</span><span lang="zh">作品集网站</span></a></span>
+        </p>
+      </article>
+    </section>
+
+    <footer>
+      <p>
+        <a href="mailto:jiaxizha@andrew.cmu.edu"><span lang="en">Email</span><span lang="zh">邮箱</span></a> &middot;
+        <a href="https://github.com/SuQichen777">GitHub</a> &middot;
+        <a href="https://www.linkedin.com/in/jiaxi-zhang-421524296/">LinkedIn</a>
+      </p>
+    </footer>
+  </main>
+
+</div>
+
+<div class="match-nav" aria-hidden="true">
+  <span class="mn-skill"></span>
+  <span class="mn-count" role="status" aria-live="polite"></span>
+  <button type="button" class="mn-home">0</button>
+  <button type="button" class="mn-prev">&#8249;</button>
+  <button type="button" class="mn-next">&#8250;</button>
+  <span class="mn-hint">
+    <span lang="en">&larr; &rarr; step &middot; 0 skills</span>
+    <span lang="zh">&larr; &rarr; 切换 &middot; 0 回技术栈</span>
+  </span>
+  <button type="button" class="mn-close">&#10005;</button>
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var reduceMotion = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var STRINGS = {
+      title: { en: 'Jiaxi Zhang | Home Page', zh: '张嘉曦 | 个人主页' },
+      jumpOne: { en: 'Jump to where I used this', zh: '跳转到相关经历' },
+      jumpMany: { en: 'Used in %n places — click to step through them', zh: '共出现在 %n 处 — 点击可逐个查看' },
+      prev: { en: 'Previous match', zh: '上一处' },
+      next: { en: 'Next match', zh: '下一处' },
+      close: { en: 'Close (Esc)', zh: '关闭（Esc）' },
+      home: { en: 'Back to Technical Skills (0)', zh: '返回技术栈（0）' }
+    };
+
+    function scrollToEl(el) {
+      el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+
+    /* ---------- language switch ---------- */
+
+    var langButtons = document.querySelectorAll('[data-set-lang]');
+
+    function applyLang(lang) {
+      root.setAttribute('data-lang', lang);
+      root.setAttribute('lang', lang === 'zh' ? 'zh-Hans' : 'en');
+      document.title = STRINGS.title[lang];
+      langButtons.forEach(function (b) {
+        var on = b.getAttribute('data-set-lang') === lang;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      retitleSkills(lang);
+      mnPrev.title = STRINGS.prev[lang];
+      mnPrev.setAttribute('aria-label', STRINGS.prev[lang]);
+      mnNext.title = STRINGS.next[lang];
+      mnNext.setAttribute('aria-label', STRINGS.next[lang]);
+      mnClose.title = STRINGS.close[lang];
+      mnClose.setAttribute('aria-label', STRINGS.close[lang]);
+      mnHome.title = STRINGS.home[lang];
+      mnHome.setAttribute('aria-label', STRINGS.home[lang]);
+      try { localStorage.setItem('lang', lang); } catch (e) {}
+    }
+
+    langButtons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        applyLang(b.getAttribute('data-set-lang'));
+      });
+    });
+
+    /* ---------- section navigation ---------- */
+
+    var navButtons = document.querySelectorAll('[data-goto]');
+
+    navButtons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var target = document.getElementById(b.getAttribute('data-goto'));
+        if (target) scrollToEl(target);
+      });
+    });
+
+    if ('IntersectionObserver' in window) {
+      var sections = document.querySelectorAll('main section[id]');
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          navButtons.forEach(function (b) {
+            b.classList.toggle('active', b.getAttribute('data-goto') === entry.target.id);
+          });
+        });
+      }, { rootMargin: '-25% 0px -65% 0px', threshold: 0 });
+      sections.forEach(function (s) { observer.observe(s); });
+    }
+
+    /* ---------- skill -> experience/project jumps ---------- */
+
+    // Build an index of which cards carry each skill tag.
+    var index = {};
+    document.querySelectorAll('.tag[data-skill]').forEach(function (tag) {
+      var card = tag.closest('.card');
+      if (!card || !card.id) return;
+      var key = tag.getAttribute('data-skill');
+      (index[key] = index[key] || []).push(card);
+    });
+
+    var skills = document.querySelectorAll('.skill[data-skill]');
+
+    // Floating navigator, so "next match" stays reachable after scrolling away.
+    var matchNav = document.querySelector('.match-nav');
+    var mnSkill = matchNav.querySelector('.mn-skill');
+    var mnCount = matchNav.querySelector('.mn-count');
+    var mnPrev = matchNav.querySelector('.mn-prev');
+    var mnNext = matchNav.querySelector('.mn-next');
+    var mnClose = matchNav.querySelector('.mn-close');
+    var mnHome = matchNav.querySelector('.mn-home');
+
+    var current = null; // { skill, targets, i }
+
+    function clearFlash() {
+      document.querySelectorAll('.card.flash, .card.current').forEach(function (c) {
+        c.classList.remove('flash', 'current');
+      });
+      skills.forEach(function (s) { s.classList.remove('active'); });
+    }
+
+    function retitleSkills(lang) {
+      skills.forEach(function (skill) {
+        var targets = index[skill.getAttribute('data-skill')];
+        if (!targets) return;
+        skill.title = targets.length > 1
+          ? STRINGS.jumpMany[lang].replace('%n', targets.length)
+          : STRINGS.jumpOne[lang];
+      });
+    }
+
+    function closeNav() {
+      current = null;
+      matchNav.classList.remove('open', 'at-home');
+      matchNav.setAttribute('aria-hidden', 'true');
+      clearFlash();
+    }
+
+    // Position 0 is the skill chip itself; 1..n are the matching cards.
+    function showMatch(i) {
+      if (!current) return;
+      var targets = current.targets;
+      var total = targets.length + 1;
+      current.i = ((i % total) + total) % total;
+
+      targets.forEach(function (c, n) {
+        c.classList.add('flash');
+        c.classList.toggle('current', n === current.i - 1);
+      });
+      mnCount.textContent = current.i + ' / ' + targets.length;
+      matchNav.classList.toggle('at-home', current.i === 0);
+      scrollToEl(current.i === 0 ? current.skill : targets[current.i - 1]);
+    }
+
+    function openNav(skill, targets) {
+      clearFlash();
+      skill.classList.add('active');
+      current = { skill: skill, targets: targets, i: 0 };
+      mnSkill.textContent = skill.getAttribute('data-label');
+      matchNav.classList.add('open');
+      matchNav.setAttribute('aria-hidden', 'false');
+      showMatch(1);
+    }
+
+    skills.forEach(function (skill) {
+      var key = skill.getAttribute('data-skill');
+      var targets = index[key];
+      if (!targets) return;
+
+      // Remember the label before any badge is appended.
+      skill.setAttribute('data-label', skill.textContent.trim());
+      skill.classList.add('linked');
+      skill.setAttribute('role', 'button');
+      skill.setAttribute('tabindex', '0');
+
+      if (targets.length > 1) {
+        var badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = targets.length;
+        skill.appendChild(badge);
+      }
+
+      function activate() {
+        openNav(skill, targets);
+      }
+
+      skill.addEventListener('click', activate);
+      skill.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          activate();
+        }
+      });
+    });
+
+    mnHome.addEventListener('click', function () { showMatch(0); });
+    mnPrev.addEventListener('click', function () { showMatch(current.i - 1); });
+    mnNext.addEventListener('click', function () { showMatch(current.i + 1); });
+    mnClose.addEventListener('click', closeNav);
+
+    document.addEventListener('keydown', function (e) {
+      if (!current) return;
+      if (e.key === 'ArrowRight' || e.key === 'n') { e.preventDefault(); showMatch(current.i + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'p') { e.preventDefault(); showMatch(current.i - 1); }
+      else if (e.key === '0') { e.preventDefault(); showMatch(0); }
+      else if (e.key === 'Escape') { closeNav(); }
+    });
+
+    applyLang(root.getAttribute('data-lang') === 'zh' ? 'zh' : 'en');
+  })();
+</script>
 </body>
 </html>
