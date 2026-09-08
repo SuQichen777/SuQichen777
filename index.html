@@ -8,12 +8,11 @@
   <link rel="stylesheet" href="style.css" />
   <script>
     // Pick the language before first paint so there is no flash of the wrong one.
+    // English is the default; a visitor's own choice is remembered from then on.
     (function () {
       var l = null;
       try { l = localStorage.getItem('lang'); } catch (e) {}
-      if (l !== 'en' && l !== 'zh') {
-        l = (navigator.language || 'en').toLowerCase().indexOf('zh') === 0 ? 'zh' : 'en';
-      }
+      if (l !== 'en' && l !== 'zh') { l = 'en'; }
       document.documentElement.setAttribute('data-lang', l);
       document.documentElement.setAttribute('lang', l === 'zh' ? 'zh-Hans' : 'en');
     })();
