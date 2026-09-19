@@ -48,9 +48,9 @@
 
     <p class="bio">
       <span lang="en">Hello! I'm Jiaxi (she/her). You can call me Amelia as well. I work on consensus protocols, kernel-bypass
-      networking, and the backend infrastructure &amp; system development.</span>
+      networking, and the backend infrastructure &amp; system development &mdash; and I build full-stack web apps on the side.</span>
       <span lang="zh">哈喽！我是张嘉曦，你也可以叫我 Amelia。我目前在卡内基梅隆大学攻读信息网络理学硕士，本科毕业于上海纽约大学计算机科学专业。我的研究与工作集中在共识协议、
-      内核旁路网络，以及后端基础设施与系统开发。</span>
+      内核旁路网络，以及后端基础设施与系统开发；业余时间也会做一些全栈 Web 应用。</span>
     </p>
 
     <ul class="contact">
@@ -172,6 +172,14 @@
             <span class="skill" data-skill="rest">RESTful</span>
           </dd>
 
+          <dt><span lang="en">Frontend</span><span lang="zh">前端</span></dt>
+          <dd class="skill-row">
+            <span class="skill" data-skill="react">React</span>
+            <span class="skill" data-skill="react-router">React Router</span>
+            <span class="skill" data-skill="vite">Vite</span>
+            <span class="skill" data-skill="html-css">HTML/CSS</span>
+          </dd>
+
           <dt><span lang="en">Data &amp; Messaging</span><span lang="zh">数据与消息中间件</span></dt>
           <dd class="skill-row">
             <span class="skill" data-skill="mysql">MySQL</span>
@@ -193,6 +201,7 @@
             <span class="skill" data-skill="grafana">Grafana</span>
             <span class="skill" data-skill="git">Git</span>
             <span class="skill" data-skill="cicd">CI/CD</span>
+            <span class="skill" data-skill="mocha">Mocha</span>
           </dd>
         </dl>
       </div>
@@ -356,6 +365,44 @@
         </p>
       </article>
 
+      <article class="card" id="proj-albums">
+        <h3><a href="https://github.com/SuQichen777/While-Listening-to-Albums">
+          <span lang="en">While Listening to Albums</span>
+          <span lang="zh">听专辑的时候我在想些什么</span>
+        </a></h3>
+        <p class="where">
+          <span lang="en">Full-stack music journaling app &middot; May 2025 &ndash; Present</span>
+          <span lang="zh">全栈音乐日记 Web 应用 &middot; 2025 年 5 月至今</span>
+        </p>
+        <p>
+          <span lang="en">A web app for logging the albums you listen to and writing listening notes with 1&ndash;10 decimal
+          ratings: a React + Vite SPA on an Express REST API with Mongoose models. One search queries the Spotify Web API
+          and NetEase Cloud Music concurrently &mdash; the Node.js backend drives a Python crawler through a JSON CLI in a
+          child process &mdash; merges cross-platform duplicates by normalized title, artist, and year, and still returns
+          partial results with a per-source status when either source fails. Containerized with a multi-stage Dockerfile
+          and Docker Compose, and tested with Mocha/Chai on an in-memory MongoDB.</span>
+          <span lang="zh">一个用来记录听过的专辑、写听歌笔记的 Web 应用，评分为 1&ndash;10 分并支持小数：前端是 React + Vite 单页应用，
+          后端是 Express REST API 与 Mongoose 数据模型。一次搜索会同时查询 Spotify Web API 和网易云音乐&mdash;&mdash;Node.js
+          后端通过子进程里的 JSON CLI 调用 Python 爬虫&mdash;&mdash;再按标准化后的标题、艺人和年份合并两个平台上的同一张专辑；
+          任何一个来源失败时，仍会返回另一个来源的结果并附上每个来源的状态。使用多阶段 Dockerfile 与 Docker Compose
+          容器化，并用 Mocha/Chai 在内存 MongoDB 上测试。</span>
+        </p>
+        <p class="tags">
+          <span class="tag" data-skill="javascript">JavaScript</span>
+          <span class="tag" data-skill="python">Python</span>
+          <span class="tag" data-skill="react">React</span>
+          <span class="tag" data-skill="react-router">React Router</span>
+          <span class="tag" data-skill="vite">Vite</span>
+          <span class="tag" data-skill="html-css">HTML/CSS</span>
+          <span class="tag" data-skill="express">Express.js (Node.js)</span>
+          <span class="tag" data-skill="rest">RESTful</span>
+          <span class="tag" data-skill="mongodb">MongoDB</span>
+          <span class="tag" data-skill="docker">Docker</span>
+          <span class="tag" data-skill="mocha">Mocha</span>
+          <span class="link"><a href="https://github.com/SuQichen777/While-Listening-to-Albums">GitHub</a></span>
+        </p>
+      </article>
+
       <article class="card" id="proj-dpdk-dev">
         <h3><a href="https://github.com/SuQichen777/DPDK-Dev">DPDK-Dev</a></h3>
         <p class="where">
@@ -388,23 +435,6 @@
           <span class="tag" data-skill="javascript">JavaScript</span>
           <span class="link"><a href="https://github.com/SuQichen777/Mine-Decorating">GitHub</a></span>
           <span class="link"><a href="https://suqichen777.github.io/Mine-Decorating/"><span lang="en">Live demo</span><span lang="zh">在线演示</span></a></span>
-        </p>
-      </article>
-
-      <article class="card" id="proj-albums">
-        <h3><a href="https://github.com/SuQichen777/While-Listening-to-Albums">While Listening to Albums</a></h3>
-        <p class="where">
-          <span lang="en">Music journaling web app &middot; in progress</span>
-          <span lang="zh">音乐日记 Web 应用 &middot; 开发中</span>
-        </p>
-        <p>
-          <span lang="en">A music journaling web app for writing about records while you listen to them.</span>
-          <span lang="zh">一个音乐日记 Web 应用，让你在听专辑的同时写下当下的感受。</span>
-        </p>
-        <p class="tags">
-          <span class="tag" data-skill="javascript">JavaScript</span>
-          <span class="tag" data-skill="express">Express.js (Node.js)</span>
-          <span class="link"><a href="https://github.com/SuQichen777/While-Listening-to-Albums">GitHub</a></span>
         </p>
       </article>
 

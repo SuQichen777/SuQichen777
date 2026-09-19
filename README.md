@@ -12,7 +12,7 @@ Here are some ideas to get you started:
 
 - 🔭 I'm currently working on distributed consensus and high-performance networking — Raft variants, DPDK & kernel-bypass, and DPU telemetry. Some of it lives in [DPDK-Dev](https://github.com/SuQichen777/DPDK-Dev).
 - 🛠️ Recently: **NetElect**, a latency-aware Raft variant in Go that hands leadership to low-latency nodes, and a backend internship where I befriended MySQL, Redis, Elasticsearch, MongoDB, MinIO, RabbitMQ and gRPC all at once.
-- 📻 I'm also working on a music journaling web app, [While-Listening-to-Albums](https://github.com/SuQichen777/While-Listening-to-Albums). It's still under the brainstorming stage though.
+- 📻 I'm also building a music journaling web app, [While-Listening-to-Albums](https://github.com/SuQichen777/While-Listening-to-Albums): search an album once and get it from Spotify and NetEase Cloud Music at the same time, then write down what you were thinking while listening. React + Express + MongoDB, with a Python crawler on the side, all in Docker.
 <!-- - 🌱 I’m currently learning ... -->
 <!-- - 👯 I’m looking to collaborate on ...
 - 🤔 I’m looking for help with ...
