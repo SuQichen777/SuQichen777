@@ -90,8 +90,11 @@ html[data-lang="zh"] [lang="en"] {
 }
 
 .section-nav .play-link {
+  /* a link, set like the buttons beside it: same line height, label centred */
+  display: inline-flex;
+  align-items: center;
+  line-height: normal;
   text-decoration: none;
-  color: #3554a5;
 }
 
 .section-nav button.active {
