@@ -28,6 +28,7 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: My dog's name is [MaTuan麻团](MaTuan.jpg), Click on the link to see his image 🐶!
 - 🤔 You might want to take a look at:
   - [My Home Page](https://SuQichen777.github.io/SuQichen777/)
+  - [Things you can click and play right now](https://SuQichen777.github.io/SuQichen777/play/): a two-player word game, a WebGL room to furnish, and the music journal.
   - A distributed key-value store based on Raft, implemented in C++ with WAL, snapshots, and a Redis-compatible protocol. [GitHub Repo](https://github.com/SuQichen777/RAFT-CPP).
   - Mine-Decorating: A Web-Room-Decorating Game based on WebGL. [GitHub Repo](https://github.com/SuQichen777/Mine-Decorating) and the [interactive demo is here](https://suqichen777.github.io/Mine-Decorating/).
   - My Art Work Done in Creative Coding Lab: [Google Site](https://sites.google.com/nyu.edu/ameliasimasite/cclab) and [GitHub Repo](https://github.com/SuQichen777/CCLab).

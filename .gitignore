@@ -1,2 +1,10 @@
 CLAUDE.md
 Jiaxi_Zhang_Resume.pdf
+# local agent tooling, never deployed
+.agents/
+.claude/
+skills-lock.json
+.taste-skill/
+
+# macOS
+.DS_Store

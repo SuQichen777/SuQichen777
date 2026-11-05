@@ -1,0 +1,887 @@
+/* 張氏商行 · 玩物圖錄 — an 1899 mail-order catalogue, set in the manner of a frontier supply house.
+   The book turns its pages; every size inside a page is in --u (1% of the page's width).
+   No page frames, no cards: a running head, a rule under the title, a rule above the folio,
+   and the engravings printed straight onto the paper. */
+
+:root {
+  --desk: #221812;
+  --paper: #f0d6ab;
+  --paper-light: #f6e5c7;
+  --paper-dark: #d6b98b;
+  --paper-scan: url("assets/img/paper.webp");
+  --ink: #241a10;
+  --ink-2: #3d2e1e;
+  --ink-3: #6e5a40;
+  --rule: rgba(36, 26, 16, .8);
+  --rule-soft: rgba(36, 26, 16, .32);
+  --red: #7a2a1d;
+  --cloth: #4a2e21;
+  --zh: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --gothic: "League Gothic", "Oswald", "Arial Narrow", sans-serif;
+  --fell: "IM Fell English", Georgia, serif;
+  --fell-sc: "IM Fell English SC", "IM Fell English", Georgia, serif;
+  --slab: "Alfa Slab One", "Rockwell", serif;
+  --wood: "Rye", "Alfa Slab One", serif;
+  --display: "Playfair Display", Georgia, serif;
+  --pw: min(600px, calc((100vw - 160px) / 2), max(480px, calc((100vh - 120px) / 1.42)));
+  --u: calc(var(--pw) / 100);
+  --flip: 1.15s;
+  /* readable floors for the small sizes; raised on phones where the page reflows */
+  --min-xs: 8.5px;
+  --min-sm: 9.5px;
+  --min-body: 11px;
+  --fs-xs: max(var(--min-xs), calc(var(--u) * 1.65));
+  --fs-sm: max(var(--min-sm), calc(var(--u) * 1.95));
+  --fs-body: max(var(--min-body), calc(var(--u) * 2.3));
+}
+
+* { box-sizing: border-box; }
+html { background: var(--desk); }
+body {
+  margin: 0; color: var(--ink);
+  font-family: var(--zh); font-size: 16px; line-height: 1.6;
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(96, 68, 46, .6), transparent 62%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 0, 0, .6), transparent 60%),
+    var(--desk);
+  min-height: 100vh; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+}
+html[data-lang="en"] body { font-family: var(--fell); }
+
+h1, h2, h3, p, figure, dl, dd, ol, ul { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+a { color: inherit; text-decoration-color: var(--rule-soft); text-underline-offset: 3px; }
+a:hover { text-decoration-color: currentColor; }
+a:focus-visible, button:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+img { display: block; max-width: 100%; height: auto; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+b { font-weight: 700; }
+
+html[data-lang="zh"] [lang="en"],
+html[data-lang="en"] [lang="zh"] { display: none !important; }
+
+/* ---------- desk furniture ---------- */
+.desk-bar, .desk-foot {
+  position: relative; z-index: 2; max-width: 1360px; margin: 0 auto; padding: 18px 28px 0;
+  display: flex; justify-content: space-between; align-items: center; gap: 24px;
+  font-family: var(--fell-sc); font-size: 14px; letter-spacing: .14em; color: #c9b58e;
+}
+html[data-lang="zh"] .desk-bar, html[data-lang="zh"] .desk-foot { font-family: var(--zh); font-size: 13px; letter-spacing: .22em; }
+.desk-foot { justify-content: center; padding: 10px 28px 36px; font-size: 12px; color: #8c7a59; }
+.desk-bar a { text-decoration: none; }
+.desk-bar a:hover, .desk-bar button:hover { color: #efe1c2; }
+.desk-bar__hint { color: #8c7a59; }
+.desk-bar__lang button { color: #9c8a68; padding: 2px 4px; letter-spacing: inherit; }
+.desk-bar__lang button.active { color: #efe1c2; text-decoration: underline; text-underline-offset: 5px; }
+.desk-bar__lang i { font-style: normal; padding: 0 4px; color: #9c8a68; }
+
+.stage { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 18px; padding: 24px 24px 10px; }
+.turn {
+  flex: none; width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid rgba(201, 181, 142, .45); color: #c9b58e; font: 400 30px/1 var(--fell);
+  display: grid; place-items: center; padding-bottom: 4px; transition: background .2s, color .2s, opacity .2s;
+}
+.turn:hover { background: rgba(201, 181, 142, .14); color: #efe1c2; }
+.turn:disabled { opacity: .18; cursor: default; background: none; }
+
+/* ---------- the book ----------
+   An open hardcover lying on the desk, lit by a lamp above it and a little to the left.
+   A resting leaf stays square to the screen: tipping it in 3D resamples the type and softens it,
+   so the fall of the pages into the binding is drawn instead. Each leaf's outline (set in the
+   script) dips at head and foot as it nears the spine and stands a touch taller at the fore-edge;
+   light on ::after shades the valley; under the piles the page block is drawn edge by edge to the
+   same outline, and the boards' cloth shows round it. A turning leaf is real 3D, in perspective.
+   Limits: a leaf does not truly bend; its curve is outline and light, not geometry. */
+@property --bend { syntax: '<number>'; inherits: false; initial-value: 0; }
+.book {
+  --gl: 1; --gr: 1;                   /* depth of the gutter on each side; set from the page count */
+  --sq: calc(var(--u) * 1.5);         /* the boards' squares: cloth showing round the pages */
+  --bt: calc(var(--u) * .8);          /* a board's thickness, seen at the foot */
+  --pb: calc(var(--u) * .7);          /* the page block between the boards when the book is shut */
+  --ease-turn: cubic-bezier(.45, .05, .3, 1);
+  position: relative; width: calc(var(--pw) * 2); height: calc(var(--pw) * 1.42);
+  perspective: calc(var(--pw) * 5); transform-style: preserve-3d;
+  transition: transform var(--flip) var(--ease-turn);
+  filter: drop-shadow(10px 26px 30px rgba(0, 0, 0, .55)) drop-shadow(2px 5px 6px rgba(0, 0, 0, .5));
+}
+.book[data-state="closed"] { transform: translateX(-25%); }
+.book[data-state="closed-back"] { transform: translateX(25%); }
+.sheet {
+  position: absolute; top: 0; left: 50%; width: 50%; height: 100%;
+  transform-origin: left center; transform-style: preserve-3d;
+  transition: transform var(--flip) var(--ease-turn); will-change: transform;
+}
+.sheet.is-flipped { transform: rotateY(-180deg); }
+
+/* the boards. The inside of the front board lies under page ii, the inside of the back board
+   under the last page; each turns with its leaf, so the book opens and shuts in one piece. */
+.sheet[data-sheet="0"]::after, .sheet[data-sheet="5"]::before {
+  content: ""; position: absolute; left: 0; right: calc(var(--sq) * -1); top: calc(var(--sq) * -1); bottom: calc(var(--sq) * -1);
+  pointer-events: none; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border-radius: 0 calc(var(--u) * .8) calc(var(--u) * .8) 0;
+  background:
+    linear-gradient(90deg, rgba(12, 6, 2, .6), rgba(12, 6, 2, .2) 1.2%, rgba(12, 6, 2, 0) 3.5%),
+    linear-gradient(160deg, rgba(255, 220, 170, .16), transparent 40%, rgba(0, 0, 0, .18)),
+    linear-gradient(160deg, #5a3a2a, var(--cloth) 45%, #3a2319);
+  box-shadow: inset 0 1px 0 rgba(255, 222, 176, .14), calc(var(--bt) * .25) var(--bt) 0 #2a1810, calc(var(--bt) * .25 + 1px) calc(var(--bt) + 1px) 3px rgba(0, 0, 0, .45);
+  transform: translateZ(-1px);
+  transition: top .5s, right .5s, bottom .5s, box-shadow .5s;
+}
+.sheet[data-sheet="0"]::after {
+  border-radius: calc(var(--u) * .8) 0 0 calc(var(--u) * .8);
+  background:
+    linear-gradient(270deg, rgba(12, 6, 2, .6), rgba(12, 6, 2, .2) 1.2%, rgba(12, 6, 2, 0) 3.5%),
+    linear-gradient(160deg, rgba(255, 220, 170, .16), transparent 40%, rgba(0, 0, 0, .18)),
+    linear-gradient(160deg, #5a3a2a, var(--cloth) 45%, #3a2319);
+  box-shadow: inset 0 1px 0 rgba(255, 222, 176, .14), calc(var(--bt) * -.25) var(--bt) 0 #2a1810, calc(var(--bt) * -.25 - 1px) calc(var(--bt) + 1px) 3px rgba(0, 0, 0, .45);
+  transform: translateZ(1px) rotateY(180deg);
+}
+/* shut, the lower board sits square under the upper one and shows only as an edge at the foot */
+.book[data-state="closed"] .sheet[data-sheet="5"]::before,
+.book[data-state="closed-back"] .sheet[data-sheet="0"]::after {
+  top: 0; right: 0; bottom: 0;
+  box-shadow: 0 calc(var(--bt) * 2 + var(--pb)) 0 #2a1810, 0 calc(var(--bt) * 2 + var(--pb) + 1px) 3px rgba(0, 0, 0, .45);
+}
+
+/* the page block under each pile: the script draws its edges, one leaf at a time, to the leaves' outline */
+.book__block { position: absolute; top: 0; width: 50%; height: 100%; z-index: 11; pointer-events: none; }
+.book__block--l { left: 0; }
+.book__block--r { left: 50%; }
+.book__block svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+
+/* the shadow a turning leaf throws on the pile beneath it. It runs alongside the leaf's free edge:
+   the keyframes sit where the eased turn puts that edge (in perspective) at each tenth of the turn,
+   so the shadow leaves the fore-edge as the leaf lifts, and spreads back out as the leaf comes down. */
+.book__cast { position: absolute; top: 0; width: 50%; height: 100%; z-index: 30; pointer-events: none; overflow: hidden; }
+.book__cast--l { left: 0; }
+.book__cast--r { left: 50%; }
+.book__cast::before { content: ""; position: absolute; inset: 0; opacity: 0; }
+.book__cast--r::before { background: linear-gradient(90deg, rgba(24, 12, 2, .5), rgba(24, 12, 2, .2) 10%, rgba(24, 12, 2, .06) 24%, transparent 40%); }
+.book__cast--l::before { background: linear-gradient(270deg, rgba(24, 12, 2, .5), rgba(24, 12, 2, .2) 10%, rgba(24, 12, 2, .06) 24%, transparent 40%); }
+.book[data-turning="fwd"] .book__cast--r::before { animation: cast-r-lift var(--flip) linear; }
+.book[data-turning="fwd"] .book__cast--l::before { animation: cast-l-land var(--flip) linear; }
+.book[data-turning="back"] .book__cast--l::before { animation: cast-l-lift var(--flip) linear; }
+.book[data-turning="back"] .book__cast--r::before { animation: cast-r-land var(--flip) linear; }
+@keyframes cast-r-lift {
+  0% { translate: 100% 0; opacity: 0; } 19% { translate: 100% 0; opacity: .3; } 26.1% { translate: 91.7% 0; opacity: .5; }
+  31.2% { translate: 70.1% 0; opacity: .55; } 35.6% { translate: 38.2% 0; opacity: .45; } 39.8% { translate: 0 0; opacity: .2; } 44%, 100% { translate: 0 0; opacity: 0; }
+}
+@keyframes cast-r-land {
+  0%, 39.8% { translate: 0 0; opacity: 0; } 44.3% { translate: 38.2% 0; opacity: .3; } 49.7% { translate: 70.1% 0; opacity: .48; }
+  56.6% { translate: 91.7% 0; opacity: .55; } 66.9% { translate: 100% 0; opacity: .5; } 75.4% { translate: 100% 0; opacity: .3; } 100% { translate: 100% 0; opacity: 0; }
+}
+@keyframes cast-l-lift {
+  0% { translate: -100% 0; opacity: 0; } 19% { translate: -100% 0; opacity: .3; } 26.1% { translate: -91.7% 0; opacity: .5; }
+  31.2% { translate: -70.1% 0; opacity: .55; } 35.6% { translate: -38.2% 0; opacity: .45; } 39.8% { translate: 0 0; opacity: .2; } 44%, 100% { translate: 0 0; opacity: 0; }
+}
+@keyframes cast-l-land {
+  0%, 39.8% { translate: 0 0; opacity: 0; } 44.3% { translate: -38.2% 0; opacity: .3; } 49.7% { translate: -70.1% 0; opacity: .48; }
+  56.6% { translate: -91.7% 0; opacity: .55; } 66.9% { translate: -100% 0; opacity: .5; } 75.4% { translate: -100% 0; opacity: .3; } 100% { translate: -100% 0; opacity: 0; }
+}
+
+.face { position: absolute; inset: 0; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; cursor: pointer; }
+.face--back { transform: rotateY(180deg); }
+.face a, .face button { cursor: pointer; }
+/* light only, laid over the page: the paper itself is the scan on ::before */
+.face::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 3;
+  background: linear-gradient(90deg, rgb(30 16 4 / calc(var(--bend) * .42)), rgb(30 16 4 / calc(var(--bend) * .16)) 30%, rgb(255 244 220 / calc(var(--bend) * .1)) 62%, rgb(30 16 4 / calc(var(--bend) * .18))), linear-gradient(90deg, rgba(60, 35, 10, .36), rgba(60, 35, 10, .1) 8%, transparent 14%);
+}
+.face--back::after { background: linear-gradient(270deg, rgb(30 16 4 / calc(var(--bend) * .42)), rgb(30 16 4 / calc(var(--bend) * .16)) 30%, rgb(255 244 220 / calc(var(--bend) * .1)) 62%, rgb(30 16 4 / calc(var(--bend) * .18))), linear-gradient(270deg, rgba(60, 35, 10, .4), rgba(60, 35, 10, .12) 8%, transparent 14%); }
+.paper::after {
+  background:
+    /* the leaf bending while it turns (zero at rest) */
+    linear-gradient(90deg, rgb(30 16 4 / calc(var(--bend) * .42)), rgb(30 16 4 / calc(var(--bend) * .16)) 30%, rgb(255 244 220 / calc(var(--bend) * .1)) 62%, rgb(30 16 4 / calc(var(--bend) * .18))),
+    /* the fold: the leaf falling away into the binding, deeper on the fuller side */
+    linear-gradient(90deg, rgb(36 20 6 / calc(var(--gr) * .44)), rgb(36 20 6 / calc(var(--gr) * .3)) .7%, rgb(36 20 6 / calc(var(--gr) * .19)) 2%, rgb(36 20 6 / calc(var(--gr) * .11)) 4.5%, rgb(36 20 6 / calc(var(--gr) * .05)) 8%, rgb(36 20 6 / calc(var(--gr) * .015)) 12%, transparent 16%),
+    /* light thrown back across the fold by the facing page */
+    linear-gradient(90deg, transparent .8%, rgb(255 238 204 / .1) 1.7%, transparent 3.4%),
+    /* the crest where the leaf rises out of the gutter */
+    linear-gradient(90deg, transparent 13%, rgb(255 249 232 / .07) 22%, transparent 36%),
+    /* the fore-edge lifting a little off the block */
+    linear-gradient(90deg, transparent 88%, rgb(60 38 14 / .05)),
+    /* the lamp is above the desk: the head of the page a touch brighter than the foot */
+    linear-gradient(180deg, rgb(255 250 236 / .035), transparent 35%, transparent 70%, rgb(60 38 14 / .04));
+}
+.paper.face--back::after {
+  background:
+    /* the leaf bending while it turns (zero at rest) */
+    linear-gradient(270deg, rgb(30 16 4 / calc(var(--bend) * .42)), rgb(30 16 4 / calc(var(--bend) * .16)) 30%, rgb(255 244 220 / calc(var(--bend) * .1)) 62%, rgb(30 16 4 / calc(var(--bend) * .18))),
+    /* the fold: the leaf falling away into the binding, deeper on the fuller side */
+    linear-gradient(270deg, rgb(36 20 6 / calc(var(--gl) * .44)), rgb(36 20 6 / calc(var(--gl) * .3)) .7%, rgb(36 20 6 / calc(var(--gl) * .19)) 2%, rgb(36 20 6 / calc(var(--gl) * .11)) 4.5%, rgb(36 20 6 / calc(var(--gl) * .05)) 8%, rgb(36 20 6 / calc(var(--gl) * .015)) 12%, transparent 16%),
+    /* light thrown back across the fold by the facing page */
+    linear-gradient(270deg, transparent .8%, rgb(255 238 204 / .1) 1.7%, transparent 3.4%),
+    /* the crest where the leaf rises out of the gutter */
+    linear-gradient(270deg, transparent 13%, rgb(255 249 232 / .07) 22%, transparent 36%),
+    /* the fore-edge lifting a little off the block */
+    linear-gradient(270deg, transparent 88%, rgb(60 38 14 / .05)),
+    /* the lamp is above the desk: the head of the page a touch brighter than the foot */
+    linear-gradient(180deg, rgb(255 250 236 / .035), transparent 35%, transparent 70%, rgb(60 38 14 / .04)),
+    /* the left page faces a little away from the lamp */
+    linear-gradient(rgb(60 38 14 / .025), rgb(60 38 14 / .025));
+}
+.sheet.is-turning .face::after { animation: bend var(--flip) var(--ease-turn); }
+@keyframes bend { 0%, 100% { --bend: 0; } 50% { --bend: 1; } }
+
+/* ---------- paper: one scanned sheet of antique stock ----------
+   Fibres, pulp and mottling all come from the scan on ::before; nothing here imitates them.
+   The scan is never tiled or filtered, only shifted and turned per leaf so that facing pages
+   never show the same patch, and the scan's own toned edge always falls on the fore-edge.
+   The inset shadow is the light catching the cut edge; the gradients on ::after are the light. */
+.paper { color: var(--ink); background: var(--paper); }
+/* deckled outlines from the script; a free leaf's outline also falls into the binding */
+.paper, .cover__label { clip-path: var(--outline-leaf, var(--outline)); }
+.paper::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--paper-scan) var(--scan-x, 50%) 50% / cover no-repeat;
+  transform: var(--scan-turn, none);
+  box-shadow: inset 0 0 calc(var(--u) * 1.2) rgba(96, 60, 22, .1), inset 0 0 calc(var(--u) * .25) rgba(96, 60, 22, .2);
+}
+.sheet[data-sheet="0"] .face--back  { --scan-x: 0%; }
+.sheet[data-sheet="1"] .face--front { --scan-x: 100%; --scan-turn: scaleY(-1); }
+.sheet[data-sheet="1"] .face--back  { --scan-x: 100%; --scan-turn: scaleX(-1); }
+.sheet[data-sheet="2"] .face--front { --scan-x: 0%; --scan-turn: rotate(180deg); }
+.sheet[data-sheet="2"] .face--back  { --scan-x: 0%; --scan-turn: scaleY(-1); }
+.sheet[data-sheet="3"] .face--front { --scan-x: 100%; }
+.sheet[data-sheet="3"] .face--back  { --scan-x: 100%; --scan-turn: rotate(180deg); }
+.sheet[data-sheet="4"] .face--front { --scan-x: 0%; --scan-turn: scaleX(-1); }
+.sheet[data-sheet="4"] .face--back  { --scan-x: 30%; --scan-turn: scaleY(-1); }
+.sheet[data-sheet="5"] .face--front { --scan-x: 70%; --scan-turn: rotate(180deg); }
+
+/* ---------- the printed page ----------
+   No z-index here on purpose: the engravings multiply onto the face's paper,
+   which only works while they share its stacking context. */
+.page {
+  position: absolute; inset: calc(var(--u) * 4.2) calc(var(--u) * 5.4) calc(var(--u) * 2.6);
+  display: flex; flex-direction: column; padding-bottom: calc(var(--u) * 5);
+}
+.page::after { content: ""; position: absolute; left: 0; right: 0; bottom: calc(var(--u) * 3.5); border-top: 1px solid var(--rule); }
+.folio {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: flex; justify-content: space-between; align-items: center; gap: calc(var(--u) * 2);
+  font-size: var(--fs-xs); letter-spacing: .3em; color: var(--ink-3); line-height: 1.2;
+}
+html[data-lang="en"] .folio { font-family: var(--fell-sc); letter-spacing: .14em; }
+.folio__num { font: 400 calc(var(--u) * 2.6) / 1 var(--gothic); letter-spacing: .04em; color: var(--ink-2); }
+
+.runhead {
+  display: flex; align-items: center; gap: calc(var(--u) * 2.2);
+  font: 700 var(--fs-xs) / 1.3 var(--zh); letter-spacing: .34em; color: var(--ink-2); white-space: nowrap;
+}
+html[data-lang="en"] .runhead { font: 400 max(var(--min-xs), calc(var(--u) * 1.8)) / 1.3 var(--fell-sc); letter-spacing: .16em; }
+.runhead::before, .runhead::after { content: ""; flex: 1; border-top: 1px solid var(--rule-soft); }
+
+/* body copy */
+.copy { font-size: var(--fs-body); line-height: 1.72; text-align: justify; color: var(--ink-2); }
+html[data-lang="en"] .copy { font-size: max(var(--min-body), calc(var(--u) * 2.4)); line-height: 1.36; hyphens: auto; }
+.claim { margin-top: calc(var(--u) * 1.7); font: 900 calc(var(--u) * 2.9) / 1.25 var(--zh); letter-spacing: .05em; color: var(--ink); }
+html[data-lang="en"] .claim { font: 400 calc(var(--u) * 3.5) / 1 var(--gothic); text-transform: uppercase; letter-spacing: .03em; }
+.claim + .copy { margin-top: calc(var(--u) * .35); }
+.plans { font-size: var(--fs-sm); color: var(--ink-2); letter-spacing: .1em; }
+html[data-lang="en"] .plans { font-style: italic; letter-spacing: 0; }
+
+/* ---------- advertisement titles ---------- */
+.ad-title { text-align: center; margin-top: calc(var(--u) * 1.4); line-height: 1; color: var(--ink); }
+.ad-title > [lang="zh"] { display: inline-block; font: 900 calc(var(--u) * 15.5) / 1 var(--zh); letter-spacing: .03em; transform: scaleX(.94); text-shadow: 0 0 calc(var(--u) * .15) rgba(36, 26, 16, .45); }
+.ad-title > [lang="en"] { display: inline-block; font: 400 calc(var(--u) * 13) / .9 var(--gothic); text-transform: uppercase; letter-spacing: .01em; }
+.ad-tagline {
+  margin-top: calc(var(--u) * 1.3); padding: calc(var(--u) * .75) 0 calc(var(--u) * .65);
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  text-align: center; font: 700 max(var(--min-sm), calc(var(--u) * 2.1)) / 1.3 var(--zh); letter-spacing: .42em; color: var(--ink-2);
+}
+html[data-lang="en"] .ad-tagline { font: 400 max(var(--min-sm), calc(var(--u) * 1.9)) / 1.3 var(--slab); text-transform: uppercase; letter-spacing: .16em; }
+
+/* prices: a big figure, the dollar and the cents set superior */
+.price { text-align: center; }
+.price__fig { display: flex; justify-content: center; align-items: flex-start; color: var(--ink); line-height: .8; }
+.price--gothic .price__fig { font-family: var(--gothic); }
+.price--gothic .price__cur { font-size: calc(var(--u) * 7); margin: calc(var(--u) * 1.6) calc(var(--u) * .5) 0 0; }
+.price--gothic .price__num { font-size: calc(var(--u) * 21); }
+.price--gothic .price__cents { font-size: calc(var(--u) * 8); margin: calc(var(--u) * 1.6) 0 0 calc(var(--u) * .6); padding-bottom: calc(var(--u) * .5); border-bottom: calc(var(--u) * .5) solid; }
+.price--tuscan .price__fig { font-family: var(--wood); }
+.price--tuscan .price__cur { font-size: calc(var(--u) * 4.2); margin: calc(var(--u) * 1) calc(var(--u) * .5) 0 0; }
+.price--tuscan .price__num { font-size: calc(var(--u) * 13); line-height: .85; }
+.price--tuscan .price__cents { font-size: calc(var(--u) * 4.6); margin: calc(var(--u) * 1) 0 0 calc(var(--u) * .5); padding-bottom: calc(var(--u) * .3); border-bottom: calc(var(--u) * .4) solid; }
+.price__free { margin-top: calc(var(--u) * .8); font: 900 calc(var(--u) * 4.4) / 1.1 var(--zh); letter-spacing: .05em; }
+html[data-lang="en"] .price__free { font: 400 calc(var(--u) * 5.2) / 1 var(--gothic); text-transform: uppercase; letter-spacing: .02em; }
+.price__was { margin-top: calc(var(--u) * .5); font-size: var(--fs-sm); letter-spacing: .2em; color: var(--ink-2); }
+html[data-lang="en"] .price__was { font-style: italic; letter-spacing: .02em; }
+.price--tuscan .price__free { font-size: calc(var(--u) * 3.7); }
+html[data-lang="en"] .price--tuscan .price__free { font-size: calc(var(--u) * 4.4); }
+
+/* ---------- No. 1: the figure at the table, the price in its corner ---------- */
+.words { display: grid; grid-template-columns: 58% minmax(0, 1fr); gap: 0 calc(var(--u) * 3); margin-top: calc(var(--u) * 1.6); align-items: start; }
+.words__plate { margin-left: calc(var(--u) * -1.4); }
+.words__plate a { display: block; }
+.words__plate img { width: 100%; mix-blend-mode: multiply; }
+.words__plate figcaption { margin-top: calc(var(--u) * .5); text-align: center; font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); letter-spacing: .04em; }
+html[data-lang="en"] .words__plate figcaption { font-style: italic; letter-spacing: 0; }
+.words__side { padding-top: calc(var(--u) * 1.4); }
+.words__side .copy--lead { margin-top: calc(var(--u) * 1.4); padding-top: calc(var(--u) * 1.2); border-top: 1px solid var(--rule-soft); }
+.words__foot { margin-top: auto; padding-top: calc(var(--u) * 1.2); display: flex; justify-content: space-between; align-items: center; gap: calc(var(--u) * 2.4); }
+.words__foot .plans { flex: 1; text-align: center; }
+
+.dotbox {
+  border: calc(var(--u) * .35) dotted var(--ink); padding: calc(var(--u) * 1.1) calc(var(--u) * 2.6);
+  text-align: center; line-height: 1.35; color: var(--ink);
+}
+.dotbox small { font-size: var(--fs-sm); letter-spacing: .2em; color: var(--ink-2); }
+.dotbox b { font: 900 calc(var(--u) * 3.5) / 1.3 var(--zh); letter-spacing: .1em; margin: 0 calc(var(--u) * .4); }
+html[data-lang="en"] .dotbox small { font-style: italic; letter-spacing: 0; }
+html[data-lang="en"] .dotbox b { font: 400 calc(var(--u) * 3.7) / 1.15 var(--gothic); text-transform: uppercase; letter-spacing: .04em; }
+
+.order { display: flex; flex-direction: column; align-items: center; gap: calc(var(--u) * .9); }
+.coupon {
+  position: relative; display: block; text-align: center; text-decoration: none; color: var(--ink);
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 3.8) calc(var(--u) * 1.2);
+  border: calc(var(--u) * .35) solid transparent; transition: background .15s, color .15s;
+}
+.coupon::before { content: "✂"; position: absolute; top: calc(var(--u) * -1.7); left: calc(var(--u) * 2); font-size: calc(var(--u) * 2.6); line-height: 1; padding: 0 calc(var(--u) * .4); color: var(--ink); }
+.coupon::after {
+  --b: calc(var(--u) * .35); --dash: linear-gradient(90deg, var(--ink) 0 31%, transparent 0 69%, var(--ink) 0); --dash-v: linear-gradient(180deg, var(--ink) 0 31%, transparent 0 69%, var(--ink) 0);
+  content: ""; position: absolute; inset: calc(var(--b) * -1); pointer-events: none;
+  background-image: var(--dash), var(--dash), var(--dash-v), var(--dash-v);
+  background-position: top, bottom, left, right;
+  background-size: calc(var(--u) * 1.45) var(--b), calc(var(--u) * 1.45) var(--b), var(--b) calc(var(--u) * 1.45), var(--b) calc(var(--u) * 1.45);
+  background-repeat: round no-repeat, round no-repeat, no-repeat round, no-repeat round;
+  -webkit-mask: linear-gradient(90deg, #000 calc(var(--u) * 2.1), #0000 0 calc(var(--u) * 6), #000 0) top / 100% var(--b) no-repeat, linear-gradient(#000 0 0) bottom / 100% calc(100% - var(--b)) no-repeat;
+          mask: linear-gradient(90deg, #000 calc(var(--u) * 2.1), #0000 0 calc(var(--u) * 6), #000 0) top / 100% var(--b) no-repeat, linear-gradient(#000 0 0) bottom / 100% calc(100% - var(--b)) no-repeat;
+}
+.coupon__top { display: block; font-size: var(--fs-xs); letter-spacing: .2em; color: var(--ink-2); }
+.coupon b { display: block; margin: calc(var(--u) * .3) 0 calc(var(--u) * .2); font: 900 calc(var(--u) * 4.4) / 1.15 var(--zh); letter-spacing: .3em; margin-right: -.3em; }
+html[data-lang="en"] .coupon b { font: 400 calc(var(--u) * 5.2) / 1 var(--gothic); text-transform: uppercase; letter-spacing: .06em; margin-right: 0; }
+.coupon__sub { display: block; font: 400 max(var(--min-xs), calc(var(--u) * 1.7)) / 1.2 var(--slab); letter-spacing: .26em; }
+html[data-lang="en"] .coupon__sub { font: 700 max(var(--min-xs), calc(var(--u) * 1.8)) / 1.2 var(--zh); letter-spacing: .4em; }
+.coupon:hover, .coupon:focus-visible { background: var(--ink); color: var(--paper-light); }
+.coupon:hover .coupon__top, .coupon:focus-visible .coupon__top { color: var(--paper); }
+
+/* ---------- No. 2: the room across the page, a key of furniture below ---------- */
+.ad-title--ruled { display: flex; align-items: center; gap: calc(var(--u) * 2.4); }
+.ad-title--ruled::before, .ad-title--ruled::after { content: ""; flex: 1; height: calc(var(--u) * 1.1); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.advert--room .ad-title > [lang="zh"] { font-size: calc(var(--u) * 13); }
+.advert--room .ad-title > [lang="en"] { font-size: calc(var(--u) * 12); }
+.arc { display: block; width: 100%; height: auto; margin-top: calc(var(--u) * .1); overflow: visible; }
+.arc text { fill: var(--ink-2); }
+.arc__zh { font: 700 25px var(--zh); letter-spacing: 6px; }
+.arc__en { font: 400 19px var(--slab); letter-spacing: 2px; }
+.room__plate { width: 80%; margin: calc(var(--u) * .4) auto 0; }
+.room__plate a { display: block; }
+.room__plate img { width: 100%; mix-blend-mode: multiply; }
+.legend { margin-top: calc(var(--u) * .8); padding: calc(var(--u) * .7) 0 calc(var(--u) * .5); border-top: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); }
+.legend__head { text-align: center; font: 700 var(--fs-xs) / 1.3 var(--zh); letter-spacing: .44em; color: var(--ink-2); }
+html[data-lang="en"] .legend__head { font: 400 max(var(--min-xs), calc(var(--u) * 1.8)) / 1.3 var(--fell-sc); letter-spacing: .16em; }
+.legend__list { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); margin-top: calc(var(--u) * .3); }
+.legend__list li { display: flex; flex-direction: column; align-items: center; gap: calc(var(--u) * .1); font-size: var(--fs-sm); line-height: 1.2; color: var(--ink); letter-spacing: .1em; }
+html[data-lang="en"] .legend__list li { font: 400 max(var(--min-xs), calc(var(--u) * 1.7)) / 1.2 var(--fell-sc); letter-spacing: .02em; }
+.legend__list svg { width: calc(var(--u) * 6.6); height: calc(var(--u) * 5); color: var(--ink-2); }
+.room__cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr) minmax(0, 1fr); gap: 0 calc(var(--u) * 2.4); margin-top: calc(var(--u) * 1.3); align-items: start; }
+.room__col .claim:first-child { margin-top: 0; }
+.room__mid { display: flex; flex-direction: column; align-items: center; justify-content: center; align-self: stretch; padding: 0 calc(var(--u) * 1.4); border-left: 1px solid var(--rule-soft); border-right: 1px solid var(--rule-soft); }
+.room__foot { margin-top: auto; padding-top: calc(var(--u) * .3); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: calc(var(--u) * 2.4); }
+.room__foot .seal { margin: 0; width: calc(var(--u) * 11.5); height: calc(var(--u) * 11.5); justify-self: start; }
+.room__foot .plans { justify-self: end; }
+.admit { display: block; text-decoration: none; color: var(--ink); }
+.admit__body {
+  display: flex; align-items: stretch; border: 1px solid var(--ink); transition: background .15s, color .15s;
+  -webkit-mask: radial-gradient(circle at 0 50%, #0000 calc(var(--u) * 1.1), #000 calc(var(--u) * 1.15)) left / 51% 100% no-repeat, radial-gradient(circle at 100% 50%, #0000 calc(var(--u) * 1.1), #000 calc(var(--u) * 1.15)) right / 51% 100% no-repeat;
+          mask: radial-gradient(circle at 0 50%, #0000 calc(var(--u) * 1.1), #000 calc(var(--u) * 1.15)) left / 51% 100% no-repeat, radial-gradient(circle at 100% 50%, #0000 calc(var(--u) * 1.1), #000 calc(var(--u) * 1.15)) right / 51% 100% no-repeat;
+}
+.admit__stub { writing-mode: vertical-rl; transform: rotate(180deg); padding: calc(var(--u) * .8) calc(var(--u) * .9) calc(var(--u) * .8) calc(var(--u) * .5); border-left: 1px dashed var(--ink); font: 400 max(var(--min-xs), calc(var(--u) * 1.4)) / 1 var(--slab); letter-spacing: .12em; text-align: center; margin-left: calc(var(--u) * 1); }
+.admit__main { padding: calc(var(--u) * .9) calc(var(--u) * 2.4) calc(var(--u) * .8) calc(var(--u) * 1.8); text-align: center; }
+.admit__main b { display: block; font: 900 calc(var(--u) * 3.7) / 1.15 var(--zh); letter-spacing: .24em; margin-right: -.24em; white-space: nowrap; }
+html[data-lang="en"] .admit__main b { font: 400 calc(var(--u) * 4.4) / 1 var(--gothic); text-transform: uppercase; letter-spacing: .05em; margin-right: 0; }
+.admit__main small { display: block; margin-top: calc(var(--u) * .3); font: 400 max(var(--min-xs), calc(var(--u) * 1.4)) / 1.2 var(--slab); letter-spacing: .14em; white-space: nowrap; }
+html[data-lang="en"] .admit__main small { font: 700 max(var(--min-xs), calc(var(--u) * 1.5)) / 1.2 var(--zh); letter-spacing: .26em; }
+.admit:hover .admit__body, .admit:focus-visible .admit__body { background: var(--ink); color: var(--paper-light); }
+.admit:hover .admit__stub, .admit:focus-visible .admit__stub { border-color: var(--paper); }
+
+/* a round seal, set in type around a ring */
+.seal { display: block; width: calc(var(--u) * 15); height: calc(var(--u) * 15); margin: calc(var(--u) * 1.6) auto 0; }
+.seal circle { fill: none; stroke: var(--ink-2); }
+.seal__o { stroke-width: 2; }
+.seal__i { stroke-width: .8; }
+.seal text { fill: var(--ink-2); }
+.seal__ring--zh { font: 700 10.4px var(--zh); letter-spacing: 3.1px; }
+.seal__ring--en { font: 400 7.6px var(--slab); letter-spacing: .9px; }
+.seal__mid--zh { font: 900 12.5px var(--zh); letter-spacing: 1px; }
+.seal__mid--en { font: 400 14px var(--gothic); letter-spacing: 1px; }
+.seal__year { font: 400 14px var(--wood); letter-spacing: 1px; }
+
+/* ---------- No. 3: the gramophone with a vertical title, set like a magazine page ---------- */
+.music__top { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "plate sub title"; gap: 0 calc(var(--u) * 1.8); margin-top: calc(var(--u) * 1.8); align-items: start; }
+.music__plate { grid-area: plate; position: relative; margin-left: calc(var(--u) * -1.6); }
+.music__plate a { display: block; }
+.music__plate img { width: 100%; mix-blend-mode: multiply; }
+.music__title { grid-area: title; writing-mode: vertical-rl; font: 900 calc(var(--u) * 10.6) / 1 var(--zh); letter-spacing: .1em; color: var(--ink); text-shadow: 0 0 calc(var(--u) * .15) rgba(36, 26, 16, .45); }
+.music__sub { grid-area: sub; writing-mode: vertical-rl; padding-top: calc(var(--u) * 5); font: 700 max(var(--min-sm), calc(var(--u) * 2.2)) / 1.2 var(--zh); letter-spacing: .34em; color: var(--ink-2); }
+html[data-lang="en"] .music__top { grid-template-columns: minmax(0, 1fr) calc(var(--u) * 23); grid-template-areas: "plate title" "plate sub"; grid-template-rows: auto 1fr; }
+html[data-lang="en"] .music__title { writing-mode: horizontal-tb; text-align: right; font: 400 calc(var(--u) * 9.2) / .88 var(--gothic); text-transform: uppercase; letter-spacing: .01em; text-shadow: none; padding-top: calc(var(--u) * 1); }
+html[data-lang="en"] .music__sub { writing-mode: horizontal-tb; text-align: right; padding-top: calc(var(--u) * 1.4); margin-top: calc(var(--u) * 1.4); border-top: 1px solid var(--rule-soft); font: italic 400 max(var(--min-sm), calc(var(--u) * 2.4)) / 1.3 var(--fell); letter-spacing: 0; }
+.music__lede { margin-top: calc(var(--u) * 1.8); text-align: center; font: 700 max(var(--min-body), calc(var(--u) * 2.9)) / 1.8 var(--zh); letter-spacing: .08em; color: var(--ink); }
+html[data-lang="en"] .music__lede { font: italic 700 max(var(--min-body), calc(var(--u) * 2.7)) / 1.38 var(--display); letter-spacing: 0; }
+.music__lede::before, .music__lede::after { content: "❦"; display: block; font-family: serif; font-style: normal; font-size: calc(var(--u) * 2.2); line-height: 1; color: var(--ink-3); }
+.music__lede::before { margin-bottom: calc(var(--u) * .8); }
+.music__lede::after { margin-top: calc(var(--u) * .8); transform: rotate(180deg); }
+.music__cols { margin-top: calc(var(--u) * 2.2); column-count: 2; column-gap: calc(var(--u) * 3.4); column-rule: 1px solid var(--rule-soft); }
+.music__cols .copy { break-inside: avoid; margin-bottom: calc(var(--u) * 1.1); font-size: max(var(--min-body), calc(var(--u) * 2.4)); }
+html[data-lang="en"] .music__cols .copy { font-size: max(var(--min-body), calc(var(--u) * 2.5)); }
+.music__close { margin-top: auto; padding-top: calc(var(--u) * 1.6); text-align: center; font: 900 calc(var(--u) * 3.2) / 1.3 var(--zh); letter-spacing: .14em; color: var(--ink); }
+html[data-lang="en"] .music__close { font: italic 700 calc(var(--u) * 3.2) / 1.2 var(--display); letter-spacing: 0; }
+.music__cols b { font-weight: 900; color: var(--ink); margin-right: .25em; }
+html[data-lang="en"] .music__cols b { font: 400 1.05em/1 var(--fell-sc); }
+.music__foot { margin-top: calc(var(--u) * 2); display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: calc(var(--u) * 3); padding-top: calc(var(--u) * 1.6); border-top: 1px solid var(--rule); }
+.music__soon { font: 900 calc(var(--u) * 5.4) / 1.1 var(--zh); letter-spacing: .12em; }
+html[data-lang="en"] .music__soon { font: italic 900 calc(var(--u) * 5.2) / 1 var(--display); letter-spacing: 0; }
+.music__tba { margin-top: calc(var(--u) * .6); font: 400 max(var(--min-xs), calc(var(--u) * 1.7)) / 1.2 var(--slab); letter-spacing: .2em; color: var(--ink-2); }
+html[data-lang="en"] .music__tba { font: 700 max(var(--min-xs), calc(var(--u) * 1.8)) / 1.2 var(--zh); letter-spacing: .4em; }
+.music__specs { margin-top: calc(var(--u) * .5); font-size: var(--fs-sm); letter-spacing: .2em; color: var(--ink-2); }
+html[data-lang="en"] .music__specs { font-style: italic; letter-spacing: .02em; }
+.music__order { display: flex; flex-direction: column; align-items: center; max-width: calc(var(--u) * 36); }
+.card {
+  display: inline-block; text-align: center; text-decoration: none; color: var(--ink);
+  padding: calc(var(--u) * 1.2) calc(var(--u) * 3.2) calc(var(--u) * 1); border: calc(var(--u) * .55) double var(--ink); border-radius: calc(var(--u) * .5);
+  transition: background .15s, color .15s;
+}
+.card b { display: block; font: 900 calc(var(--u) * 3.6) / 1.15 var(--zh); letter-spacing: .3em; margin-right: -.3em; }
+html[data-lang="en"] .card b { font: italic 700 calc(var(--u) * 3.4) / 1.1 var(--display); letter-spacing: 0; margin: 0; }
+.card small { display: block; margin-top: calc(var(--u) * .3); font: 400 max(var(--min-xs), calc(var(--u) * 1.5)) / 1.2 var(--slab); letter-spacing: .24em; }
+html[data-lang="en"] .card small { font: 700 max(var(--min-xs), calc(var(--u) * 1.6)) / 1.2 var(--zh); letter-spacing: .4em; }
+.card:hover, .card:focus-visible { background: var(--ink); color: var(--paper-light); }
+.music__note { margin-top: calc(var(--u) * .7); text-align: center; font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); }
+html[data-lang="en"] .music__note { font-style: italic; }
+
+/* the rubber stamp on the article not yet in stock */
+.stamp {
+  position: absolute; left: 2%; top: 4%; z-index: 2;
+  width: calc(var(--u) * 15); height: calc(var(--u) * 15); border-radius: 50%;
+  border: 2px solid var(--red); box-shadow: inset 0 0 0 4px transparent, inset 0 0 0 5.5px var(--red);
+  color: var(--red); display: grid; place-items: center; text-align: center;
+  font: 900 calc(var(--u) * 3) / 1.15 var(--zh); letter-spacing: .2em; text-indent: .2em;
+  transform: rotate(-12deg); opacity: .8; mix-blend-mode: multiply; pointer-events: none;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+html[data-lang="en"] .stamp { font: 400 calc(var(--u) * 1.75) / 1.25 var(--slab); letter-spacing: .04em; text-indent: 0; }
+
+/* ---------- how-to pages: a printed sheet of rules ---------- */
+.howto__title { text-align: center; margin-top: calc(var(--u) * 1.6); font: 900 calc(var(--u) * 9.2) / 1 var(--zh); letter-spacing: .14em; margin-right: -.14em; color: var(--ink); }
+html[data-lang="en"] .howto__title { font: 400 calc(var(--u) * 10) / .95 var(--gothic); text-transform: uppercase; letter-spacing: .04em; margin-right: 0; }
+.howto__for {
+  margin-top: calc(var(--u) * 1.1); padding: calc(var(--u) * .65) 0 calc(var(--u) * .55);
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  text-align: center; font: 700 max(var(--min-sm), calc(var(--u) * 2)) / 1.3 var(--zh); letter-spacing: .4em; color: var(--ink-2);
+}
+html[data-lang="en"] .howto__for { font: 400 max(var(--min-sm), calc(var(--u) * 1.8)) / 1.3 var(--slab); text-transform: uppercase; letter-spacing: .14em; }
+.howto__intro { margin-top: calc(var(--u) * 1.6); text-align: center; font-size: var(--fs-body); letter-spacing: .1em; color: var(--ink-2); }
+html[data-lang="en"] .howto__intro { font-style: italic; letter-spacing: 0; font-size: max(var(--min-body), calc(var(--u) * 2.4)); }
+.articles { margin-top: calc(var(--u) * 2.2); display: flex; flex-direction: column; }
+.articles li + li { margin-top: calc(var(--u) * 1.8); padding-top: calc(var(--u) * 1.8); border-top: 1px dotted var(--rule-soft); }
+.articles li { display: grid; grid-template-columns: calc(var(--u) * 7.6) minmax(0, 1fr) calc(var(--u) * 10); gap: 0 calc(var(--u) * 2.4); align-items: center; }
+.articles__no {
+  font: 900 calc(var(--u) * 5.4) / 1 var(--zh); text-align: center; color: var(--ink);
+  padding: calc(var(--u) * 1) 0 calc(var(--u) * 1.1); border-top: calc(var(--u) * .4) double var(--rule); border-bottom: calc(var(--u) * .4) double var(--rule);
+}
+html[data-lang="en"] .articles__no { font: 400 calc(var(--u) * 5.4) / 1 var(--gothic); }
+.articles h3 { font: 900 calc(var(--u) * 3.3) / 1.3 var(--zh); letter-spacing: .04em; color: var(--ink); }
+html[data-lang="en"] .articles h3 { font: 700 calc(var(--u) * 2.9) / 1.2 var(--display); letter-spacing: 0; }
+.articles p { margin-top: calc(var(--u) * .4); font-size: max(var(--min-body), calc(var(--u) * 2.4)); line-height: 1.7; text-align: justify; color: var(--ink-2); }
+html[data-lang="en"] .articles p { font-size: max(var(--min-body), calc(var(--u) * 2.5)); line-height: 1.36; }
+.articles__cut { width: calc(var(--u) * 10); height: calc(var(--u) * 9); color: var(--ink-3); }
+
+.specimen { margin-top: auto; padding-top: calc(var(--u) * 1.4); border-top: calc(var(--u) * .45) double var(--rule); }
+.specimen figcaption { text-align: center; font: 900 calc(var(--u) * 2.5) / 1.3 var(--zh); letter-spacing: .5em; margin-right: -.5em; color: var(--ink); }
+html[data-lang="en"] .specimen figcaption { font: 400 calc(var(--u) * 2.6) / 1.3 var(--fell-sc); letter-spacing: .16em; margin-right: 0; }
+.specimen__table { width: 80%; margin: calc(var(--u) * 1) auto 0; border-collapse: collapse; text-align: center; font-size: var(--fs-body); color: var(--ink-2); }
+.specimen__table th { padding: calc(var(--u) * .4); border-bottom: 1px solid var(--ink); font-size: var(--fs-sm); font-weight: 700; letter-spacing: .3em; color: var(--ink); }
+html[data-lang="en"] .specimen__table th { font-family: var(--fell-sc); font-weight: 400; letter-spacing: .1em; }
+.specimen__table td { padding: calc(var(--u) * .5) calc(var(--u) * .4); border-bottom: 1px dotted var(--rule-soft); }
+html[data-lang="en"] .specimen__table td { font-style: italic; }
+.specimen__table tbody tr:last-child td { border-bottom: 1px solid var(--ink); }
+.specimen__table td b { font-weight: 900; color: var(--ink); }
+.specimen__table--three { width: 100%; }
+.specimen__table--three td { letter-spacing: .06em; }
+.specimen__note { margin-top: calc(var(--u) * .8); text-align: center; font-size: var(--fs-sm); line-height: 1.55; color: var(--ink-2); }
+html[data-lang="en"] .specimen__note { font-style: italic; }
+.entry { width: 88%; margin: calc(var(--u) * .8) auto 0; }
+.entry > div { display: grid; grid-template-columns: calc(var(--u) * 10) minmax(0, 1fr); gap: calc(var(--u) * 1.6); align-items: baseline; padding: calc(var(--u) * .5) 0; border-bottom: 1px solid var(--rule-soft); }
+.entry dt { font-size: var(--fs-sm); font-weight: 700; letter-spacing: .3em; color: var(--ink); }
+html[data-lang="en"] .entry dt { font-family: var(--fell-sc); font-weight: 400; letter-spacing: .08em; }
+.entry dd { font-size: var(--fs-body); color: var(--ink-2); }
+html[data-lang="en"] .entry dd { font-style: italic; }
+.annex { margin-top: auto; padding-top: calc(var(--u) * 2); font-size: var(--fs-sm); line-height: 1.65; color: var(--ink-2); text-align: justify; }
+
+/* ---------- front and back matter ---------- */
+.plain-title { text-align: center; margin-top: calc(var(--u) * 1.8); font: 900 calc(var(--u) * 8.4) / 1 var(--zh); letter-spacing: .16em; margin-right: -.16em; color: var(--ink); }
+html[data-lang="en"] .plain-title { font: 400 calc(var(--u) * 9) / .95 var(--gothic); text-transform: uppercase; letter-spacing: .04em; margin-right: 0; }
+.plain-title--big { font-size: calc(var(--u) * 12); }
+html[data-lang="en"] .plain-title--big { font-size: calc(var(--u) * 12); }
+.plain-sub { margin-top: calc(var(--u) * 1); padding-bottom: calc(var(--u) * 1.2); border-bottom: 1px solid var(--rule); text-align: center; font: 400 max(var(--min-xs), calc(var(--u) * 1.85)) / 1.3 var(--slab); letter-spacing: .3em; color: var(--ink-2); }
+html[data-lang="en"] .plain-sub { font: 700 max(var(--min-xs), calc(var(--u) * 2)) / 1.3 var(--zh); letter-spacing: .4em; }
+
+.letter { margin-top: calc(var(--u) * 2.6); font-size: max(var(--min-body), calc(var(--u) * 2.7)); line-height: 1.95; text-align: justify; letter-spacing: .02em; color: var(--ink); }
+html[data-lang="en"] .letter { font-size: max(var(--min-body), calc(var(--u) * 2.75)); line-height: 1.5; letter-spacing: 0; }
+.letter--centre { font-size: max(var(--min-body), calc(var(--u) * 2.45)); }
+html[data-lang="en"] .letter--centre { font-size: max(var(--min-body), calc(var(--u) * 2.55)); }
+.page--letter .letter:not(.letter--more)::first-letter {
+  float: left; margin: calc(var(--u) * .5) calc(var(--u) * 1.2) 0 0; padding: calc(var(--u) * .5) calc(var(--u) * .9);
+  border: 1px solid var(--ink); outline: 1px solid var(--rule-soft); outline-offset: calc(var(--u) * .3);
+  font: 900 calc(var(--u) * 5.4) / 1 var(--zh);
+}
+html[data-lang="en"] .page--letter .letter:not(.letter--more)::first-letter { font: 900 calc(var(--u) * 5.6) / 1 var(--display); padding: calc(var(--u) * .3) calc(var(--u) * 1) calc(var(--u) * .5); }
+.letter--centre { text-align: center; }
+.letter--more { margin-top: calc(var(--u) * 1); text-indent: 2em; }
+html[data-lang="en"] .letter--more { text-indent: 1.5em; }
+.page--letter .terms { margin-top: calc(var(--u) * 4); }
+.signoff-row { margin-top: calc(var(--u) * 2); display: flex; justify-content: flex-end; align-items: center; gap: calc(var(--u) * 2.4); }
+.chop {
+  display: block; flex: none; width: calc(var(--u) * 9); height: calc(var(--u) * 9); padding: calc(var(--u) * 1) calc(var(--u) * .9); text-align: center;
+  background: var(--red); color: var(--paper-light); border-radius: calc(var(--u) * .4); transform: rotate(-4deg); opacity: .86; mix-blend-mode: multiply;
+  font: 900 calc(var(--u) * 3.3) / 1.15 var(--zh); writing-mode: vertical-rl;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 -.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 -.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.signoff { text-align: right; font-size: max(var(--min-body), calc(var(--u) * 2.5)); line-height: 1.7; letter-spacing: .14em; color: var(--ink); }
+html[data-lang="en"] .signoff { font-style: italic; letter-spacing: 0; }
+.signoff small { font-size: var(--fs-sm); color: var(--ink-3); letter-spacing: .2em; }
+
+.terms { margin-top: auto; padding: calc(var(--u) * 1.2) calc(var(--u) * .4) calc(var(--u) * 1); border-top: calc(var(--u) * .45) double var(--rule); border-bottom: calc(var(--u) * .45) double var(--rule); }
+.terms__head { text-align: center; font: 900 calc(var(--u) * 2.5) / 1.3 var(--zh); letter-spacing: .44em; margin-right: -.44em; color: var(--ink); }
+html[data-lang="en"] .terms__head { font: 400 calc(var(--u) * 3.2) / 1.1 var(--gothic); text-transform: uppercase; letter-spacing: .1em; margin-right: 0; }
+.terms__list { margin-top: calc(var(--u) * .6); }
+.terms__list li { position: relative; padding: calc(var(--u) * .35) 0 calc(var(--u) * .35) max(20px, calc(var(--u) * 3.4)); font-size: max(var(--min-sm), calc(var(--u) * 2.1)); line-height: 1.6; color: var(--ink-2); }
+html[data-lang="en"] .terms__list li { font-size: max(var(--min-sm), calc(var(--u) * 2.1)); line-height: 1.35; }
+.terms__list li::before { content: "☞"; position: absolute; left: 0; top: calc(var(--u) * .25); font-family: serif; color: var(--ink-2); }
+.bookplate {
+  margin-top: auto; margin-bottom: calc(var(--u) * 1); align-self: flex-end; text-align: center; width: 42%;
+  border: 1px solid var(--rule); outline: 1px solid var(--rule-soft); outline-offset: calc(var(--u) * .5);
+  padding: calc(var(--u) * 1.2) calc(var(--u) * 1.6); transform: rotate(-2deg);
+}
+.bookplate__head { font: 400 max(var(--min-xs), calc(var(--u) * 1.7)) / 1 var(--slab); letter-spacing: .3em; color: var(--ink-3); }
+.bookplate__name { font: 700 calc(var(--u) * 2.9) / 1.3 var(--zh); letter-spacing: .3em; margin-top: calc(var(--u) * .5); }
+html[data-lang="en"] .bookplate__name { font: italic 400 calc(var(--u) * 3) / 1.3 var(--fell); letter-spacing: 0; }
+
+.pricelist { width: 100%; margin-top: calc(var(--u) * 2.2); border-collapse: collapse; color: var(--ink); }
+.pricelist th { white-space: nowrap; padding: calc(var(--u) * .4) calc(var(--u) * .6); border-bottom: calc(var(--u) * .45) double var(--rule); text-align: left; font-size: var(--fs-xs); font-weight: 700; letter-spacing: .3em; color: var(--ink-2); }
+html[data-lang="en"] .pricelist th { font-family: var(--fell-sc); font-weight: 400; letter-spacing: .1em; font-size: max(var(--min-xs), calc(var(--u) * 1.8)); }
+.pricelist th:nth-child(3), .pricelist th:nth-child(4) { text-align: right; }
+.pricelist td { padding: calc(var(--u) * 1.3) calc(var(--u) * .6); border-bottom: 1px dotted var(--rule-soft); vertical-align: baseline; }
+.pricelist tbody tr:last-child td { border-bottom: 1px solid var(--rule); }
+.pricelist__cut { width: calc(var(--u) * 18); padding-right: calc(var(--u) * 1.6) !important; vertical-align: middle !important; }
+.pricelist__cut img { width: calc(var(--u) * 16); height: calc(var(--u) * 12.5); object-fit: contain; mix-blend-mode: multiply; }
+.pricelist__no { width: calc(var(--u) * 6); font: 400 calc(var(--u) * 4.4) / 1 var(--gothic); color: var(--ink-2); }
+.pricelist__name b { display: block; font: 900 calc(var(--u) * 3.3) / 1.25 var(--zh); letter-spacing: .06em; }
+html[data-lang="en"] .pricelist__name b { font: 700 calc(var(--u) * 2.9) / 1.2 var(--display); letter-spacing: 0; }
+.pricelist__name i { display: block; margin-top: calc(var(--u) * .3); font-style: normal; font-size: var(--fs-sm); color: var(--ink-2); }
+html[data-lang="en"] .pricelist__name i { font-style: italic; }
+.pricelist__price { text-align: right; white-space: nowrap; font: 900 calc(var(--u) * 3) / 1 var(--zh); letter-spacing: .1em; }
+html[data-lang="en"] .pricelist__price { font: 400 calc(var(--u) * 3.6) / 1 var(--gothic); text-transform: uppercase; letter-spacing: .04em; }
+.pricelist__price--tba { color: var(--ink-3); }
+.pricelist__page { width: calc(var(--u) * 6); text-align: right; font: 400 calc(var(--u) * 3.2) / 1 var(--gothic); color: var(--ink-2); }
+.all-free { margin-top: calc(var(--u) * 3.4); text-align: center; color: var(--ink); }
+.all-free small { display: block; font-size: var(--fs-sm); letter-spacing: .4em; color: var(--ink-2); }
+html[data-lang="en"] .all-free small { font-style: italic; letter-spacing: .02em; }
+.all-free small:last-child { margin-top: calc(var(--u) * .6); font: 400 max(var(--min-xs), calc(var(--u) * 1.8)) / 1.2 var(--slab); letter-spacing: .24em; }
+html[data-lang="en"] .all-free small:last-child { font: 700 max(var(--min-xs), calc(var(--u) * 1.9)) / 1.2 var(--zh); letter-spacing: .4em; font-style: normal; }
+.all-free b { display: block; margin-top: calc(var(--u) * .4); font: 900 calc(var(--u) * 7) / 1.05 var(--zh); letter-spacing: .04em; }
+html[data-lang="en"] .all-free b { font: 400 calc(var(--u) * 9) / .95 var(--gothic); text-transform: uppercase; letter-spacing: .02em; }
+.terms--order { margin-top: auto; }
+.fineprint { margin-top: calc(var(--u) * 1.4); text-align: center; font-size: var(--fs-xs); line-height: 1.6; color: var(--ink-3); letter-spacing: .06em; }
+html[data-lang="en"] .fineprint { font-style: italic; letter-spacing: 0; font-size: var(--fs-sm); }
+
+.orderform { margin-top: calc(var(--u) * 2.6); border: 1px solid var(--rule); outline: calc(var(--u) * .4) double var(--rule); outline-offset: calc(var(--u) * .4); padding: calc(var(--u) * 1.6) calc(var(--u) * 2.4) calc(var(--u) * 1.8); }
+.orderform__head { text-align: center; font: 900 calc(var(--u) * 3.2) / 1.2 var(--zh); letter-spacing: .4em; text-indent: .4em; }
+html[data-lang="en"] .orderform__head { font: 400 calc(var(--u) * 2.8) / 1.2 var(--wood); letter-spacing: .1em; text-indent: 0; }
+.orderform__head small { display: block; font: 400 max(var(--min-xs), calc(var(--u) * 1.6)) / 1.4 var(--slab); letter-spacing: .3em; color: var(--ink-2); margin-top: calc(var(--u) * .3); }
+html[data-lang="en"] .orderform__head small { font: 700 max(var(--min-xs), calc(var(--u) * 1.8)) / 1.4 var(--zh); }
+.orderform__rows { margin-top: calc(var(--u) * 1.2); }
+.orderform__rows div { display: grid; grid-template-columns: calc(var(--u) * 12) 1fr; gap: calc(var(--u) * 1.6); align-items: end; padding: calc(var(--u) * 1.7) 0 calc(var(--u) * .3); font-size: var(--fs-sm); letter-spacing: .2em; color: var(--ink-2); }
+html[data-lang="en"] .orderform__rows div { grid-template-columns: calc(var(--u) * 17) 1fr; font-family: var(--fell-sc); letter-spacing: .1em; }
+.orderform__rows div::after { content: ""; border-bottom: 1px dotted var(--ink-2); height: calc(var(--u) * 2.4); }
+.orderform__note { margin-top: calc(var(--u) * 1.6); text-align: center; font-size: var(--fs-xs); color: var(--ink-3); letter-spacing: .06em; line-height: 1.5; }
+html[data-lang="en"] .orderform__note { font-style: italic; letter-spacing: 0; font-size: var(--fs-sm); }
+.links { margin-top: calc(var(--u) * 2.6); display: flex; justify-content: center; gap: calc(var(--u) * 3); font: 700 max(var(--min-sm), calc(var(--u) * 2.2)) / 1.3 var(--zh); letter-spacing: .2em; }
+html[data-lang="en"] .links { font: 400 max(var(--min-sm), calc(var(--u) * 3)) / 1.1 var(--gothic); text-transform: uppercase; letter-spacing: .08em; }
+.links a { text-decoration: none; border-bottom: 1px solid var(--rule-soft); }
+.links a:hover, .links a:focus-visible { border-color: currentColor; }
+.seal--works { margin-top: auto; width: calc(var(--u) * 19); height: calc(var(--u) * 19); }
+.page--finis { justify-content: center; align-items: center; padding-bottom: 0; }
+.page--finis::after { display: none; }
+.finis { font: 900 calc(var(--u) * 12) / 1 var(--zh); color: var(--ink-2); letter-spacing: .1em; }
+html[data-lang="en"] .finis { font: 400 calc(var(--u) * 8) / 1 var(--wood); }
+.finis__line { margin-top: calc(var(--u) * 2.4); font-size: var(--fs-body); color: var(--ink-3); letter-spacing: .1em; }
+
+/* ---------- the cover ---------- */
+/* the boards' own thickness, seen at the foot when the book is shut */
+.cover { cursor: pointer; border-radius: calc(var(--u) * .6); box-shadow: inset 0 -1px 0 rgba(255, 222, 176, .12), 0 var(--bt) 0 #2e1b12; }
+.cover__board {
+  position: absolute; inset: 0; border-radius: calc(var(--u) * .6);
+  background:
+    radial-gradient(ellipse 30% 22% at 6% 4%, rgba(255, 220, 170, .18), transparent 70%),
+    radial-gradient(ellipse 26% 20% at 96% 97%, rgba(255, 220, 170, .14), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 50% 50%, rgba(255, 230, 190, .06), transparent 70%),
+    linear-gradient(160deg, #5a3a2a, var(--cloth) 40%, #3a2319);
+  box-shadow: inset 0 0 calc(var(--u) * 10) rgba(0, 0, 0, .55), inset 0 0 calc(var(--u) * .6) rgba(0, 0, 0, .6);
+}
+.cover__board::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .8 0 0 0 0 .6 0 0 0 0 .4 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.cover__corner { position: absolute; width: calc(var(--u) * 7); height: calc(var(--u) * 7); z-index: 2; background: linear-gradient(135deg, #5e4a30, #7d6646 45%, #4f3d26); box-shadow: 0 0 calc(var(--u) * .6) rgba(0, 0, 0, .5); }
+.cover__corner--tl { top: 0; left: 0; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.cover__corner--tr { top: 0; right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.cover__corner--bl { bottom: 0; left: 0; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+.cover__corner--br { bottom: 0; right: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+.cover__label {
+  position: absolute; left: calc(var(--u) * 9); right: calc(var(--u) * 9); top: calc(var(--u) * 10); bottom: calc(var(--u) * 11);
+  z-index: 1; text-align: center; padding: calc(var(--u) * 4) calc(var(--u) * 4.5);
+  display: flex; flex-direction: column; justify-content: center; color: var(--ink);
+  background: var(--paper-scan) 50% 50% / cover no-repeat, var(--paper);
+  border: 1px solid var(--rule); outline: calc(var(--u) * .45) double var(--rule); outline-offset: calc(var(--u) * .6);
+  box-shadow: 0 calc(var(--u) * .4) calc(var(--u) * 1.2) rgba(0, 0, 0, .5), inset 0 0 calc(var(--u) * 1.8) rgba(96, 60, 22, .22);
+  transform: rotate(-.6deg);
+}
+.cover__label > * { position: relative; }
+.eyebrow { font-size: max(var(--min-xs), calc(var(--u) * 1.9)); letter-spacing: .3em; color: var(--ink-2); }
+html[data-lang="en"] .eyebrow { font-family: var(--fell-sc); letter-spacing: .16em; }
+.brand { margin-top: calc(var(--u) * 2.4); font: 900 calc(var(--u) * 14) / 1 var(--zh); letter-spacing: .14em; margin-right: -.14em; text-shadow: 0 0 calc(var(--u) * .2) rgba(36, 26, 16, .5); }
+html[data-lang="en"] .brand { font: 400 calc(var(--u) * 10) / 1 var(--wood); letter-spacing: .02em; margin-right: 0; text-shadow: none; }
+.brand__latin { margin-top: calc(var(--u) * 1.6); font: 400 calc(var(--u) * 3.2) / 1 var(--gothic); letter-spacing: .26em; color: var(--ink-2); }
+html[data-lang="en"] .brand__latin { font: 700 calc(var(--u) * 2.2) / 1 var(--zh); letter-spacing: .3em; }
+.rule { height: 1px; background: var(--rule); position: relative; margin: calc(var(--u) * 2) auto; width: 70%; }
+.rule--lozenge { background: linear-gradient(90deg, var(--rule) calc(50% - var(--u) * 2), transparent 0 calc(50% + var(--u) * 2), var(--rule) 0); }
+.rule--lozenge::after { content: "◆"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: calc(var(--u) * 1.6); color: var(--ink-2); line-height: 1; }
+.brand__sub { font: 900 calc(var(--u) * 7.4) / 1.1 var(--zh); letter-spacing: .34em; margin-right: -.34em; }
+html[data-lang="en"] .brand__sub { font: 400 calc(var(--u) * 7) / 1 var(--gothic); text-transform: uppercase; letter-spacing: .04em; margin-right: 0; }
+.brand__slab { margin-top: calc(var(--u) * 1.2); font: 400 calc(var(--u) * 2.9) / 1 var(--gothic); letter-spacing: .22em; color: var(--ink-2); }
+html[data-lang="en"] .brand__slab { font: 700 calc(var(--u) * 2.1) / 1 var(--zh); letter-spacing: .3em; }
+.brand__season { margin-top: calc(var(--u) * 2.4); padding: calc(var(--u) * .6) 0; border-top: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); font-size: max(var(--min-xs), calc(var(--u) * 2)); letter-spacing: .3em; color: var(--ink-2); }
+html[data-lang="en"] .brand__season { font-family: var(--fell-sc); letter-spacing: .16em; }
+.cover__claim { margin-top: calc(var(--u) * 2.6); font-size: max(var(--min-sm), calc(var(--u) * 2.25)); line-height: 1.85; letter-spacing: .08em; color: var(--ink-2); }
+html[data-lang="en"] .cover__claim { font-size: max(var(--min-sm), calc(var(--u) * 2.4)); line-height: 1.5; letter-spacing: 0; font-style: italic; }
+.cover__open { margin-top: calc(var(--u) * 2.6); font: 700 calc(var(--u) * 2.5) / 1 var(--zh); letter-spacing: .3em; }
+html[data-lang="en"] .cover__open { font: 400 calc(var(--u) * 2.4) / 1 var(--fell-sc); letter-spacing: .16em; }
+.cover--back .cover__back-mark { position: absolute; left: 50%; bottom: calc(var(--u) * 10); transform: translateX(-50%); font: 400 calc(var(--u) * 5) / 1 var(--wood); letter-spacing: .08em; color: rgba(0, 0, 0, .35); text-shadow: 0 1px 0 rgba(255, 220, 170, .12); }
+
+/* ---------- smaller screens: the pages one under another, the type kept readable ---------- */
+@media (max-width: 1100px) {
+  :root { --pw: min(600px, calc(100vw - 24px)); --min-xs: 10.5px; --min-sm: 12.5px; --min-body: 14.5px; }
+  .desk-bar { padding: 14px 14px 0; font-size: 12px; flex-wrap: wrap; }
+  .desk-bar__hint { display: none; }
+  .stage { padding: 16px 12px 10px; }
+  .turn { display: none; }
+  .book { width: var(--pw); height: auto; perspective: none; transform: none !important; display: grid; gap: 18px; filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .6)); }
+  .book::before, .book::after { display: none !important; }
+  .sheet { position: static; width: 100%; height: auto; transform: none !important; transition: none; display: grid; gap: 18px; }
+  .face { position: relative; inset: auto; transform: none !important; backface-visibility: visible; -webkit-backface-visibility: visible; cursor: default; }
+  .face::after { display: none; }
+  .paper { clip-path: var(--outline); }
+  .book__block, .book__cast, .sheet::before, .sheet::after { display: none !important; }
+  .cover { box-shadow: none; }
+  .cover { height: calc(var(--pw) * 1.3); }
+  .cover--back { height: calc(var(--pw) * .5); }
+  .page { position: relative; inset: auto; margin: calc(var(--u) * 5) calc(var(--u) * 5.4) calc(var(--u) * 3); min-height: calc(var(--pw) * 1.2); }
+  .page--finis { min-height: calc(var(--pw) * .6); }
+  .specimen, .terms, .words__foot, .music__foot, .seal--works { margin-top: calc(var(--u) * 5); }
+  .annex { margin-bottom: calc(var(--u) * 2); }
+  .words { grid-template-columns: 1fr; }
+  .words__plate { width: 88%; margin: 0 auto; }
+  .words__side { padding-top: calc(var(--u) * 3); }
+  .words__foot { flex-wrap: wrap; justify-content: center; }
+  .room__plate { width: 100%; }
+  .legend__list { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: calc(var(--u) * 1.6); }
+  .legend__list svg { width: calc(var(--u) * 11); height: calc(var(--u) * 8.5); }
+  .room__cols { grid-template-columns: 1fr; }
+  .room__mid { order: 3; border: 0; border-top: 1px solid var(--rule-soft); padding: calc(var(--u) * 4) 0 0; margin-top: calc(var(--u) * 4); }
+  .room__col + .room__col { margin-top: calc(var(--u) * 1.7); }
+  .room__foot { grid-template-columns: auto 1fr; margin-top: calc(var(--u) * 5); }
+  .room__foot .plans { grid-column: 1 / -1; justify-self: center; }
+  .words__foot .plans { flex-basis: 100%; order: 3; }
+  .music__close { margin-top: calc(var(--u) * 4); }
+  .music__cols { column-count: 1; }
+  .music__foot { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  html[data-lang="en"] .music__top { grid-template-columns: 1fr; grid-template-areas: "title" "plate" "sub"; }
+  html[data-lang="en"] .music__title { text-align: center; font-size: calc(var(--u) * 12); }
+  html[data-lang="en"] .music__sub { text-align: center; border-top: 0; }
+  .music__plate { margin-left: 0; }
+  .articles li { grid-template-columns: calc(var(--u) * 9) minmax(0, 1fr) calc(var(--u) * 11); }
+  .specimen__table { width: 100%; }
+  /* display type keeps its rank above the floored body copy */
+  .claim, .articles h3 { font-size: max(17px, calc(var(--u) * 3.1)); }
+  html[data-lang="en"] .claim { font-size: max(21px, calc(var(--u) * 3.5)); }
+  html[data-lang="en"] .articles h3 { font-size: max(18px, calc(var(--u) * 2.9)); }
+  .price__free, html[data-lang="en"] .price--tuscan .price__free, .price--tuscan .price__free { font-size: max(19px, calc(var(--u) * 4.4)); }
+  html[data-lang="en"] .price__free { font-size: max(24px, calc(var(--u) * 5.2)); }
+  .coupon b, .admit__main b, .card b { font-size: max(21px, calc(var(--u) * 4.4)); }
+  html[data-lang="en"] .coupon b, html[data-lang="en"] .admit__main b { font-size: max(26px, calc(var(--u) * 5)); }
+  html[data-lang="en"] .card b { font-size: max(20px, calc(var(--u) * 3.4)); }
+  .admit__main small, .coupon__top { white-space: normal; }
+  .admit__stub { font-size: 10px; }
+  .dotbox b { font-size: max(18px, calc(var(--u) * 3.5)); }
+  html[data-lang="en"] .dotbox b { font-size: max(21px, calc(var(--u) * 3.7)); }
+  .music__soon { font-size: max(26px, calc(var(--u) * 5.4)); }
+  .music__close { font-size: max(17px, calc(var(--u) * 3.2)); }
+  .music__order { max-width: none; }
+  .pricelist__name b { font-size: max(17px, calc(var(--u) * 3.3)); }
+  html[data-lang="en"] .pricelist__name b { font-size: max(17px, calc(var(--u) * 2.9)); }
+  .pricelist__price { font-size: max(16px, calc(var(--u) * 3)); }
+  .specimen figcaption, .terms__head { font-size: max(16px, calc(var(--u) * 2.5)); }
+  html[data-lang="en"] .terms__head { font-size: max(20px, calc(var(--u) * 3.2)); }
+  .orderform__head { font-size: max(18px, calc(var(--u) * 3.2)); }
+  .room__foot .seal { width: calc(var(--u) * 19); height: calc(var(--u) * 19); }
+  .legend__head, .runhead { white-space: normal; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book, .sheet { transition: none; }
+  .sheet.is-turning .face::after, .book__cast::before { animation: none !important; }
+  .sheet::before, .sheet::after { transition: none; }
+  .coupon, .admit__body, .card, .turn { transition: none; }
+}
+
+/* ---------- the photographed book (desks 1280px wide and up) ----------
+   Switched on by data-book="photo" on .book; without it the book above is drawn as before, which
+   is also what phones and narrower desks get.
+
+   The photograph (assets/img/book-open.webp, 1505 x 1045, transparent ground) supplies the boards,
+   both page blocks, the gutter and its stitching, the curve of the leaves and the light. It is cut
+   at the spine and each half lines the inside of a board: the left half the front board (sheet 0),
+   the right half the back board (sheet 5). Opening the front board therefore uncovers the book by
+   the board's own movement, and what lands on the left is the board's own inside; nothing fades.
+   The shut book is the board seen from outside: the same footprint, cloth and brass as the
+   photographed boards. The photograph's own cast shadow is left out (it would turn with a board);
+   a drawn shadow under each board follows the board's projection on the desk through the turn.
+
+   Each leaf is painted with the very patch of the photograph it lies on, cut to the photographed
+   page's outline: at rest it matches the photograph to the pixel; turning, it carries that paper
+   with it, and the leaf below shows the same paper with its own print, so nothing is doubled.
+   The print is multiplied onto the paper, so the photograph's shading falls on ink and paper alike.
+
+   Measured in image px: spine at x 752.5; boards x 49-1456, y 49-997; each leaf's box 636 x 909
+   from y 58. The drawn page (100u x 142u) sits on the flattest part of each leaf, x 145.5-752.5
+   (left) / 752.5-1359.5 (right), y 70-932, so 1u = 6.07 image px and the type keeps its size. */
+
+.book__shadow { display: none; }
+
+/* only where the photographed book fits with its pages at 478px or more; narrower desks keep the
+   drawn book, whose pages need no room for boards (below that the type floors overfill a page) */
+@media (min-width: 1280px) {
+  /* the photographed book is 231.8u wide and 156.2u tall where it is opaque */
+  html:has(.book[data-book="photo"]) { --pw: min(560px, calc((100vw - 172px) / 2.318), max(480px, calc((100vh - 130px) / 1.562))); }
+  .stage:has(.book[data-book="photo"]) { gap: calc(18px + calc(var(--pw) * 0.111203)); }
+  .book[data-book="photo"] { width: calc(var(--pw) * 2.095552); height: calc(var(--pw) * 1.497529); margin: calc(var(--pw) * 0.014827) 0 calc(var(--pw) * 0.128501); }
+
+  /* one shadow under each board; the photograph's own is left out */
+  .book[data-book="photo"] { filter: drop-shadow(0 0 0 transparent); }  /* keeps the 3D flattened, as in Phase G */
+  .book[data-book="photo"][data-state="closed"] { transform: translateX(-27.653%); }      /* centre the shut board */
+  .book[data-book="photo"][data-state="closed-back"] { transform: translateX(27.653%); }
+  .book[data-book="photo"] .book__block { display: none; }
+
+  /* the boards' insides: the photograph, cut at the spine. Each box is the board's footprint
+     (image x 49-752.5 or 752.5-1456, y 49-997), measured from the spine */
+  .book[data-book="photo"] .sheet[data-sheet="0"]::after,
+  .book[data-book="photo"] .sheet[data-sheet="5"]::before {
+    top: calc(var(--pw) * -0.014827); right: calc(var(--pw) * -0.111203); bottom: calc(var(--pw) * -0.049423); left: 0;
+    border-radius: 0; box-shadow: none; transition: none; visibility: visible;
+    background: url("assets/img/book-open.webp") calc(var(--pw) * -1.239703) calc(var(--pw) * -0.080725) / calc(var(--pw) * 2.479407) auto no-repeat;
+  }
+  .book[data-book="photo"] .sheet[data-sheet="0"]::after { background-position: calc(var(--pw) * -0.080725) calc(var(--pw) * -0.080725); }
+
+  /* the boards' outsides: the shut book. Same footprint as the photographed boards */
+  .book[data-book="photo"] .face.cover {
+    inset: calc(var(--pw) * -0.014827) calc(var(--pw) * -0.111203) calc(var(--pw) * -0.049423) 0;
+    border-radius: 0 calc(var(--pw) * 0.021417) calc(var(--pw) * 0.021417) 0;
+    box-shadow: 0 calc(var(--pw) * 0.003295) 0 #23140b, 0 calc(var(--pw) * 0.004942) calc(var(--pw) * 0.003295) rgba(0, 0, 0, .35);   /* the board's edge */
+  }
+  .book[data-book="photo"] .face--back.cover { border-radius: calc(var(--pw) * 0.021417) 0 0 calc(var(--pw) * 0.021417); }
+  .book[data-book="photo"] .cover__board {
+    border-radius: inherit;
+    background:
+      /* the joint: the cloth bends round the spine here */
+      linear-gradient(90deg, rgba(12, 6, 2, .55), rgba(12, 6, 2, .14) 1.4%, rgba(255, 222, 176, .07) 2.4%, rgba(12, 6, 2, .3) 3.4%, rgba(12, 6, 2, 0) 4.6%),
+      /* the lamp: above the desk and a little to the left, as in the photograph */
+      linear-gradient(172deg, rgba(255, 226, 180, .05), transparent 45%, rgba(0, 0, 0, .12)),
+      /* the photograph's cloth: about rgb(84 54 34) across the board, a little lighter where the light falls */
+      linear-gradient(180deg, #5a3622, #53311e 48%, #4a2b1a);
+    box-shadow: inset 0 0 0 1px rgba(255, 222, 176, .1), inset 0 0 calc(var(--pw) * 0.013180) rgba(0, 0, 0, .3);
+  }
+  .book[data-book="photo"] .cover--back .cover__board {
+    background:
+      linear-gradient(270deg, rgba(12, 6, 2, .55), rgba(12, 6, 2, .14) 1.4%, rgba(255, 222, 176, .07) 2.4%, rgba(12, 6, 2, .3) 3.4%, rgba(12, 6, 2, 0) 4.6%),
+      linear-gradient(172deg, rgba(255, 226, 180, .05), transparent 45%, rgba(0, 0, 0, .12)),
+      linear-gradient(180deg, #5a3622, #53311e 48%, #4a2b1a);
+  }
+  /* the pebbled grain of the photographed leather: dark pits and light tops (about +-18 levels) */
+  .book[data-book="photo"] .cover__board::before { opacity: .85; mix-blend-mode: normal; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .08 0 0 0 0 .04 0 0 0 0 .02 2.8 0 0 0 -1.05'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .6 0 0 0 0 .38 0 0 0 0 .24 2.2 0 0 0 -1.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  /* the brass corners are the photograph's own, only on the fore-edge corners as there */
+  .book[data-book="photo"] .cover__corner {
+    width: calc(var(--pw) * 0.088962); height: calc(var(--pw) * 0.088962); box-shadow: none;
+    background: url("assets/img/book-open.webp") 0 0 / calc(var(--pw) * 2.479407) auto no-repeat;
+  }
+  .book[data-book="photo"] .cover:not(.cover--back) .cover__corner--tl,
+  .book[data-book="photo"] .cover:not(.cover--back) .cover__corner--bl,
+  .book[data-book="photo"] .cover--back .cover__corner--tr,
+  .book[data-book="photo"] .cover--back .cover__corner--br { display: none; }
+  .book[data-book="photo"] .cover:not(.cover--back) .cover__corner--tr { background-position: calc(var(--pw) * -2.309720) calc(var(--pw) * -0.080725); }
+  .book[data-book="photo"] .cover:not(.cover--back) .cover__corner--br { background-position: calc(var(--pw) * -2.309720) calc(var(--pw) * -1.553542); }
+  .book[data-book="photo"] .cover--back .cover__corner--tl { background-position: calc(var(--pw) * -0.080725) calc(var(--pw) * -0.080725); }
+  .book[data-book="photo"] .cover--back .cover__corner--bl { background-position: calc(var(--pw) * -0.080725) calc(var(--pw) * -1.553542); }
+  /* the label keeps its size, centred on the board clear of the joint */
+  .book[data-book="photo"] .cover__label { left: calc(var(--u) * 19.61); right: calc(var(--u) * 14.28); top: calc(var(--u) * 17.09); bottom: calc(var(--u) * 18.09); }
+  /* the board's own light only: no drawn gutter on the outside of the cover */
+  .book[data-book="photo"] .cover::after { background: linear-gradient(90deg, rgb(30 16 4 / calc(var(--bend) * .42)), rgb(30 16 4 / calc(var(--bend) * .16)) 30%, rgb(255 244 220 / calc(var(--bend) * .1)) 62%, rgb(30 16 4 / calc(var(--bend) * .18))); }
+  .book[data-book="photo"] .cover.face--back::after { background: linear-gradient(270deg, rgb(30 16 4 / calc(var(--bend) * .42)), rgb(30 16 4 / calc(var(--bend) * .16)) 30%, rgb(255 244 220 / calc(var(--bend) * .1)) 62%, rgb(30 16 4 / calc(var(--bend) * .18))); }
+
+  /* the shadows: one per board's footprint. Shut, only the board on the desk casts one; while a
+     board turns, its shadow is its projection on the desk (|cos| of its angle) once it is over
+     that side, keyed to the same eased turn as the board, so it holds if --flip changes */
+  .book[data-book="photo"] .book__shadow {
+    display: block; position: absolute; z-index: 2; pointer-events: none;
+    top: calc(var(--pw) * -0.014827); width: calc(var(--pw) * 1.158979); height: calc(var(--pw) * 1.561779); border-radius: calc(var(--pw) * 0.021417);
+    box-shadow: calc(var(--pw) * 0.008237) calc(var(--pw) * 0.014827) calc(var(--pw) * 0.049423) rgba(14, 7, 3, .62), calc(var(--pw) * 0.001647) calc(var(--pw) * 0.003295) calc(var(--pw) * 0.006590) rgba(0, 0, 0, .35);
+  }
+  .book[data-book="photo"] .book__shadow--r { left: 50%; transform-origin: left center; }
+  .book[data-book="photo"] .book__shadow--l { right: 50%; transform-origin: right center; }
+  .book[data-book="photo"][data-state="closed"] .book__shadow--l,
+  .book[data-book="photo"][data-state="closed-back"] .book__shadow--r { scale: 0 1; }
+  .book[data-book="photo"][data-cover="front"][data-turning="fwd"] .book__shadow--l,
+  .book[data-book="photo"][data-cover="back"][data-turning="back"] .book__shadow--r { animation: board-down var(--flip) linear; }
+  .book[data-book="photo"][data-cover="front"][data-turning="back"] .book__shadow--l,
+  .book[data-book="photo"][data-cover="back"][data-turning="fwd"] .book__shadow--r { animation: board-up var(--flip) linear; }
+
+  /* the leaves: the photograph's own paper, cut to its page outline */
+  .book[data-book="photo"] .paper {
+    background: url("assets/img/book-open.webp") var(--photo-x) calc(var(--pw) * -0.095552) / calc(var(--pw) * 2.479407) auto no-repeat, var(--paper);
+    clip-path: var(--leaf);
+  }
+  .book[data-book="photo"] .face--front.paper {
+    --photo-x: calc(var(--pw) * -1.239703);
+    --leaf: polygon(0.00% 3.65%,0.55% 3.65%,1.18% 3.65%,1.81% 3.32%,2.44% 3.10%,3.07% 2.99%,3.69% 2.88%,4.32% 2.66%,4.95% 2.55%,5.58% 2.44%,6.21% 2.33%,6.84% 2.33%,7.47% 2.22%,8.10% 2.11%,8.73% 2.00%,9.36% 2.00%,9.98% 1.89%,10.61% 1.78%,11.24% 1.78%,11.87% 1.67%,12.50% 1.67%,13.13% 1.56%,13.76% 1.56%,14.39% 1.45%,15.02% 1.45%,15.64% 1.34%,16.27% 1.34%,16.90% 1.23%,17.53% 1.23%,18.16% 1.23%,18.79% 1.12%,19.42% 1.01%,20.05% 1.01%,20.68% 1.01%,21.31% 1.01%,21.93% 1.01%,22.56% 1.01%,23.19% 1.01%,23.82% 1.01%,24.45% 0.90%,25.08% 0.90%,25.71% 0.90%,26.34% 0.90%,26.97% 0.90%,27.59% 0.79%,28.22% 0.79%,28.85% 0.79%,29.48% 0.79%,30.11% 0.79%,30.74% 0.68%,31.37% 0.68%,32.00% 0.68%,32.63% 0.68%,33.25% 0.68%,33.88% 0.57%,34.51% 0.57%,35.14% 0.57%,35.77% 0.57%,36.40% 0.57%,37.03% 0.57%,37.66% 0.57%,38.29% 0.57%,38.92% 0.57%,39.54% 0.57%,40.17% 0.46%,40.80% 0.46%,41.43% 0.46%,42.06% 0.46%,42.69% 0.46%,43.32% 0.46%,43.95% 0.46%,44.58% 0.46%,45.20% 0.46%,45.83% 0.35%,46.46% 0.35%,47.09% 0.35%,47.72% 0.35%,48.35% 0.35%,48.98% 0.35%,49.61% 0.35%,50.24% 0.35%,50.86% 0.35%,51.49% 0.35%,52.12% 0.35%,52.75% 0.35%,53.38% 0.24%,54.01% 0.24%,54.64% 0.24%,55.27% 0.24%,55.90% 0.35%,56.53% 0.35%,57.15% 0.35%,57.78% 0.35%,58.41% 0.35%,59.04% 0.35%,59.67% 0.24%,60.30% 0.24%,60.93% 0.24%,61.56% 0.24%,62.19% 0.24%,62.81% 0.24%,63.44% 0.24%,64.07% 0.24%,64.70% 0.35%,65.33% 0.35%,65.96% 0.35%,66.59% 0.35%,67.22% 0.35%,67.85% 0.35%,68.47% 0.35%,69.10% 0.46%,69.73% 0.57%,70.36% 0.57%,70.99% 0.68%,71.62% 0.68%,72.25% 0.68%,72.88% 0.68%,73.51% 0.79%,74.14% 0.79%,74.76% 0.68%,75.39% 0.68%,76.02% 0.68%,76.65% 0.68%,77.28% 0.68%,77.91% 0.68%,78.54% 0.68%,79.17% 0.68%,79.80% 0.68%,80.42% 0.68%,81.05% 0.79%,81.68% 0.79%,82.31% 0.79%,82.94% 0.79%,83.57% 0.79%,84.20% 0.79%,84.83% 0.79%,85.46% 0.68%,86.08% 0.68%,86.71% 0.68%,87.34% 0.68%,87.97% 0.68%,88.60% 0.68%,89.23% 0.68%,89.86% 0.57%,90.49% 0.57%,91.12% 0.46%,91.75% 0.35%,92.37% 0.35%,93.00% 0.35%,93.63% 0.35%,94.26% 0.35%,94.89% 0.35%,95.52% 0.35%,96.15% 0.35%,96.78% 0.57%,97.41% 0.79%,98.03% 1.12%,98.66% 1.23%,99.29% 1.12%,99.80% 1.32%,99.79% 2.86%,99.75% 4.40%,99.89% 5.94%,99.93% 7.48%,99.75% 9.02%,99.83% 10.56%,99.60% 12.10%,99.84% 13.64%,99.82% 15.18%,99.95% 16.72%,99.89% 18.26%,99.68% 19.80%,99.72% 21.34%,99.83% 22.88%,99.58% 24.42%,99.75% 25.96%,99.64% 27.50%,99.62% 29.04%,99.60% 30.58%,99.87% 32.12%,99.62% 33.66%,99.67% 35.20%,99.72% 36.74%,99.90% 38.28%,99.61% 39.82%,99.74% 41.36%,99.78% 42.90%,99.91% 44.44%,99.88% 45.98%,99.90% 47.52%,99.68% 49.06%,99.73% 50.61%,99.71% 52.15%,99.91% 53.69%,99.94% 55.23%,99.63% 56.77%,99.64% 58.31%,99.66% 59.85%,99.66% 61.39%,99.76% 62.93%,99.80% 64.47%,99.67% 66.01%,99.58% 67.55%,99.73% 69.09%,99.71% 70.63%,99.79% 72.17%,99.94% 73.71%,99.84% 75.25%,99.77% 76.79%,99.81% 78.33%,99.83% 79.87%,99.60% 81.41%,99.91% 82.95%,99.87% 84.49%,99.91% 86.03%,99.88% 87.57%,99.72% 89.11%,99.73% 90.65%,99.61% 92.19%,99.81% 93.73%,99.60% 95.27%,99.60% 96.81%,99.29% 98.00%,98.66% 98.00%,98.03% 98.00%,97.41% 98.00%,96.78% 98.00%,96.15% 98.00%,95.52% 98.00%,94.89% 98.00%,94.26% 98.00%,93.63% 97.89%,93.00% 97.89%,92.37% 97.89%,91.75% 97.89%,91.12% 97.89%,90.49% 97.89%,89.86% 97.89%,89.23% 97.89%,88.60% 97.89%,87.97% 97.89%,87.34% 97.89%,86.71% 97.78%,86.08% 97.78%,85.46% 97.78%,84.83% 97.67%,84.20% 97.67%,83.57% 97.67%,82.94% 97.67%,82.31% 97.67%,81.68% 97.67%,81.05% 97.67%,80.42% 97.67%,79.80% 97.56%,79.17% 97.56%,78.54% 97.56%,77.91% 97.45%,77.28% 97.45%,76.65% 97.34%,76.02% 97.34%,75.39% 97.34%,74.76% 97.34%,74.14% 97.34%,73.51% 97.34%,72.88% 97.34%,72.25% 97.34%,71.62% 97.23%,70.99% 97.23%,70.36% 97.23%,69.73% 97.23%,69.10% 97.23%,68.47% 97.23%,67.85% 97.12%,67.22% 97.12%,66.59% 97.12%,65.96% 97.12%,65.33% 97.12%,64.70% 97.12%,64.07% 97.12%,63.44% 97.01%,62.81% 96.90%,62.19% 96.90%,61.56% 96.90%,60.93% 96.90%,60.30% 96.90%,59.67% 96.79%,59.04% 96.79%,58.41% 96.68%,57.78% 96.68%,57.15% 96.57%,56.53% 96.57%,55.90% 96.57%,55.27% 96.57%,54.64% 96.57%,54.01% 96.57%,53.38% 96.57%,52.75% 96.68%,52.12% 96.68%,51.49% 96.68%,50.86% 96.68%,50.24% 96.68%,49.61% 96.68%,48.98% 96.57%,48.35% 96.57%,47.72% 96.57%,47.09% 96.57%,46.46% 96.57%,45.83% 96.57%,45.20% 96.46%,44.58% 96.46%,43.95% 96.57%,43.32% 96.46%,42.69% 96.46%,42.06% 96.46%,41.43% 96.46%,40.80% 96.46%,40.17% 96.46%,39.54% 96.46%,38.92% 96.46%,38.29% 96.46%,37.66% 96.46%,37.03% 96.46%,36.40% 96.46%,35.77% 96.46%,35.14% 96.46%,34.51% 96.46%,33.88% 96.46%,33.25% 96.46%,32.63% 96.46%,32.00% 96.46%,31.37% 96.46%,30.74% 96.46%,30.11% 96.46%,29.48% 96.35%,28.85% 96.35%,28.22% 96.35%,27.59% 96.46%,26.97% 96.46%,26.34% 96.46%,25.71% 96.57%,25.08% 96.57%,24.45% 96.68%,23.82% 96.68%,23.19% 96.68%,22.56% 96.68%,21.93% 96.79%,21.31% 96.79%,20.68% 96.79%,20.05% 96.79%,19.42% 96.79%,18.79% 96.90%,18.16% 97.01%,17.53% 97.01%,16.90% 97.01%,16.27% 97.12%,15.64% 97.23%,15.02% 97.34%,14.39% 97.34%,13.76% 97.45%,13.13% 97.45%,12.50% 97.56%,11.87% 97.67%,11.24% 97.67%,10.61% 97.78%,9.98% 97.78%,9.36% 97.89%,8.73% 98.00%,8.10% 98.11%,7.47% 98.22%,6.84% 98.22%,6.21% 98.44%,5.58% 98.66%,4.95% 98.77%,4.32% 98.88%,3.69% 99.21%,3.07% 99.21%,2.44% 99.43%,1.81% 99.43%,1.18% 99.43%,0.55% 99.65%,0.00% 99.65%);
+  }
+  .book[data-book="photo"] .face--back.paper {
+    --photo-x: calc(var(--pw) * -0.191928);
+    --leaf: polygon(0.55% 0.79%,1.18% 0.90%,1.81% 0.79%,2.44% 0.68%,3.07% 0.68%,3.69% 0.68%,4.32% 0.57%,4.95% 0.57%,5.58% 0.57%,6.21% 0.57%,6.84% 0.57%,7.47% 0.57%,8.10% 0.57%,8.73% 0.68%,9.36% 0.79%,9.98% 0.90%,10.61% 0.90%,11.24% 0.90%,11.87% 0.90%,12.50% 0.79%,13.13% 0.79%,13.76% 0.79%,14.39% 0.79%,15.02% 0.79%,15.64% 0.79%,16.27% 0.79%,16.90% 0.68%,17.53% 0.68%,18.16% 0.57%,18.79% 0.46%,19.42% 0.46%,20.05% 0.46%,20.68% 0.46%,21.31% 0.57%,21.93% 0.57%,22.56% 0.57%,23.19% 0.57%,23.82% 0.57%,24.45% 0.57%,25.08% 0.57%,25.71% 0.68%,26.34% 0.68%,26.97% 0.68%,27.59% 0.57%,28.22% 0.57%,28.85% 0.57%,29.48% 0.57%,30.11% 0.57%,30.74% 0.57%,31.37% 0.57%,32.00% 0.57%,32.63% 0.57%,33.25% 0.46%,33.88% 0.46%,34.51% 0.35%,35.14% 0.35%,35.77% 0.24%,36.40% 0.24%,37.03% 0.24%,37.66% 0.24%,38.29% 0.24%,38.92% 0.24%,39.54% 0.24%,40.17% 0.24%,40.80% 0.24%,41.43% 0.24%,42.06% 0.24%,42.69% 0.24%,43.32% 0.24%,43.95% 0.24%,44.58% 0.24%,45.20% 0.24%,45.83% 0.24%,46.46% 0.24%,47.09% 0.35%,47.72% 0.46%,48.35% 0.46%,48.98% 0.46%,49.61% 0.46%,50.24% 0.46%,50.86% 0.46%,51.49% 0.46%,52.12% 0.46%,52.75% 0.46%,53.38% 0.46%,54.01% 0.46%,54.64% 0.46%,55.27% 0.46%,55.90% 0.57%,56.53% 0.57%,57.15% 0.57%,57.78% 0.57%,58.41% 0.57%,59.04% 0.57%,59.67% 0.57%,60.30% 0.57%,60.93% 0.57%,61.56% 0.57%,62.19% 0.57%,62.81% 0.57%,63.44% 0.57%,64.07% 0.57%,64.70% 0.57%,65.33% 0.57%,65.96% 0.57%,66.59% 0.68%,67.22% 0.68%,67.85% 0.79%,68.47% 0.79%,69.10% 0.79%,69.73% 0.79%,70.36% 0.68%,70.99% 0.68%,71.62% 0.68%,72.25% 0.68%,72.88% 0.68%,73.51% 0.68%,74.14% 0.68%,74.76% 0.79%,75.39% 0.90%,76.02% 0.90%,76.65% 1.01%,77.28% 1.01%,77.91% 1.01%,78.54% 1.12%,79.17% 1.12%,79.80% 1.12%,80.42% 1.12%,81.05% 1.23%,81.68% 1.23%,82.31% 1.23%,82.94% 1.23%,83.57% 1.23%,84.20% 1.34%,84.83% 1.34%,85.46% 1.34%,86.08% 1.45%,86.71% 1.56%,87.34% 1.56%,87.97% 1.67%,88.60% 1.78%,89.23% 1.78%,89.86% 1.89%,90.49% 1.89%,91.12% 2.00%,91.75% 2.11%,92.37% 2.22%,93.00% 2.22%,93.63% 2.33%,94.26% 2.44%,94.89% 2.55%,95.52% 2.66%,96.15% 2.77%,96.78% 2.88%,97.41% 3.10%,98.03% 3.21%,98.66% 3.43%,99.29% 3.43%,99.92% 3.65%,100.00% 3.65%,100.00% 99.76%,99.92% 99.76%,99.29% 99.54%,98.66% 99.54%,98.03% 99.54%,97.41% 99.43%,96.78% 99.10%,96.15% 99.10%,95.52% 98.88%,94.89% 98.77%,94.26% 98.66%,93.63% 98.44%,93.00% 98.33%,92.37% 98.22%,91.75% 98.11%,91.12% 98.00%,90.49% 98.00%,89.86% 97.89%,89.23% 97.78%,88.60% 97.78%,87.97% 97.67%,87.34% 97.56%,86.71% 97.45%,86.08% 97.45%,85.46% 97.34%,84.83% 97.34%,84.20% 97.34%,83.57% 97.23%,82.94% 97.23%,82.31% 97.12%,81.68% 97.12%,81.05% 97.01%,80.42% 97.01%,79.80% 96.90%,79.17% 96.90%,78.54% 96.79%,77.91% 96.79%,77.28% 96.79%,76.65% 96.79%,76.02% 96.79%,75.39% 96.68%,74.76% 96.68%,74.14% 96.68%,73.51% 96.57%,72.88% 96.57%,72.25% 96.57%,71.62% 96.57%,70.99% 96.57%,70.36% 96.57%,69.73% 96.57%,69.10% 96.57%,68.47% 96.57%,67.85% 96.46%,67.22% 96.46%,66.59% 96.35%,65.96% 96.35%,65.33% 96.35%,64.70% 96.46%,64.07% 96.46%,63.44% 96.46%,62.81% 96.46%,62.19% 96.46%,61.56% 96.35%,60.93% 96.35%,60.30% 96.35%,59.67% 96.35%,59.04% 96.35%,58.41% 96.35%,57.78% 96.35%,57.15% 96.35%,56.53% 96.46%,55.90% 96.46%,55.27% 96.46%,54.64% 96.46%,54.01% 96.46%,53.38% 96.57%,52.75% 96.57%,52.12% 96.57%,51.49% 96.57%,50.86% 96.57%,50.24% 96.57%,49.61% 96.57%,48.98% 96.68%,48.35% 96.68%,47.72% 96.79%,47.09% 96.79%,46.46% 96.79%,45.83% 96.79%,45.20% 96.79%,44.58% 96.79%,43.95% 96.79%,43.32% 96.79%,42.69% 96.79%,42.06% 96.79%,41.43% 96.79%,40.80% 96.79%,40.17% 96.79%,39.54% 96.79%,38.92% 96.79%,38.29% 96.79%,37.66% 96.90%,37.03% 96.90%,36.40% 96.90%,35.77% 96.90%,35.14% 97.01%,34.51% 97.12%,33.88% 97.12%,33.25% 97.12%,32.63% 97.12%,32.00% 97.12%,31.37% 97.12%,30.74% 97.12%,30.11% 97.12%,29.48% 97.12%,28.85% 97.12%,28.22% 97.12%,27.59% 97.12%,26.97% 97.12%,26.34% 97.12%,25.71% 97.12%,25.08% 97.12%,24.45% 97.12%,23.82% 97.12%,23.19% 97.12%,22.56% 97.23%,21.93% 97.34%,21.31% 97.34%,20.68% 97.45%,20.05% 97.56%,19.42% 97.56%,18.79% 97.56%,18.16% 97.56%,17.53% 97.56%,16.90% 97.56%,16.27% 97.56%,15.64% 97.56%,15.02% 97.56%,14.39% 97.56%,13.76% 97.56%,13.13% 97.56%,12.50% 97.67%,11.87% 97.78%,11.24% 97.78%,10.61% 97.78%,9.98% 97.89%,9.36% 97.89%,8.73% 97.89%,8.10% 97.89%,7.47% 97.89%,6.84% 97.89%,6.21% 97.89%,5.58% 98.00%,4.95% 98.00%,4.32% 98.00%,3.69% 98.00%,3.07% 98.00%,2.44% 98.00%,1.81% 97.89%,1.18% 97.89%,0.55% 97.89%,0.46% 97.69%,0.52% 96.15%,0.34% 94.61%,0.55% 93.07%,0.38% 91.53%,0.44% 89.99%,0.56% 88.45%,0.39% 86.91%,0.57% 85.37%,0.42% 83.83%,0.56% 82.29%,0.55% 80.75%,0.42% 79.21%,0.27% 77.67%,0.54% 76.13%,0.50% 74.59%,0.34% 73.05%,0.22% 71.51%,0.36% 69.97%,0.43% 68.43%,0.21% 66.89%,0.56% 65.35%,0.26% 63.81%,0.47% 62.27%,0.53% 60.73%,0.54% 59.19%,0.47% 57.65%,0.27% 56.11%,0.51% 54.57%,0.36% 53.03%,0.34% 51.49%,0.44% 49.94%,0.38% 48.40%,0.56% 46.86%,0.56% 45.32%,0.50% 43.78%,0.33% 42.24%,0.42% 40.70%,0.46% 39.16%,0.36% 37.62%,0.41% 36.08%,0.47% 34.54%,0.28% 33.00%,0.32% 31.46%,0.49% 29.92%,0.36% 28.38%,0.38% 26.84%,0.25% 25.30%,0.31% 23.76%,0.47% 22.22%,0.21% 20.68%,0.54% 19.14%,0.42% 17.60%,0.30% 16.06%,0.52% 14.52%,0.40% 12.98%,0.57% 11.44%,0.33% 9.90%,0.29% 8.36%,0.37% 6.82%,0.25% 5.28%,0.46% 3.74%,0.32% 2.20%);
+  }
+  /* no second paper and no second gutter: the scan and the drawn light are switched off,
+     leaving only the shading of a leaf while it turns */
+  .book[data-book="photo"] .paper::before { display: none; }
+  .book[data-book="photo"] .paper::after { background: linear-gradient(90deg, rgb(30 16 4 / calc(var(--bend) * .42)), rgb(30 16 4 / calc(var(--bend) * .16)) 30%, rgb(255 244 220 / calc(var(--bend) * .1)) 62%, rgb(30 16 4 / calc(var(--bend) * .18))); }
+  .book[data-book="photo"] .paper.face--back::after { background: linear-gradient(270deg, rgb(30 16 4 / calc(var(--bend) * .42)), rgb(30 16 4 / calc(var(--bend) * .16)) 30%, rgb(255 244 220 / calc(var(--bend) * .1)) 62%, rgb(30 16 4 / calc(var(--bend) * .18))); }
+
+  /* the print: same size as before, set on the flat of each leaf, multiplied onto the paper */
+  .book[data-book="photo"] .page { mix-blend-mode: multiply; }
+  .book[data-book="photo"] .face--front .page { inset: calc(var(--pw) * 0.019769) calc(var(--pw) * 0.047776) calc(var(--pw) * 0.057661) 0; margin: calc(var(--u) * 4.2) calc(var(--u) * 5.4) calc(var(--u) * 2.6); }
+  .book[data-book="photo"] .face--back .page { inset: calc(var(--pw) * 0.019769) 0 calc(var(--pw) * 0.057661) calc(var(--pw) * 0.047776); margin: calc(var(--u) * 4.2) calc(var(--u) * 5.4) calc(var(--u) * 2.6); }
+}
+
+/* a board's shadow on the desk at each tenth of its eased turn (same offsets as the leaf shadows) */
+@keyframes board-down {
+  0%, 39.8% { scale: 0 1; } 44.3% { scale: .309 1; } 49.7% { scale: .588 1; } 56.6% { scale: .809 1; }
+  66.9% { scale: .951 1; } 75.4% { scale: .988 1; } 100% { scale: 1 1; }
+}
+@keyframes board-up {
+  0% { scale: 1 1; } 19% { scale: .951 1; } 26.1% { scale: .809 1; } 31.2% { scale: .588 1; } 35.6% { scale: .309 1; } 39.8%, 100% { scale: 0 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book[data-book="photo"] .book__shadow { animation: none !important; }
+}

@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>張氏商行 · 玩物圖錄 — Zhang &amp; Co. Catalogue of Playthings</title>
+  <meta name="description" content="張氏商行玩物圖錄：同詞相遇（二人猜詞遊戲）、空房一間（WebGL 房間）、音樂日記。皆為店主張嘉曦手製，一律免費。A mail-order catalogue of small things made by Jiaxi Zhang." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='6' fill='%23241a10'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%23ebdfc3' font-family='serif' font-weight='900'%3E%E5%BC%B5%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=League+Gothic&family=Alfa+Slab+One&family=Rye&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="catalogue.css" />
+  <link rel="preload" href="assets/img/paper.webp" as="image" type="image/webp">
+  <link rel="preload" href="assets/img/book-open.webp" as="image" type="image/webp">
+  <script>
+    // Traditional Chinese first; a visitor's own choice on this page is remembered
+    (function () {
+      var l = null;
+      try { l = localStorage.getItem('catalogue-lang'); } catch (e) {}
+      if (l !== 'en' && l !== 'zh') { l = 'zh'; }
+      document.documentElement.setAttribute('data-lang', l);
+      document.documentElement.setAttribute('lang', l === 'zh' ? 'zh-Hant' : 'en');
+    })();
+  </script>
+</head>
+<body>
+
+<!-- small woodcut spot cuts: instruction margins and the furniture legend -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" stroke="currentColor" stroke-width="1.1"/></pattern>
+    <symbol id="i-door" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="6" width="30" height="52"/><rect x="19" y="11" width="20" height="18" fill="url(#hatch)"/><rect x="19" y="34" width="20" height="18" fill="url(#hatch)"/><circle cx="40" cy="33" r="2.2" fill="currentColor"/><path d="M44 6v52M8 58h50"/><path d="M48 30c4-2 8-1 10 1 1 2-1 3-3 3h-6"/></g></symbol>
+    <symbol id="i-quill" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M50 8c-14 2-26 14-30 34l-3 10 10-3C47 45 58 30 56 14c-3 4-6 6-10 8 2-4 3-8 4-14z"/><path d="M20 52L8 56l5-9"/><path d="M46 14c-6 8-12 16-20 26" stroke-width="1.3"/><path d="M36 58h22" stroke-width="1.5"/></g></symbol>
+    <symbol id="i-cards" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><g transform="rotate(-12 26 34)"><rect x="12" y="12" width="26" height="38" rx="2" fill="url(#hatch)"/><rect x="12" y="12" width="26" height="38" rx="2"/></g><g transform="rotate(10 40 34)"><rect x="27" y="14" width="26" height="38" rx="2"/><text x="40" y="39" font-size="16" text-anchor="middle" fill="currentColor" stroke="none" font-family="serif">♥</text></g></g></symbol>
+    <symbol id="i-meet" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="24" cy="32" r="15"/><circle cx="40" cy="32" r="15"/><path d="M32 20.5a15 15 0 0 1 0 23 15 15 0 0 1 0-23z" fill="url(#hatch)" stroke="none"/><path d="M4 56h56" stroke-width="1.4"/></g></symbol>
+    <symbol id="i-wall" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="10" width="52" height="44"/><path d="M6 21h52M6 32h52M6 43h52M19 10v11M45 10v11M32 21v11M19 32v11M45 32v11M32 43v11"/><rect x="33" y="22" width="11" height="9" fill="url(#hatch)" stroke="none"/><path d="M4 58h56" stroke-width="2"/></g></symbol>
+    <symbol id="i-chair" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8v28h26V8"/><path d="M22 12h18M22 18h18M22 24h18" stroke-width="1.3"/><rect x="14" y="36" width="36" height="7" fill="url(#hatch)"/><path d="M18 43v15M46 43v15M18 50h28"/></g></symbol>
+    <symbol id="i-move" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="22" y="22" width="20" height="20" fill="url(#hatch)"/><path d="M32 4v12M28 8l4-4 4 4M32 60V48M28 56l4 4 4-4M4 32h12M8 28l-4 4 4 4M60 32H48M56 28l4 4-4 4"/></g></symbol>
+    <symbol id="i-eye" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 32c8-12 18-18 28-18s20 6 28 18c-8 12-18 18-28 18S12 44 4 32z"/><circle cx="32" cy="32" r="8" fill="url(#hatch)"/><circle cx="32" cy="32" r="3" fill="currentColor"/><path d="M10 54L54 10"/></g></symbol>
+    <symbol id="i-glass" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="27" cy="27" r="16"/><circle cx="27" cy="27" r="10" fill="url(#hatch)" stroke="none" opacity=".8"/><path d="M39 39l18 18" stroke-width="4"/></g></symbol>
+    <symbol id="i-disc" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="32" cy="32" r="26"/><circle cx="32" cy="32" r="21" stroke-width="1"/><circle cx="32" cy="32" r="16" stroke-width="1"/><circle cx="32" cy="32" r="8" fill="url(#hatch)"/><circle cx="32" cy="32" r="1.8" fill="currentColor"/></g></symbol>
+    <symbol id="i-star" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M32 6l7.6 16.6 18 2-13.4 12.3 3.6 17.8L32 45.8 16.2 54.7l3.6-17.8L6.4 24.6l18-2z" fill="url(#hatch)"/></g></symbol>
+    <symbol id="i-lock" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="12" y="28" width="40" height="30" rx="2" fill="url(#hatch)"/><path d="M20 28v-8a12 12 0 0 1 24 0v8"/><path d="M32 40v8" stroke-width="3"/></g></symbol>
+
+    <symbol id="f-chair" viewBox="0 0 64 48"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3c6-2 14-2 20 0v20H22z"/><path d="M27 5v18M32 4v19M37 5v18" stroke-width="1.1"/><path d="M18 23h28l-2 5H20z" fill="url(#hatch)"/><path d="M21 28l-2 18M43 28l2 18M21 39h22"/></g></symbol>
+    <symbol id="f-table" viewBox="0 0 64 48"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14h54l-3 5H8z" fill="url(#hatch)"/><path d="M12 19v26M52 19v26M17 19v20M47 19v20M12 25h40"/></g></symbol>
+    <symbol id="f-bed" viewBox="0 0 64 48"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6v40M5 10c4-4 8-4 12 0v12M59 22v24"/><rect x="5" y="24" width="54" height="8" fill="url(#hatch)"/><ellipse cx="14" cy="20" rx="6" ry="3"/><path d="M5 38h54"/></g></symbol>
+    <symbol id="f-sofa" viewBox="0 0 64 48"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 22c0-12 44-12 44 0" fill="url(#hatch)"/><path d="M4 22h8v15H4zM52 22h8v15h-8z"/><path d="M12 27h40v10H12z"/><path d="M7 37v7M57 37v7"/></g></symbol>
+    <symbol id="f-tv" viewBox="0 0 64 48"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="8" width="42" height="29" rx="3"/><rect x="15" y="12" width="27" height="21" rx="4" fill="url(#hatch)"/><circle cx="47.5" cy="16" r="2"/><circle cx="47.5" cy="24" r="2"/><path d="M18 37l-4 8M46 37l4 8M28 8l-6-6M36 8l6-6"/></g></symbol>
+    <symbol id="f-pc" viewBox="0 0 64 48"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="3" width="36" height="26" rx="2"/><rect x="18" y="7" width="28" height="18" fill="url(#hatch)"/><path d="M28 29v5M36 29v5M22 34h20M8 40h48l3 5H5z"/></g></symbol>
+    <symbol id="f-frame" viewBox="0 0 64 48"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M32 2L20 11M32 2l12 9"/><rect x="8" y="11" width="48" height="34"/><rect x="13" y="16" width="38" height="24"/><path d="M13 34l9-8 7 6 8-10 14 12"/><circle cx="22" cy="21" r="2.5" fill="url(#hatch)"/></g></symbol>
+    <symbol id="f-clock" viewBox="0 0 64 48"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4h18v34l-9 7-9-7z"/><circle cx="32" cy="14" r="6.5"/><path d="M32 14v-4M32 14l3 2M32 21v10"/><circle cx="32" cy="33" r="3" fill="url(#hatch)"/></g></symbol>
+  </defs>
+</svg>
+
+<nav class="desk-bar" aria-label="Page tools">
+  <a href="../"><span lang="zh">☜ 回到主頁</span><span lang="en">☜ Back to the front door</span></a>
+  <span class="desk-bar__hint"><span lang="zh">點擊書頁或按 ← → 翻頁</span><span lang="en">Click a page, or use ← →, to turn</span></span>
+  <span class="desk-bar__lang"><button type="button" data-set-lang="zh">中文</button><i>·</i><button type="button" data-set-lang="en">English</button></span>
+</nav>
+
+<div class="stage">
+  <button type="button" class="turn turn--prev" data-turn="-1" aria-label="Previous page">‹</button>
+
+  <div class="book" data-state="closed" data-book="photo">
+    <!-- a shadow under each board, drawn so it can follow a board as it turns -->
+    <div class="book__shadow book__shadow--l" aria-hidden="true"></div>
+    <div class="book__shadow book__shadow--r" aria-hidden="true"></div>
+    <!-- drawn parts of the book, not content: the page block under each pile, the shadow of a turning leaf -->
+    <div class="book__block book__block--l" aria-hidden="true"></div>
+    <div class="book__block book__block--r" aria-hidden="true"></div>
+    <div class="book__cast book__cast--l" aria-hidden="true"></div>
+    <div class="book__cast book__cast--r" aria-hidden="true"></div>
+
+    <!-- ============ sheet 0: the cover; inside it, a word from the proprietor ============ -->
+    <div class="sheet" data-sheet="0">
+      <div class="face face--front cover">
+        <div class="cover__board">
+          <div class="cover__label">
+            <p class="eyebrow"><span lang="zh">創設於二〇二六年 · 匹茲堡 · 上海</span><span lang="en">Established 2026 · Pittsburgh &amp; Shanghai</span></p>
+            <h1 class="brand"><span lang="zh">張氏商行</span><span lang="en">Zhang &amp; Co.</span></h1>
+            <p class="brand__latin"><span lang="zh">ZHANG &amp; CO. · GENERAL MERCHANDISE</span><span lang="en">張氏商行 · GENERAL MERCHANDISE</span></p>
+            <div class="rule rule--lozenge" aria-hidden="true"></div>
+            <h2 class="brand__sub"><span lang="zh">玩物圖錄</span><span lang="en">Catalogue of Playthings</span></h2>
+            <p class="brand__slab"><span lang="zh">ILLUSTRATED CATALOGUE OF PLAYTHINGS</span><span lang="en">玩物圖錄 · ILLUSTRATED</span></p>
+            <p class="brand__season"><span lang="zh">第壹號 · 二〇二六年</span><span lang="en">No. 1 · Season of 2026</span></p>
+            <p class="cover__claim"><span lang="zh">三件俱為店主手製 · 一律免費供應<br>凡有瀏覽器者，皆可即刻取用</span><span lang="en">Three articles made by the proprietor · free of charge<br>for anyone with a browser</span></p>
+            <p class="cover__open"><span lang="zh">☞ 翻開圖錄 ☜</span><span lang="en">☞ Open the catalogue ☜</span></p>
+          </div>
+          <span class="cover__corner cover__corner--tl" aria-hidden="true"></span><span class="cover__corner cover__corner--tr" aria-hidden="true"></span>
+          <span class="cover__corner cover__corner--bl" aria-hidden="true"></span><span class="cover__corner cover__corner--br" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="face face--back paper">
+        <div class="page page--letter">
+          <p class="runhead"><span lang="zh">張氏商行 · 告白</span><span lang="en">Zhang &amp; Co. · To our customers</span></p>
+          <h2 class="plain-title"><span lang="zh">商行告白</span><span lang="en">To Our Customers</span></h2>
+          <p class="plain-sub"><span lang="zh">A WORD FROM THE PROPRIETOR</span><span lang="en">商行告白</span></p>
+          <p class="letter">
+            <span lang="zh">敬啟者：本行所列三件，皆係店主一人於課餘夜間手製。既無夥計，亦無股東，故不收分文。凡有瀏覽器者，點開即可取用，不必開戶，不必安裝，下單即取。各件圖紙俱存於印刷所，任人查閱，仿製亦無妨。</span>
+            <span lang="en">Dear customer: the three articles listed herein were made by the proprietor alone, at night, after lessons. There are no clerks and no shareholders, so nothing is charged. Anyone with a browser may open them at once: no account, no installation, orders filled the instant they are placed. The plans of every article are kept at the printing works for anyone to inspect, or copy.</span>
+          </p>
+          <p class="letter letter--more"><span lang="zh">本錄所載各件，日後或有增補；屆時另印新錄，奉告諸君。</span><span lang="en">Further articles may be added in time; a new catalogue will be printed when they are, and you shall hear of it.</span></p>
+          <div class="signoff-row">
+            <p class="signoff"><span lang="zh">店主 張嘉曦 謹啟<br><small>二〇二六年秋</small></span><span lang="en">Your obedient servant,<br>Jiaxi Zhang, proprietor<br><small>Autumn, 2026</small></span></p>
+            <span class="chop" aria-hidden="true">張氏商行</span>
+          </div>
+          <div class="terms">
+            <p class="terms__head"><span lang="zh">營業條款</span><span lang="en">Terms of Business</span></p>
+            <ul class="terms__list">
+              <li><span lang="zh">恕不收現，亦不賒帳。</span><span lang="en">Cash not accepted; no credit given either.</span></li>
+              <li><span lang="zh">第壹號需友人一位同玩；第貳號宜以鼠標操作。</span><span lang="en">No. 1 requires a friend; a mouse is recommended for No. 2.</span></li>
+              <li><span lang="zh">各件於新標籤頁開啟，本錄留於原處。</span><span lang="en">Each article opens in a new tab; this catalogue stays put.</span></li>
+              <li><span lang="zh">印刷所：<a href="https://github.com/SuQichen777">github.com/SuQichen777</a></span><span lang="en">Printing works: <a href="https://github.com/SuQichen777">github.com/SuQichen777</a></span></li>
+            </ul>
+          </div>
+          <div class="bookplate">
+            <p class="bookplate__head"><span lang="zh">藏書票</span><span lang="en">Ex libris</span></p>
+            <p class="bookplate__name"><span lang="zh">讀者</span><span lang="en">the reader</span></p>
+          </div>
+          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">ii</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ sheet 1: contents; on its back, how No. 1 is used ============ -->
+    <div class="sheet" data-sheet="1">
+      <div class="face face--front paper">
+        <div class="page page--contents">
+          <p class="runhead"><span lang="zh">張氏商行 · 目錄及價目</span><span lang="en">Zhang &amp; Co. · Contents &amp; prices</span></p>
+          <h2 class="plain-title plain-title--big"><span lang="zh">目錄</span><span lang="en">Contents</span></h2>
+          <p class="plain-sub"><span lang="zh">CONTENTS &amp; PRICES · SEASON OF 2026</span><span lang="en">目錄及價目 · 二〇二六年</span></p>
+          <table class="pricelist">
+            <thead><tr><th scope="col"><span lang="zh">貨號</span><span lang="en">No.</span></th><th scope="col" colspan="2"><span lang="zh">品名</span><span lang="en">Article</span></th><th scope="col"><span lang="zh">價目</span><span lang="en">Price</span></th><th scope="col"><span lang="zh">頁</span><span lang="en">Page</span></th></tr></thead>
+            <tbody>
+              <tr><td class="pricelist__no">1</td><td class="pricelist__cut"><img src="assets/img/engraving-same-word-760.webp" alt="" width="760" height="950" decoding="async"></td><td class="pricelist__name"><b><span lang="zh">同詞相遇</span><span lang="en">The Same-Word Game</span></b><i><span lang="zh">二人猜詞遊戲 · 中文對局</span><span lang="en">A guessing game for two, in Chinese</span></i></td><td class="pricelist__price"><span lang="zh">免費</span><span lang="en">Free</span></td><td class="pricelist__page">3</td></tr>
+              <tr><td class="pricelist__no">2</td><td class="pricelist__cut"><img src="assets/img/engraving-vacant-room-960.webp" alt="" width="960" height="720" decoding="async"></td><td class="pricelist__name"><b><span lang="zh">空房一間</span><span lang="en">A Vacant Room</span></b><i><span lang="zh">三壁一地 · WebGL 所繪 · 家具隨附</span><span lang="en">Three walls and a floor, drawn in WebGL, furniture supplied</span></i></td><td class="pricelist__price"><span lang="zh">免費</span><span lang="en">Free</span></td><td class="pricelist__page">5</td></tr>
+              <tr><td class="pricelist__no">3</td><td class="pricelist__cut"><img src="assets/img/engraving-music-journal-960.webp" alt="" width="960" height="640" decoding="async"></td><td class="pricelist__name"><b><span lang="zh">音樂日記一冊</span><span lang="en">A Music Journal</span></b><i><span lang="zh">聽專輯的時候我在想些什麼 · 即將發售</span><span lang="en">What I was thinking while listening · forthcoming</span></i></td><td class="pricelist__price pricelist__price--tba"><span lang="zh">待定</span><span lang="en">T.B.A.</span></td><td class="pricelist__page">7</td></tr>
+            </tbody>
+          </table>
+          <p class="all-free"><small><span lang="zh">本行各貨</span><span lang="en">Every article in this book</span></small><b><span lang="zh">一律免費供應！</span><span lang="en">Free of Charge!</span></b><small><span lang="zh">EVERY ARTICLE FREE OF CHARGE</span><span lang="en">一律免費供應</span></small></p>
+          <div class="terms terms--order">
+            <p class="terms__head"><span lang="zh">訂購須知</span><span lang="en">How to Order</span></p>
+            <ul class="terms__list">
+              <li><span lang="zh">點擊各頁之票券，貨品即於新標籤頁送達。</span><span lang="en">Click the ticket on any page; the article is delivered in a new tab.</span></li>
+              <li><span lang="zh">翻頁可點書頁，或按鍵盤 ← →。</span><span lang="en">Turn the pages by clicking them, or with ← → on the keyboard.</span></li>
+              <li><span lang="zh">圖紙與源碼皆附於各件之下，歡迎查閱。</span><span lang="en">Plans and source are attached beneath each article.</span></li>
+            </ul>
+          </div>
+          <p class="fineprint"><span lang="zh">每翻一頁即一件：左頁使用方法，右頁商品告示。印刷所與信函見末頁。</span><span lang="en">One article to a spread: how it is used on the left, the advertisement on the right. Printing works and letters on the last page.</span></p>
+          <p class="folio"><span class="folio__num">1</span><span class="folio__text"><span lang="zh">各件均免費</span><span lang="en">Every article free of charge</span></span></p>
+        </div>
+      </div>
+
+      <div class="face face--back paper howto" id="no1">
+        <div class="page">
+          <p class="runhead"><span lang="zh">張氏商行 · 使用方法 · 第壹號</span><span lang="en">Zhang &amp; Co. · How to use · No. 1</span></p>
+          <h2 class="howto__title"><span lang="zh">使用方法</span><span lang="en">How to Use</span></h2>
+          <p class="howto__for"><span lang="zh">同詞相遇 · 遊戲規則四條</span><span lang="en">The Same-Word Game · four rules of play</span></p>
+          <p class="howto__intro"><span lang="zh">凡二人各有一瀏覽器，即可依下列四條行之。</span><span lang="en">Any two persons, each with a browser, may play by the four rules below.</span></p>
+          <ol class="articles">
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">壹</span><span lang="en">I</span></span><div><h3><span lang="zh">一人開房</span><span lang="en">One opens a room</span></h3><p><span lang="zh">將四字母房碼或鏈接寄予友人。無須旁人主持，二人即可。</span><span lang="en">Send the four-letter code, or the link, to a friend. No umpire needed; two is enough.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-door"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">貳</span><span lang="en">II</span></span><div><h3><span lang="zh">二人各暗書一詞</span><span lang="en">Each writes a word in secret</span></h3><p><span lang="zh">寫畢同時揭曉。</span><span lang="en">Both are shown at once.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-quill"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">參</span><span lang="en">III</span></span><div><h3><span lang="zh">二詞相同，即為相遇</span><span lang="en">The same word: you have met</span></h3><p><span lang="zh">遊戲勝；不同，則各可選「我覺得一樣」，二人皆選亦算勝。</span><span lang="en">The game is won. If they differ, each may say “I think they are the same”; two such votes also win.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-cards"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">肆</span><span lang="en">IV</span></span><div><h3><span lang="zh">否則下一詞須連綴前二詞</span><span lang="en">Else the next word joins the two</span></h3><p><span lang="zh">「海」與「火車」之後，或可書「港口」。不得重複。數一數幾輪相遇。</span><span lang="en">After <i>sea</i> and <i>train</i>, perhaps <i>harbour</i>. Nothing twice. Count the rounds.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-meet"/></svg></li>
+          </ol>
+          <figure class="specimen">
+            <figcaption><span lang="zh">對局實例</span><span lang="en">An Example of Play</span></figcaption>
+            <table class="specimen__table">
+              <thead><tr><th scope="col"><span lang="zh">回合</span><span lang="en">Round</span></th><th scope="col"><span lang="zh">甲書</span><span lang="en">A writes</span></th><th scope="col"><span lang="zh">乙書</span><span lang="en">B writes</span></th><th scope="col"><span lang="zh">結果</span><span lang="en">Result</span></th></tr></thead>
+              <tbody>
+                <tr><td><span lang="zh">一</span><span lang="en">1</span></td><td><span lang="zh">海</span><span lang="en">sea</span></td><td><span lang="zh">火車</span><span lang="en">train</span></td><td><span lang="zh">未遇</span><span lang="en">apart</span></td></tr>
+                <tr><td><span lang="zh">二</span><span lang="en">2</span></td><td><span lang="zh">港口</span><span lang="en">harbour</span></td><td><span lang="zh">港口</span><span lang="en">harbour</span></td><td><b><span lang="zh">相遇</span><span lang="en">met!</span></b></td></tr>
+              </tbody>
+            </table>
+            <p class="specimen__note"><span lang="zh">二輪而遇：「海」與「火車」之間，二人不約而同想到了「港口」。</span><span lang="en">Met in two rounds: between <i>sea</i> and <i>train</i>, both thought of <i>harbour</i>.</span></p>
+          </figure>
+          <p class="annex"><span lang="zh">☞ 附告：構築於 Cloudflare Workers 之上，每房一 Durable Object，無需專人看管。手機、電腦皆可。</span><span lang="en">☞ Note: built upon Cloudflare Workers, one Durable Object to each room, no servant needed to keep it running. Telephone or desk machine alike.</span></p>
+          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">2</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ sheet 2: No. 1 advertised; on its back, how No. 2 is used ============ -->
+    <div class="sheet" data-sheet="2">
+      <div class="face face--front paper advert advert--words">
+        <div class="page">
+          <p class="runhead"><span lang="zh">張氏商行 · 室內遊戲 · 第壹號</span><span lang="en">Zhang &amp; Co. · Parlour games · No. 1</span></p>
+          <h2 class="ad-title"><span lang="zh">同詞相遇</span><span lang="en">The Same-Word Game</span></h2>
+          <p class="ad-tagline"><span lang="zh">二人對局 · 中文猜詞 · 四字母房碼</span><span lang="en">For two · in Chinese · four-letter rooms</span></p>
+          <div class="words">
+            <figure class="words__plate">
+              <a href="https://same-word.same-word.workers.dev/" target="_blank" rel="noopener" tabindex="-1"><img src="assets/img/engraving-same-word-760.webp" srcset="assets/img/engraving-same-word-760.webp 760w, assets/img/engraving-same-word.webp 1122w" sizes="(max-width: 1100px) 92vw, 380px" width="1122" height="1402" decoding="async" alt="Engraving: a lady and a gentleman at a round parlour table, chins in hand, each writing a word on a card, an ink pot and a lamp between them"></a>
+              <figcaption><span lang="zh">圖示：甲書「海」，乙書「火車」；次輪二人俱書「港口」，是為相遇。</span><span lang="en">Fig.: she writes <i>sea</i>, he writes <i>train</i>; next round both write <i>harbour</i>, and they have met.</span></figcaption>
+            </figure>
+            <div class="words__side">
+              <div class="price price--gothic">
+                <p class="price__fig" aria-label="$0.00"><span class="price__cur">$</span><span class="price__num">0</span><span class="price__cents">00</span></p>
+                <p class="price__free"><span lang="zh">免費供應！</span><span lang="en">Free of Charge!</span></p>
+                <p class="price__was"><span lang="zh">原價：一碗麵錢</span><span lang="en">Was: one bowl of noodles</span></p>
+              </div>
+              <p class="copy copy--lead"><span lang="zh">每回合二人各暗書一詞；相同即勝，不同則下一詞須連綴前二詞。開房得四字母之碼，以鏈接相邀，無須註冊。</span><span lang="en">Each round both write a word in secret. The same word wins; different words must be joined by the next. A room has a four-letter code and is shared by link; nothing to sign up for.</span></p>
+              <h3 class="claim"><span lang="zh">無須旁人主持</span><span lang="en">No umpire required</span></h3>
+              <p class="copy"><span lang="zh">二人即可開局，不必另請裁判，亦不必湊足一桌。</span><span lang="en">Two may begin at once, without a referee or a full table.</span></p>
+              <h3 class="claim"><span lang="zh">手機電腦皆可</span><span lang="en">Telephone or desk</span></h3>
+              <p class="copy"><span lang="zh">有瀏覽器者即可入局，不必安裝。</span><span lang="en">Any browser will do; nothing to install.</span></p>
+              <h3 class="claim"><span lang="zh">用過之詞不重複</span><span lang="en">No word used twice</span></h3>
+              <p class="copy"><span lang="zh">每輪須連綴前二詞，愈玩愈見默契。</span><span lang="en">Each word joins the last two; the longer you play, the closer you think.</span></p>
+            </div>
+          </div>
+          <div class="words__foot">
+            <p class="dotbox"><span lang="zh"><small>宜</small><b>二人</b><small>對局</small><br><small>每局約</small><b>五分鐘</b></span><span lang="en"><small>for</small> <b>Two Players</b><br><small>about</small> <b>Five Minutes</b> <small>a game</small></span></p>
+            <a class="plans" href="https://github.com/SuQichen777/guess-the-same-word" target="_blank" rel="noopener"><span lang="zh">圖紙與源碼 →</span><span lang="en">Plans &amp; source →</span></a>
+            <div class="order">
+              <a class="coupon" href="https://same-word.same-word.workers.dev/" target="_blank" rel="noopener"><small class="coupon__top"><span lang="zh">憑此券入局 · No. 0001</span><span lang="en">Present this coupon · No. 0001</span></small><b><span lang="zh">即刻試玩</span><span lang="en">Play It Now</span></b><small class="coupon__sub"><span lang="zh">PLAY IT NOW</span><span lang="en">即刻試玩</span></small></a>
+            </div>
+          </div>
+          <p class="folio"><span class="folio__num">3</span><span class="folio__text"><span lang="zh">各件均免費</span><span lang="en">Every article free of charge</span></span></p>
+        </div>
+      </div>
+
+      <div class="face face--back paper howto" id="no2">
+        <div class="page">
+          <p class="runhead"><span lang="zh">張氏商行 · 使用方法 · 第貳號</span><span lang="en">Zhang &amp; Co. · How to use · No. 2</span></p>
+          <h2 class="howto__title"><span lang="zh">使用方法</span><span lang="en">How to Use</span></h2>
+          <p class="howto__for"><span lang="zh">空房一間 · 佈置之法四條</span><span lang="en">A Vacant Room · four directions for furnishing</span></p>
+          <p class="howto__intro"><span lang="zh">凡欲佈置一室者，依下列四條行之，不必搬運。</span><span lang="en">Whoever would furnish a room may follow these four directions; no carting required.</span></p>
+          <ol class="articles">
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">壹</span><span lang="en">I</span></span><div><h3><span lang="zh">擇地板或一壁</span><span lang="en">Choose the floor or a wall</span></h3><p><span lang="zh">地板承桌椅床榻，牆壁掛畫與鐘。</span><span lang="en">The floor takes tables, chairs and beds; a wall takes paintings and clocks.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-wall"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">貳</span><span lang="en">II</span></span><div><h3><span lang="zh">置入家具</span><span lang="en">Set down the furniture</span></h3><p><span lang="zh">椅、桌、床、沙發；電視與計算機可陳於桌上。</span><span lang="en">Chair, table, bed, sofa; a television or computer may stand on the table.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-chair"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">參</span><span lang="en">III</span></span><div><h3><span lang="zh">挪移、旋轉、改大小</span><span lang="en">Move, turn, resize</span></h3><p><span lang="zh">逐格移動，左右旋轉，以頂端滑桿改其大小。</span><span lang="en">A unit at a time, turned either way, sized by the slide at the top.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-move"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">肆</span><span lang="en">IV</span></span><div><h3><span lang="zh">礙眼之壁可隱去</span><span lang="en">Hide a wall in the way</span></h3><p><span lang="zh">左壁右壁皆可暫隱，看清再現。</span><span lang="en">Either side wall may be hidden for a clearer view and shown again.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-eye"/></svg></li>
+          </ol>
+          <figure class="specimen">
+            <figcaption><span lang="zh">家具陳設一覽</span><span lang="en">Where Each Piece Goes</span></figcaption>
+            <table class="specimen__table specimen__table--three">
+              <thead><tr><th scope="col"><span lang="zh">置於地板</span><span lang="en">On the floor</span></th><th scope="col"><span lang="zh">陳於桌上</span><span lang="en">On the table</span></th><th scope="col"><span lang="zh">懸於牆壁</span><span lang="en">On a wall</span></th></tr></thead>
+              <tbody><tr><td><span lang="zh">椅 · 桌 · 床 · 沙發</span><span lang="en">chair · table · bed · sofa</span></td><td><span lang="zh">電視 · 計算機</span><span lang="en">television · computer</span></td><td><span lang="zh">畫 · 鐘</span><span lang="en">painting · clock</span></td></tr></tbody>
+            </table>
+            <p class="specimen__note"><span lang="zh">合計八種，每件皆可挪移、旋轉、改大小。</span><span lang="en">Eight kinds in all; every piece may be moved, turned and resized.</span></p>
+          </figure>
+          <p class="annex"><span lang="zh">☞ 附告：全作為店主於上海紐約大學圖形學課之期末之作，未用任何引擎，純以 WebGL 手繪。以電腦觀之勝於手機。</span><span lang="en">☞ Note: the proprietor's final work for a computer-graphics course at NYU Shanghai, drawn in WebGL without any engine. Better on a desk machine than a telephone.</span></p>
+          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">4</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ sheet 3: No. 2 advertised; on its back, how No. 3 is used ============ -->
+    <div class="sheet" data-sheet="3">
+      <div class="face face--front paper advert advert--room">
+        <div class="page">
+          <p class="runhead"><span lang="zh">張氏商行 · 居家用品 · 第貳號</span><span lang="en">Zhang &amp; Co. · Household goods · No. 2</span></p>
+          <h2 class="ad-title ad-title--ruled"><span lang="zh">空房一間</span><span lang="en">A Vacant Room</span></h2>
+          <svg class="arc" viewBox="0 0 890 64" role="img" aria-labelledby="arc-zh arc-en">
+            <defs><path id="arc-path" d="M60 58 Q445 2 830 58"/></defs>
+            <text lang="zh" id="arc-zh" class="arc__zh"><textPath href="#arc-path" startOffset="50%" text-anchor="middle">三壁一地 · WebGL 所繪 · 家具隨附 · 任君佈置</textPath></text>
+            <text lang="en" id="arc-en" class="arc__en"><textPath href="#arc-path" startOffset="50%" text-anchor="middle">THREE WALLS · A FLOOR · DRAWN IN WEBGL · FURNISHED</textPath></text>
+          </svg>
+          <figure class="room__plate">
+            <a href="https://suqichen777.github.io/Mine-Decorating/" target="_blank" rel="noopener" tabindex="-1"><img src="assets/img/engraving-vacant-room-960.webp" srcset="assets/img/engraving-vacant-room-960.webp 960w, assets/img/engraving-vacant-room.webp 1448w" sizes="(max-width: 1100px) 92vw, 480px" width="1448" height="1086" decoding="async" alt="Engraving: a panelled room with a window, a landscape painting, a wall clock, a bookcase with a trailing plant, a table with two chairs and a lamp, a trunk and a patterned rug"></a>
+          </figure>
+          <div class="legend">
+            <p class="legend__head"><span lang="zh">隨房附送家具八種</span><span lang="en">Eight Pieces of Furniture Supplied</span></p>
+            <ul class="legend__list">
+              <li><svg aria-hidden="true"><use href="#f-chair"/></svg><span lang="zh">椅</span><span lang="en">Chair</span></li>
+              <li><svg aria-hidden="true"><use href="#f-table"/></svg><span lang="zh">桌</span><span lang="en">Table</span></li>
+              <li><svg aria-hidden="true"><use href="#f-bed"/></svg><span lang="zh">床</span><span lang="en">Bed</span></li>
+              <li><svg aria-hidden="true"><use href="#f-sofa"/></svg><span lang="zh">沙發</span><span lang="en">Sofa</span></li>
+              <li><svg aria-hidden="true"><use href="#f-tv"/></svg><span lang="zh">電視</span><span lang="en">Television</span></li>
+              <li><svg aria-hidden="true"><use href="#f-pc"/></svg><span lang="zh">計算機</span><span lang="en">Computer</span></li>
+              <li><svg aria-hidden="true"><use href="#f-frame"/></svg><span lang="zh">畫</span><span lang="en">Painting</span></li>
+              <li><svg aria-hidden="true"><use href="#f-clock"/></svg><span lang="zh">鐘</span><span lang="en">Clock</span></li>
+            </ul>
+          </div>
+          <div class="room__cols">
+            <div class="room__col">
+              <h3 class="claim"><span lang="zh">可自由擺置家具</span><span lang="en">Furnish as you please</span></h3>
+              <p class="copy"><span lang="zh">擇地板或一壁，置椅、桌、床或沙發。畫與鐘可懸於壁。</span><span lang="en">Choose the floor or a wall; set down a chair, a table, a bed or a sofa. Paintings and clocks hang on the wall.</span></p>
+              <h3 class="claim"><span lang="zh">支援拖曳與旋轉</span><span lang="en">Moves and turns</span></h3>
+              <p class="copy"><span lang="zh">每件可逐格移動、旋轉。</span><span lang="en">Every piece moves a unit at a time, and turns.</span></p>
+            </div>
+            <div class="room__mid">
+              <div class="price price--tuscan">
+                <p class="price__fig" aria-label="$0.00"><span class="price__cur">$</span><span class="price__num">0</span><span class="price__cents">00</span></p>
+                <p class="price__free"><span lang="zh">免費供應！</span><span lang="en">Free of Charge!</span></p>
+                <p class="price__was"><span lang="zh">房間一間 · 家具八種</span><span lang="en">One room · eight kinds of furniture</span></p>
+              </div>
+
+            </div>
+            <div class="room__col">
+              <h3 class="claim"><span lang="zh">以頂端滑桿改大小</span><span lang="en">Sized by the slide</span></h3>
+              <p class="copy"><span lang="zh">大小隨意，以頂端滑桿調之。</span><span lang="en">Any size you like, set by the slide at the top.</span></p>
+              <h3 class="claim"><span lang="zh">礙眼之壁可隱去</span><span lang="en">Walls may be hidden</span></h3>
+              <p class="copy"><span lang="zh">左右二壁皆可暫隱，看清再現。</span><span lang="en">Either side wall may be hidden, then shown again.</span></p>
+
+            </div>
+          </div>
+          <div class="room__foot">
+            <svg class="seal" viewBox="0 0 120 120" role="img" aria-label="Seal: drawn in pure WebGL, no engine">
+              <defs><path id="seal-ring-room" d="M60 60 m-41 0 a41 41 0 1 1 82 0 a41 41 0 1 1 -82 0"/></defs>
+              <circle cx="60" cy="60" r="56" class="seal__o"/><circle cx="60" cy="60" r="51.5" class="seal__i"/><circle cx="60" cy="60" r="31" class="seal__i"/>
+              <text lang="zh" class="seal__ring seal__ring--zh"><textPath href="#seal-ring-room" startOffset="0">張氏商行·品質保證·張氏商行·品質保證·</textPath></text>
+              <text lang="en" class="seal__ring seal__ring--en"><textPath href="#seal-ring-room" startOffset="0">ZHANG &amp; CO. · GUARANTEED · ZHANG &amp; CO. · GUARANTEED ·</textPath></text>
+              <text lang="zh" class="seal__mid seal__mid--zh" x="60" y="54" text-anchor="middle">純 WebGL</text>
+              <text lang="zh" class="seal__mid seal__mid--zh" x="60" y="72" text-anchor="middle">不用引擎</text>
+              <text lang="en" class="seal__mid seal__mid--en" x="60" y="56" text-anchor="middle">PURE WEBGL</text>
+              <text lang="en" class="seal__mid seal__mid--en" x="60" y="71" text-anchor="middle">NO ENGINE</text>
+              </svg>
+            <a class="admit" href="https://suqichen777.github.io/Mine-Decorating/" target="_blank" rel="noopener"><span class="admit__body"><span class="admit__stub" aria-hidden="true">No. 0002</span><span class="admit__main"><b><span lang="zh">進屋一觀</span><span lang="en">Enter the Room</span></b><small><span lang="zh">ENTER THE ROOM · 一人一票</span><span lang="en">進屋一觀 · ADMIT ONE</span></small></span></span></a>
+            <a class="plans" href="https://github.com/SuQichen777/Mine-Decorating" target="_blank" rel="noopener"><span lang="zh">圖紙與源碼 →</span><span lang="en">Plans &amp; source →</span></a>
+          </div>
+          <p class="folio"><span class="folio__num">5</span><span class="folio__text"><span lang="zh">各件均免費</span><span lang="en">Every article free of charge</span></span></p>
+        </div>
+      </div>
+
+      <div class="face face--back paper howto" id="no3">
+        <div class="page">
+          <p class="runhead"><span lang="zh">張氏商行 · 使用方法 · 第參號</span><span lang="en">Zhang &amp; Co. · How to use · No. 3</span></p>
+          <h2 class="howto__title"><span lang="zh">使用方法</span><span lang="en">How to Use</span></h2>
+          <p class="howto__for"><span lang="zh">音樂日記 · 記錄之法四條</span><span lang="en">The Music Journal · four directions for keeping it</span></p>
+          <p class="howto__intro"><span lang="zh">凡聽專輯而欲有所記者，依下列四條行之。</span><span lang="en">Whoever listens to albums and would keep a record may follow these four directions.</span></p>
+          <ol class="articles">
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">壹</span><span lang="en">I</span></span><div><h3><span lang="zh">搜尋一次</span><span lang="en">Search once</span></h3><p><span lang="zh">同時問 Spotify 與網易雲，重複者自動合併。</span><span lang="en">Spotify and NetEase are asked together; duplicates are merged.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-glass"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">貳</span><span lang="en">II</span></span><div><h3><span lang="zh">專輯入列</span><span lang="en">Add the album</span></h3><p><span lang="zh">各人各有其列表；專輯總目則共用。</span><span lang="en">Each reader keeps a list; the catalogue of albums is shared.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-disc"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">參</span><span lang="en">III</span></span><div><h3><span lang="zh">一至十分評之</span><span lang="en">Rate it 1 to 10</span></h3><p><span lang="zh">可至小數點後一位，如八·五分。</span><span lang="en">To one decimal, 8.5 for instance.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-star"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">肆</span><span lang="en">IV</span></span><div><h3><span lang="zh">批註所思所想</span><span lang="en">Write what you thought</span></h3><p><span lang="zh">所記皆私，非贈鏈接不得見。</span><span lang="en">Private, unless you give out the link.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-lock"/></svg></li>
+          </ol>
+          <figure class="specimen specimen--entry">
+            <figcaption><span lang="zh">日記樣張</span><span lang="en">A Specimen Entry</span></figcaption>
+            <dl class="entry">
+              <div><dt><span lang="zh">專輯</span><span lang="en">Album</span></dt><dd><i>OK Computer</i> · Radiohead</dd></div>
+              <div><dt><span lang="zh">來源</span><span lang="en">Found on</span></dt><dd>Spotify</dd></div>
+              <div><dt><span lang="zh">評分</span><span lang="en">Rating</span></dt><dd><span lang="zh">八·五 / 十</span><span lang="en">8.5 of 10</span></dd></div>
+              <div><dt><span lang="zh">批註</span><span lang="en">Remarks</span></dt><dd><span lang="zh">深夜重聽一遍，比初聽時更喜歡第三首。</span><span lang="en">Heard again late at night; the third song is better than I remembered.</span></dd></div>
+            </dl>
+            <p class="specimen__note"><span lang="zh">此頁僅示格式；實際所記，非贈鏈接不得見。</span><span lang="en">Shown for form only; real entries stay private unless a link is given out.</span></p>
+          </figure>
+          <p class="annex"><span lang="zh">☞ 附告：此冊尚未到貨。圖紙連同 Docker 配件存於印刷所，性急之讀者可今日自運一份；帳戶與新界面已於今秋完成。</span><span lang="en">☞ Note: not yet in stock. The plans, with a Docker fitting, are at the printing works; the impatient may run their own copy today. Accounts and a new face were finished this autumn.</span></p>
+          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">6</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ sheet 4: No. 3 advertised; on its back, the printing works ============ -->
+    <div class="sheet" data-sheet="4">
+      <div class="face face--front paper advert advert--music">
+        <div class="page">
+          <p class="runhead"><span lang="zh">張氏商行 · 文具音樂 · 第參號</span><span lang="en">Zhang &amp; Co. · Stationery &amp; music · No. 3</span></p>
+          <div class="music__top">
+            <figure class="music__plate">
+              <a href="https://github.com/SuQichen777/While-Listening-to-Albums" target="_blank" rel="noopener" tabindex="-1"><img src="assets/img/engraving-music-journal-960.webp" srcset="assets/img/engraving-music-journal-960.webp 960w, assets/img/engraving-music-journal.webp 1536w" sizes="(max-width: 1100px) 92vw, 420px" width="1536" height="1024" decoding="async" alt="Engraving: a horn gramophone beside a stack of records, an open journal with a ribbon marker, a fountain pen, an ink bottle and a vase of lilies"></a>
+              <span class="stamp" aria-hidden="true"><span lang="zh">尚未<br>到貨</span><span lang="en">NOT YET<br>IN STOCK</span></span>
+            </figure>
+            <h2 class="music__title"><span lang="zh">音樂日記</span><span lang="en">The Music Journal</span></h2>
+            <p class="music__sub"><span lang="zh">聽專輯的時候我在想些什麼</span><span lang="en">What I thought while listening to albums</span></p>
+          </div>
+          <p class="music__lede"><span lang="zh">君若嘗於夜深獨聽一張專輯，<br>翌日竟忘其所感，<br>此冊正為君設。</span><span lang="en">If you have ever sat up late with an album<br>and found, by morning, that you had<br>forgotten what it made you feel,<br>this journal was made for you.</span></p>
+          <div class="music__cols">
+            <p class="copy"><b><span lang="zh">一次搜尋，兩處同問。</span><span lang="en">One search, two shops.</span></b><span lang="zh">一次搜尋，同時問 Spotify 與網易雲，重複者自動合併。</span><span lang="en">One search asks Spotify and NetEase together; duplicates are merged.</span></p>
+            <p class="copy"><b><span lang="zh">以十分為度。</span><span lang="en">Marked out of ten.</span></b><span lang="zh">專輯入己之列表，以一至十分計，評分可至小數，隨時批註。</span><span lang="en">The album joins your list, is rated 1 to 10, to one decimal, and annotated at leisure.</span></p>
+            <p class="copy"><b><span lang="zh">所記皆私。</span><span lang="en">Kept private.</span></b><span lang="zh">筆記默認私密，非贈鏈接不得見。</span><span lang="en">Notes are private by default, unless a link is given out.</span></p>
+            <p class="copy"><b><span lang="zh">性急者可自運。</span><span lang="en">For the impatient.</span></b><span lang="zh">圖紙連同 Docker 配件存於印刷所，今日即可自運一份。</span><span lang="en">The plans, with a Docker fitting, may be run at home today.</span></p>
+          </div>
+          <p class="music__close"><span lang="zh">聽過的每一張，都值得記下一行。</span><span lang="en">Every album you have heard deserves a line.</span></p>
+          <div class="music__foot">
+            <div class="music__price">
+              <p class="music__soon"><span lang="zh">即將發售</span><span lang="en">Forthcoming</span></p>
+              <p class="music__tba"><span lang="zh">PRICE TO BE ANNOUNCED</span><span lang="en">價目待定</span></p>
+              <p class="music__specs"><span lang="zh">評分 1–10 · 來源 2 處</span><span lang="en">Rated 1–10 · two sources</span></p>
+            </div>
+            <div class="music__order">
+              <a class="card" href="https://github.com/SuQichen777/While-Listening-to-Albums" target="_blank" rel="noopener"><b><span lang="zh">查閱圖紙</span><span lang="en">Inspect the Plans</span></b><small><span lang="zh">INSPECT THE PLANS</span><span lang="en">查閱圖紙</span></small></a>
+              <p class="music__note"><span lang="zh">成品尚未到貨；圖紙與源碼今已可閱。</span><span lang="en">The finished article is not yet in stock; the plans and source may be inspected now.</span></p>
+            </div>
+          </div>
+          <p class="folio"><span class="folio__num">7</span><span class="folio__text"><span lang="zh">下單即取</span><span lang="en">Orders filled instantly</span></span></p>
+        </div>
+      </div>
+
+      <div class="face face--back paper">
+        <div class="page page--colophon">
+          <p class="runhead"><span lang="zh">張氏商行 · 印刷所</span><span lang="en">Zhang &amp; Co. · Printing works</span></p>
+          <h2 class="plain-title"><span lang="zh">印刷所</span><span lang="en">Printing Works</span></h2>
+          <p class="plain-sub"><span lang="zh">COLOPHON &amp; LETTERS</span><span lang="en">版權與信函</span></p>
+          <p class="letter letter--centre">
+            <span lang="zh">本圖錄由店主<b>張嘉曦</b>以 HTML 與 CSS 手工排版，錄中各件亦皆其所製。字體為思源宋體、League Gothic、Alfa Slab One、Rye、IM Fell English 與 Playfair Display；三幅圖版依店主所擬之稿，以銅版畫風格製成。勘誤、訂單及信函請寄印刷所。</span>
+            <span lang="en">Set by hand in HTML and CSS by the proprietor, <b>Jiaxi Zhang</b>, who also made everything listed. The type is Noto Serif, League Gothic, Alfa Slab One, Rye, IM Fell English and Playfair Display; the three plates were made in the manner of copper engravings after the proprietor's sketches. Corrections, orders and letters to the printing works.</span>
+          </p>
+          <div class="orderform" aria-label="Order blank (decorative)">
+            <p class="orderform__head"><span lang="zh">訂貨單</span><span lang="en">Order Blank</span><small><span lang="zh">ORDER BLANK · PLEASE WRITE PLAINLY</span><span lang="en">訂貨單 · 請以正楷填寫</span></small></p>
+            <div class="orderform__rows">
+              <div><span lang="zh">台甫</span><span lang="en">Name</span></div>
+              <div><span lang="zh">寶號地址</span><span lang="en">Post office</span></div>
+              <div><span lang="zh">所訂貨號</span><span lang="en">Article No.</span></div>
+              <div><span lang="zh">數量</span><span lang="en">Quantity</span></div>
+              <div><span lang="zh">日期</span><span lang="en">Date</span></div>
+              <div><span lang="zh">備註</span><span lang="en">Remarks</span></div>
+            </div>
+            <p class="orderform__note"><span lang="zh">※ 本行不辦郵購，此單留作紀念。欲取貨者，請翻回各頁點擊票券。</span><span lang="en">※ We do not fill orders by post; keep this blank as a souvenir. To take delivery, turn back and click the ticket.</span></p>
+          </div>
+          <p class="links"><a href="../"><span lang="zh">主頁</span><span lang="en">The front door</span></a><a href="https://github.com/SuQichen777">GitHub</a><a href="https://www.linkedin.com/in/jiaxi-zhang-421524296/">LinkedIn</a></p>
+          <svg class="seal seal--works" viewBox="0 0 120 120" role="img" aria-label="Printer's seal: Zhang &amp; Co. printing works, MMXXVI">
+            <defs><path id="seal-ring-works" d="M60 60 m-41 0 a41 41 0 1 1 82 0 a41 41 0 1 1 -82 0"/></defs>
+            <circle cx="60" cy="60" r="56" class="seal__o"/><circle cx="60" cy="60" r="51.5" class="seal__i"/><circle cx="60" cy="60" r="31" class="seal__i"/>
+            <text lang="zh" class="seal__ring seal__ring--zh"><textPath href="#seal-ring-works" startOffset="0">張氏商行印刷所·匹茲堡·上海·</textPath></text>
+            <text lang="en" class="seal__ring seal__ring--en"><textPath href="#seal-ring-works" startOffset="0">ZHANG &amp; CO. PRINTING WORKS · PITTSBURGH · SHANGHAI ·</textPath></text>
+            <text class="seal__year" x="60" y="66" text-anchor="middle">MMXXVI</text>
+          </svg>
+          <p class="folio"><span class="folio__text"><span lang="zh">© 2026 張嘉曦</span><span lang="en">© 2026 Jiaxi Zhang</span></span><span class="folio__num">8</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ sheet 5: the last leaf, then the back board ============ -->
+    <div class="sheet" data-sheet="5">
+      <div class="face face--front paper">
+        <div class="page page--finis">
+          <p class="finis"><span lang="zh">終</span><span lang="en">Finis</span></p>
+          <p class="finis__line"><span lang="zh">合上書，或翻回開頭。</span><span lang="en">Close the book, or turn back to the beginning.</span></p>
+        </div>
+      </div>
+      <div class="face face--back cover cover--back">
+        <div class="cover__board">
+          <p class="cover__back-mark" aria-hidden="true">Z &amp; Co.</p>
+          <span class="cover__corner cover__corner--tl" aria-hidden="true"></span><span class="cover__corner cover__corner--tr" aria-hidden="true"></span>
+          <span class="cover__corner cover__corner--bl" aria-hidden="true"></span><span class="cover__corner cover__corner--br" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <button type="button" class="turn turn--next" data-turn="1" aria-label="Next page">›</button>
+</div>
+
+<p class="desk-foot"><span lang="zh">HTML 與 CSS 手工排版 · © 2026 張嘉曦</span><span lang="en">Set by hand in HTML &amp; CSS · © 2026 Jiaxi Zhang</span></p>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---------- language ---------- */
+    var buttons = document.querySelectorAll('[data-set-lang]');
+    var TITLE = { zh: '張氏商行 · 玩物圖錄', en: 'Zhang & Co. — Catalogue of Playthings' };
+    function applyLang(lang) {
+      root.setAttribute('data-lang', lang);
+      root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
+      document.title = TITLE[lang];
+      buttons.forEach(function (b) {
+        var on = b.getAttribute('data-set-lang') === lang;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      try { localStorage.setItem('catalogue-lang', lang); } catch (e) {}
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { applyLang(b.getAttribute('data-set-lang')); }); });
+    applyLang(root.getAttribute('data-lang') === 'en' ? 'en' : 'zh');
+
+    /* ---------- the book ---------- */
+    var book = document.querySelector('.book');
+    var sheets = Array.prototype.slice.call(book.querySelectorAll('.sheet'));
+    var n = sheets.length;
+    var turned = 0;
+    var busy = false;
+    var blockL = book.querySelector('.book__block--l'), blockR = book.querySelector('.book__block--r');
+    var LEAVES = n - 2; // the paper leaves between the two boards
+
+    // a leaf's outline: at u (0 at the spine, 1 at the fore-edge) its head and foot are drawn in by
+    // this fraction of its height; most of it in the last quarter before the spine, where the leaf
+    // falls into the binding, and a little all the way across, so the fore-edge stands tallest
+    function fall(u) { var d = u < .28 ? (1 - u / .28) * (1 - u / .28) : 0; return .005 * d + .003 * (1 - u); }
+    var US = [0, .03, .06, .1, .14, .18, .23, .28, .36, .46, .58, .7, .82, .92, 1];
+
+    // the page block under a pile, drawn from the bottom leaf up, two edges to a leaf: each a little
+    // lower and a little further out than the one above, as the leaves fan in an open book
+    function drawBlock(el, leaves, out, shut) {
+      var W = el.offsetWidth, H = el.offsetHeight, u = W / 100, svg = '';
+      var seed = out > 0 ? 11 : 29, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+      var X = function (x) { return (out > 0 ? x : W - x).toFixed(2); }; // x measured from the spine
+      var fills = ['#dcc092', '#d1b382', '#e0c699', '#ccac7a']; // edges of old stock are duller than its faces
+      var layer = function (j, fill, stroke) {
+        var dx = j * .55 + (rnd() - .5) * .4, dy = j * .9 + (rnd() - .5) * .3, pts = [];
+        US.forEach(function (t) { pts.push(X(t * W + dx) + ',' + (H * (1 - fall(t)) + dy + (rnd() - .5) * .35).toFixed(2)); });
+        pts.push(X(W + dx + (rnd() - .5) * .3) + ',' + (H * fall(1) + dy).toFixed(2)); // up the fore-edge
+        pts.push(X(dx) + ',' + (H * fall(0) + dy).toFixed(2));                         // back, under the leaf
+        return '<polygon points="' + pts.join(' ') + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width=".6"/>';
+      };
+      if (shut) {
+        // shut: the block lies square and recessed between the boards, a band of edges at the foot
+        var top = H + .8 * u, depth = .7 * u;
+        for (var k = 5; k >= 1; k--) {
+          svg += '<rect x="' + (1.5 * u).toFixed(2) + '" y="' + (top - 2).toFixed(2) + '" width="' + (W - 3 * u).toFixed(2) +
+                 '" height="' + (depth * k / 5 + 2).toFixed(2) + '" fill="' + fills[k % 4] + '" stroke="rgba(88,58,28,.45)" stroke-width=".6"/>';
+        }
+      } else if (leaves) {
+        svg += layer(leaves * 2 + 2, 'rgba(20,10,2,.26)', 'none'); // the block's shadow on the board
+        for (var j = leaves * 2; j >= 1; j--) svg += layer(j, fills[j % 4], 'rgba(78,50,22,.55)');
+      }
+      el.innerHTML = svg && W ? '<svg viewBox="0 0 ' + W + ' ' + H + '">' + svg + '</svg>' : '';
+    }
+    var held = '';
+    function drawBlocks() {
+      var state = book.getAttribute('data-state');
+      var left = Math.max(0, Math.min(LEAVES, turned - 1)), right = LEAVES - left;
+      // the pile a turning leaf is landing on gains its edges once the leaf is down
+      if (held !== 'l') drawBlock(blockL, left, -1, state === 'closed-back');
+      if (held !== 'r') drawBlock(blockR, right, 1, state === 'closed');
+    }
+    window.addEventListener('resize', drawBlocks);
+
+    function paint() {
+      sheets.forEach(function (s, i) {
+        var flipped = i < turned;
+        s.classList.toggle('is-flipped', flipped);
+        // two steps apart, so each page block can sit between a pile's board and its leaves
+        s.style.zIndex = 10 + 2 * (flipped ? i : n - 1 - i);
+      });
+      var state = turned === 0 ? 'closed' : turned === n ? 'closed-back' : 'open';
+      book.setAttribute('data-state', state);
+      // leaves lying on each side: the fuller pile stands higher, so its gutter falls deeper
+      var left = Math.max(0, Math.min(LEAVES, turned - 1)), right = LEAVES - left;
+      book.style.setProperty('--gl', (1 + .08 * left).toFixed(2));
+      book.style.setProperty('--gr', (.95 + .08 * right).toFixed(2));
+      drawBlocks();
+      document.querySelector('.turn--prev').disabled = turned === 0;
+      document.querySelector('.turn--next').disabled = turned === n;
+    }
+    function turn(dir) {
+      if (busy) return;
+      var next = turned + dir;
+      if (next < 0 || next > n) return;
+      var sheet = sheets[dir > 0 ? turned : turned - 1];
+      turned = next;
+      if (!reduce) book.setAttribute('data-turning', dir > 0 ? 'fwd' : 'back');
+      // a board turning (the book opening or shutting): its shadow on the desk follows it
+      var board = sheet === sheets[0] ? 'front' : sheet === sheets[n - 1] ? 'back' : '';
+      if (!reduce && board) book.setAttribute('data-cover', board);
+      sheet.classList.add('is-turning');
+      held = reduce ? '' : dir > 0 ? 'l' : 'r';
+      paint();
+      sheet.style.zIndex = 40;
+      busy = true;
+      var done = function () { sheet.classList.remove('is-turning'); book.removeAttribute('data-turning'); book.removeAttribute('data-cover'); held = ''; paint(); busy = false; };
+      if (reduce) { done(); } else { setTimeout(done, 1150); }
+    }
+    document.querySelectorAll('[data-turn]').forEach(function (b) {
+      b.addEventListener('click', function () { turn(+b.getAttribute('data-turn')); });
+    });
+    book.addEventListener('click', function (e) {
+      if (e.target.closest('a, button')) return;
+      if (String(window.getSelection && window.getSelection()).length) return; // a drag to select text is not a turn
+      var face = e.target.closest('.face');
+      if (!face) return;
+      turn(face.parentElement.classList.contains('is-flipped') ? -1 : 1);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.target.closest && e.target.closest('input, textarea')) return;
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); turn(1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); turn(-1); }
+    });
+
+    /* ---------- deckled edges on every leaf ---------- */
+    document.querySelectorAll('.paper, .cover__label').forEach(function (el, k) {
+      var seed = k * 7 + 3, js = [];
+      var rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+      for (var q = 0; q < 132; q++) js.push((rnd() - .5) * 0.9); // one jitter per point, both outlines alike
+      // the edge sewn into the binding stays straight: a front's left edge, a back's right edge
+      var boundL = el.classList.contains('face--front') ? 0 : 1, boundR = el.classList.contains('face--back') ? 0 : 1;
+      // a free leaf (not a page pasted to a board, not the label) also gets the outline of a leaf
+      // falling into the binding; the stylesheet uses it only while the pages lie in a book
+      var no = el.classList.contains('face') ? +el.closest('.sheet').getAttribute('data-sheet') : -1, leaf = no > 0 && no < n - 1;
+      var outline = function (curved) {
+        var pts = [], q = 0;
+        var dip = function (xf) { return curved ? fall(el.classList.contains('face--back') ? 1 - xf : xf) * 100 : 0; }, d0 = dip(0), d1 = dip(1);
+        var side = function (m, fx, fy) { for (var i = 0; i <= m; i++) { var t = i / m, j = js[q++]; pts.push(fx(t, j).toFixed(2) + '% ' + fy(t, j).toFixed(2) + '%'); } };
+        side(28, function (t) { return t * 100; }, function (t, j) { return Math.abs(j) + dip(t); });
+        side(36, function (t, j) { return 100 - Math.abs(j) * boundR; }, function (t) { return d1 + t * (100 - 2 * d1); });
+        side(28, function (t) { return 100 - t * 100; }, function (t, j) { return 100 - Math.abs(j) - dip(1 - t); });
+        side(36, function (t, j) { return Math.abs(j) * boundL; }, function (t) { return 100 - d0 - t * (100 - 2 * d0); });
+        return 'polygon(' + pts.join(',') + ')';
+      };
+      el.style.setProperty('--outline', outline(false));
+      if (leaf) el.style.setProperty('--outline-leaf', outline(true));
+    });
+
+    // #no2 in the address opens the book at that article
+    function openAtHash() {
+      var hash = (location.hash || '').replace('#', '');
+      var target = hash && document.getElementById(hash);
+      var was = turned;
+      if (target) { turned = sheets.indexOf(target.closest('.sheet')) + 1; }
+      // a link straight into the book swings the front board open; its shadow follows it
+      if (!reduce && was === 0 && turned > 0) {
+        book.setAttribute('data-turning', 'fwd'); book.setAttribute('data-cover', 'front');
+        setTimeout(function () { if (!busy) { book.removeAttribute('data-turning'); book.removeAttribute('data-cover'); } }, 1150);
+      }
+      paint();
+      // pages stacked on a narrow screen: settle on the article once the type has loaded
+      if (target && window.matchMedia('(max-width: 1100px)').matches && document.fonts) {
+        document.fonts.ready.then(function () { target.scrollIntoView({ block: 'start' }); });
+      }
+    }
+    window.addEventListener('hashchange', openAtHash);
+    openAtHash();
+  })();
+</script>
+</body>
+</html>

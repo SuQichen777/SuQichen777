@@ -61,7 +61,8 @@ html[data-lang="zh"] [lang="en"] {
               0 8px 22px rgba(23, 37, 65, 0.09);
 }
 
-.topbar button {
+.topbar button,
+.topbar .play-link {
   font-family: inherit;
   font-size: 0.8rem;
   font-weight: 600;
@@ -76,7 +77,8 @@ html[data-lang="zh"] [lang="en"] {
   transition: color 0.15s ease, background 0.15s ease;
 }
 
-.topbar button:hover {
+.topbar button:hover,
+.topbar .play-link:hover {
   color: #3554a5;
   background: #eef2fb;
 }
@@ -85,6 +87,11 @@ html[data-lang="zh"] [lang="en"] {
   display: flex;
   flex-wrap: wrap;
   gap: 0.15rem;
+}
+
+.section-nav .play-link {
+  text-decoration: none;
+  color: #3554a5;
 }
 
 .section-nav button.active {
@@ -480,7 +487,8 @@ footer p {
     padding: 0.45rem 0.5rem;
   }
 
-  .topbar button {
+  .topbar button,
+  .topbar .play-link {
     padding: 0.3rem 0.65rem;
   }
 
