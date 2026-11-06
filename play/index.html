@@ -8,18 +8,19 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='6' fill='%23241a10'/%3E%3Ctext x='32' y='46' font-size='40' text-anchor='middle' fill='%23ebdfc3' font-family='serif' font-weight='900'%3E%E5%BC%B5%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=League+Gothic&family=Alfa+Slab+One&family=Rye&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Serif+SC:wght@400;700;900&family=League+Gothic&family=Alfa+Slab+One&family=Rye&family=IM+Fell+English:ital@0;1&family=IM+Fell+English+SC&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="catalogue.css" />
   <link rel="preload" href="assets/img/paper.webp" as="image" type="image/webp">
   <link rel="preload" href="assets/img/book-open.webp" as="image" type="image/webp">
   <script>
-    // Traditional Chinese first; a visitor's own choice on this page is remembered
+    // the original edition (Traditional, as printed) first; a visitor's own choice is remembered.
+    // zh = the original edition, zh-Hans = the same catalogue in today's Simplified Chinese, en = English
     (function () {
       var l = null;
       try { l = localStorage.getItem('catalogue-lang'); } catch (e) {}
-      if (l !== 'en' && l !== 'zh') { l = 'zh'; }
+      if (l !== 'en' && l !== 'zh-Hans') { l = 'zh'; }
       document.documentElement.setAttribute('data-lang', l);
-      document.documentElement.setAttribute('lang', l === 'zh' ? 'zh-Hant' : 'en');
+      document.documentElement.setAttribute('lang', l === 'zh' ? 'zh-Hant' : l);
     })();
   </script>
 </head>
@@ -54,9 +55,9 @@
 </svg>
 
 <nav class="desk-bar" aria-label="Page tools">
-  <a href="../"><span lang="zh">☜ 回到主頁</span><span lang="en">☜ Back to the front door</span></a>
-  <span class="desk-bar__hint"><span lang="zh">點擊書頁或按 ← → 翻頁</span><span lang="en">Click a page, or use ← →, to turn</span></span>
-  <span class="desk-bar__lang"><button type="button" data-set-lang="zh">中文</button><i>·</i><button type="button" data-set-lang="en">English</button></span>
+  <a href="../"><span lang="zh">☜ 回到主頁</span><span lang="zh-Hans">☜ 回到主页</span><span lang="en">☜ Back to the front door</span></a>
+  <span class="desk-bar__hint"><span lang="zh">點擊書頁或按 ← → 翻頁</span><span lang="zh-Hans">点击书页或按 ← → 翻页</span><span lang="en">Click a page, or use ← →, to turn</span></span>
+  <span class="desk-bar__lang"><button type="button" data-set-lang="zh">原版圖冊</button><i>·</i><button type="button" data-set-lang="zh-Hans">简体中文</button><i>·</i><button type="button" data-set-lang="en">English</button></span>
 </nav>
 
 <div class="stage">
@@ -77,15 +78,15 @@
       <div class="face face--front cover">
         <div class="cover__board">
           <div class="cover__label">
-            <p class="eyebrow"><span lang="zh">創設於二〇二六年 · 匹茲堡 · 上海</span><span lang="en">Established 2026 · Pittsburgh &amp; Shanghai</span></p>
-            <h1 class="brand"><span lang="zh">張氏商行</span><span lang="en">Zhang &amp; Co.</span></h1>
-            <p class="brand__latin"><span lang="zh">ZHANG &amp; CO. · GENERAL MERCHANDISE</span><span lang="en">張氏商行 · GENERAL MERCHANDISE</span></p>
+            <p class="eyebrow"><span lang="zh">創設於二〇二六年 · 匹茲堡 · 上海</span><span lang="zh-Hans">2026 年开张 · 匹兹堡 · 上海</span><span lang="en">Established 2026 · Pittsburgh &amp; Shanghai</span></p>
+            <h1 class="brand"><span lang="zh">張氏商行</span><span lang="zh-Hans">张氏商行</span><span lang="en">Zhang &amp; Co.</span></h1>
+            <p class="brand__latin"><span lang="zh">ZHANG &amp; CO. · GENERAL MERCHANDISE</span><span lang="zh-Hans">ZHANG &amp; CO. · GENERAL MERCHANDISE</span><span lang="en">張氏商行 · GENERAL MERCHANDISE</span></p>
             <div class="rule rule--lozenge" aria-hidden="true"></div>
-            <h2 class="brand__sub"><span lang="zh">玩物圖錄</span><span lang="en">Catalogue of Playthings</span></h2>
-            <p class="brand__slab"><span lang="zh">ILLUSTRATED CATALOGUE OF PLAYTHINGS</span><span lang="en">玩物圖錄 · ILLUSTRATED</span></p>
-            <p class="brand__season"><span lang="zh">第壹號 · 二〇二六年</span><span lang="en">No. 1 · Season of 2026</span></p>
-            <p class="cover__claim"><span lang="zh">三件俱為店主手製 · 一律免費供應<br>凡有瀏覽器者，皆可即刻取用</span><span lang="en">Three articles made by the proprietor · free of charge<br>for anyone with a browser</span></p>
-            <p class="cover__open"><span lang="zh">☞ 翻開圖錄 ☜</span><span lang="en">☞ Open the catalogue ☜</span></p>
+            <h2 class="brand__sub"><span lang="zh">玩物圖錄</span><span lang="zh-Hans">小玩意图录</span><span lang="en">Catalogue of Playthings</span></h2>
+            <p class="brand__slab"><span lang="zh">ILLUSTRATED CATALOGUE OF PLAYTHINGS</span><span lang="zh-Hans">ILLUSTRATED CATALOGUE OF PLAYTHINGS</span><span lang="en">玩物圖錄 · ILLUSTRATED</span></p>
+            <p class="brand__season"><span lang="zh">第壹號 · 二〇二六年</span><span lang="zh-Hans">第 1 期 · 2026 年</span><span lang="en">No. 1 · Season of 2026</span></p>
+            <p class="cover__claim"><span lang="zh">三件俱為店主手製 · 一律免費供應<br>凡有瀏覽器者，皆可即刻取用</span><span lang="zh-Hans">三件作品都是我亲手做的 · 全部免费<br>有浏览器就能马上打开</span><span lang="en">Three articles made by the proprietor · free of charge<br>for anyone with a browser</span></p>
+            <p class="cover__open"><span lang="zh">☞ 翻開圖錄 ☜</span><span lang="zh-Hans">☞ 翻开看看 ☜</span><span lang="en">☞ Open the catalogue ☜</span></p>
           </div>
           <span class="cover__corner cover__corner--tl" aria-hidden="true"></span><span class="cover__corner cover__corner--tr" aria-hidden="true"></span>
           <span class="cover__corner cover__corner--bl" aria-hidden="true"></span><span class="cover__corner cover__corner--br" aria-hidden="true"></span>
@@ -93,32 +94,32 @@
       </div>
       <div class="face face--back paper">
         <div class="page page--letter">
-          <p class="runhead"><span lang="zh">張氏商行 · 告白</span><span lang="en">Zhang &amp; Co. · To our customers</span></p>
-          <h2 class="plain-title"><span lang="zh">商行告白</span><span lang="en">To Our Customers</span></h2>
-          <p class="plain-sub"><span lang="zh">A WORD FROM THE PROPRIETOR</span><span lang="en">商行告白</span></p>
+          <p class="runhead"><span lang="zh">張氏商行 · 告白</span><span lang="zh-Hans">张氏商行 · 写在前面</span><span lang="en">Zhang &amp; Co. · To our customers</span></p>
+          <h2 class="plain-title"><span lang="zh">商行告白</span><span lang="zh-Hans">写在前面</span><span lang="en">To Our Customers</span></h2>
+          <p class="plain-sub"><span lang="zh">A WORD FROM THE PROPRIETOR</span><span lang="zh-Hans">A WORD FROM THE PROPRIETOR</span><span lang="en">商行告白</span></p>
           <p class="letter">
-            <span lang="zh">敬啟者：本行所列三件，皆係店主一人於課餘夜間手製。既無夥計，亦無股東，故不收分文。凡有瀏覽器者，點開即可取用，不必開戶，不必安裝，下單即取。各件圖紙俱存於印刷所，任人查閱，仿製亦無妨。</span>
+            <span lang="zh">敬啟者：本行所列三件，皆係店主一人於課餘夜間手製。既無夥計，亦無股東，故不收分文。凡有瀏覽器者，點開即可取用，不必開戶，不必安裝，下單即取。各件圖紙俱存於印刷所，任人查閱，仿製亦無妨。</span><span lang="zh-Hans">你好：这本图录里的三件作品，都是我一个人在课余和深夜做出来的。没有同事，也没有投资人，所以一分钱都不收。有浏览器就能直接打开：不用注册，不用安装，点开就能玩。每件作品的源码都放在 GitHub 上，随便看，想照着做一个也没问题。</span>
             <span lang="en">Dear customer: the three articles listed herein were made by the proprietor alone, at night, after lessons. There are no clerks and no shareholders, so nothing is charged. Anyone with a browser may open them at once: no account, no installation, orders filled the instant they are placed. The plans of every article are kept at the printing works for anyone to inspect, or copy.</span>
           </p>
-          <p class="letter letter--more"><span lang="zh">本錄所載各件，日後或有增補；屆時另印新錄，奉告諸君。</span><span lang="en">Further articles may be added in time; a new catalogue will be printed when they are, and you shall hear of it.</span></p>
+          <p class="letter letter--more"><span lang="zh">本錄所載各件，日後或有增補；屆時另印新錄，奉告諸君。</span><span lang="zh-Hans">以后可能还会加新作品；到时候再出新的一期，告诉大家。</span><span lang="en">Further articles may be added in time; a new catalogue will be printed when they are, and you shall hear of it.</span></p>
           <div class="signoff-row">
-            <p class="signoff"><span lang="zh">店主 張嘉曦 謹啟<br><small>二〇二六年秋</small></span><span lang="en">Your obedient servant,<br>Jiaxi Zhang, proprietor<br><small>Autumn, 2026</small></span></p>
+            <p class="signoff"><span lang="zh">店主 張嘉曦 謹啟<br><small>二〇二六年秋</small></span><span lang="zh-Hans">—— 张嘉曦<br><small>2026 年秋</small></span><span lang="en">Your obedient servant,<br>Jiaxi Zhang, proprietor<br><small>Autumn, 2026</small></span></p>
             <span class="chop" aria-hidden="true">張氏商行</span>
           </div>
           <div class="terms">
-            <p class="terms__head"><span lang="zh">營業條款</span><span lang="en">Terms of Business</span></p>
+            <p class="terms__head"><span lang="zh">營業條款</span><span lang="zh-Hans">几点说明</span><span lang="en">Terms of Business</span></p>
             <ul class="terms__list">
-              <li><span lang="zh">恕不收現，亦不賒帳。</span><span lang="en">Cash not accepted; no credit given either.</span></li>
-              <li><span lang="zh">第壹號需友人一位同玩；第貳號宜以鼠標操作。</span><span lang="en">No. 1 requires a friend; a mouse is recommended for No. 2.</span></li>
-              <li><span lang="zh">各件於新標籤頁開啟，本錄留於原處。</span><span lang="en">Each article opens in a new tab; this catalogue stays put.</span></li>
-              <li><span lang="zh">印刷所：<a href="https://github.com/SuQichen777">github.com/SuQichen777</a></span><span lang="en">Printing works: <a href="https://github.com/SuQichen777">github.com/SuQichen777</a></span></li>
+              <li><span lang="zh">恕不收現，亦不賒帳。</span><span lang="zh-Hans">不收钱，所以也没法赊账。</span><span lang="en">Cash not accepted; no credit given either.</span></li>
+              <li><span lang="zh">第壹號需友人一位同玩；第貳號宜以鼠標操作。</span><span lang="zh-Hans">1 号需要一位朋友一起玩；2 号最好用鼠标操作。</span><span lang="en">No. 1 requires a friend; a mouse is recommended for No. 2.</span></li>
+              <li><span lang="zh">各件於新標籤頁開啟，本錄留於原處。</span><span lang="zh-Hans">每件作品都会在新标签页打开，这本图录不会关掉。</span><span lang="en">Each article opens in a new tab; this catalogue stays put.</span></li>
+              <li><span lang="zh">印刷所：<a href="https://github.com/SuQichen777">github.com/SuQichen777</a></span><span lang="zh-Hans">源码：<a href="https://github.com/SuQichen777">github.com/SuQichen777</a></span><span lang="en">Printing works: <a href="https://github.com/SuQichen777">github.com/SuQichen777</a></span></li>
             </ul>
           </div>
           <div class="bookplate">
-            <p class="bookplate__head"><span lang="zh">藏書票</span><span lang="en">Ex libris</span></p>
-            <p class="bookplate__name"><span lang="zh">讀者</span><span lang="en">the reader</span></p>
+            <p class="bookplate__head"><span lang="zh">藏書票</span><span lang="zh-Hans">本书属于</span><span lang="en">Ex libris</span></p>
+            <p class="bookplate__name"><span lang="zh">讀者</span><span lang="zh-Hans">你</span><span lang="en">the reader</span></p>
           </div>
-          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">ii</span></p>
+          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="zh-Hans">张氏商行 · 小玩意图录</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">ii</span></p>
         </div>
       </div>
     </div>
@@ -127,56 +128,56 @@
     <div class="sheet" data-sheet="1">
       <div class="face face--front paper">
         <div class="page page--contents">
-          <p class="runhead"><span lang="zh">張氏商行 · 目錄及價目</span><span lang="en">Zhang &amp; Co. · Contents &amp; prices</span></p>
-          <h2 class="plain-title plain-title--big"><span lang="zh">目錄</span><span lang="en">Contents</span></h2>
-          <p class="plain-sub"><span lang="zh">CONTENTS &amp; PRICES · SEASON OF 2026</span><span lang="en">目錄及價目 · 二〇二六年</span></p>
+          <p class="runhead"><span lang="zh">張氏商行 · 目錄及價目</span><span lang="zh-Hans">张氏商行 · 目录和价格</span><span lang="en">Zhang &amp; Co. · Contents &amp; prices</span></p>
+          <h2 class="plain-title plain-title--big"><span lang="zh">目錄</span><span lang="zh-Hans">目录</span><span lang="en">Contents</span></h2>
+          <p class="plain-sub"><span lang="zh">CONTENTS &amp; PRICES · SEASON OF 2026</span><span lang="zh-Hans">CONTENTS &amp; PRICES · SEASON OF 2026</span><span lang="en">目錄及價目 · 二〇二六年</span></p>
           <table class="pricelist">
-            <thead><tr><th scope="col"><span lang="zh">貨號</span><span lang="en">No.</span></th><th scope="col" colspan="2"><span lang="zh">品名</span><span lang="en">Article</span></th><th scope="col"><span lang="zh">價目</span><span lang="en">Price</span></th><th scope="col"><span lang="zh">頁</span><span lang="en">Page</span></th></tr></thead>
+            <thead><tr><th scope="col"><span lang="zh">貨號</span><span lang="zh-Hans">编号</span><span lang="en">No.</span></th><th scope="col" colspan="2"><span lang="zh">品名</span><span lang="zh-Hans">作品</span><span lang="en">Article</span></th><th scope="col"><span lang="zh">價目</span><span lang="zh-Hans">价格</span><span lang="en">Price</span></th><th scope="col"><span lang="zh">頁</span><span lang="zh-Hans">页</span><span lang="en">Page</span></th></tr></thead>
             <tbody>
-              <tr><td class="pricelist__no">1</td><td class="pricelist__cut"><img src="assets/img/engraving-same-word-760.webp" alt="" width="760" height="950" decoding="async"></td><td class="pricelist__name"><b><span lang="zh">同詞相遇</span><span lang="en">The Same-Word Game</span></b><i><span lang="zh">二人猜詞遊戲 · 中文對局</span><span lang="en">A guessing game for two, in Chinese</span></i></td><td class="pricelist__price"><span lang="zh">免費</span><span lang="en">Free</span></td><td class="pricelist__page">3</td></tr>
-              <tr><td class="pricelist__no">2</td><td class="pricelist__cut"><img src="assets/img/engraving-vacant-room-960.webp" alt="" width="960" height="720" decoding="async"></td><td class="pricelist__name"><b><span lang="zh">空房一間</span><span lang="en">A Vacant Room</span></b><i><span lang="zh">三壁一地 · WebGL 所繪 · 家具隨附</span><span lang="en">Three walls and a floor, drawn in WebGL, furniture supplied</span></i></td><td class="pricelist__price"><span lang="zh">免費</span><span lang="en">Free</span></td><td class="pricelist__page">5</td></tr>
-              <tr><td class="pricelist__no">3</td><td class="pricelist__cut"><img src="assets/img/engraving-music-journal-960.webp" alt="" width="960" height="640" decoding="async"></td><td class="pricelist__name"><b><span lang="zh">音樂日記一冊</span><span lang="en">A Music Journal</span></b><i><span lang="zh">聽專輯的時候我在想些什麼 · 即將發售</span><span lang="en">What I was thinking while listening · forthcoming</span></i></td><td class="pricelist__price pricelist__price--tba"><span lang="zh">待定</span><span lang="en">T.B.A.</span></td><td class="pricelist__page">7</td></tr>
+              <tr><td class="pricelist__no">1</td><td class="pricelist__cut"><img src="assets/img/engraving-same-word-760.webp" alt="" width="760" height="950" decoding="async"></td><td class="pricelist__name"><b><span lang="zh">同詞相遇</span><span lang="zh-Hans">同词相遇</span><span lang="en">The Same-Word Game</span></b><i><span lang="zh">二人猜詞遊戲 · 中文對局</span><span lang="zh-Hans">双人猜词游戏 · 中文</span><span lang="en">A guessing game for two, in Chinese</span></i></td><td class="pricelist__price"><span lang="zh">免費</span><span lang="zh-Hans">免费</span><span lang="en">Free</span></td><td class="pricelist__page">3</td></tr>
+              <tr><td class="pricelist__no">2</td><td class="pricelist__cut"><img src="assets/img/engraving-vacant-room-960.webp" alt="" width="960" height="720" decoding="async"></td><td class="pricelist__name"><b><span lang="zh">空房一間</span><span lang="zh-Hans">一间空房</span><span lang="en">A Vacant Room</span></b><i><span lang="zh">三壁一地 · WebGL 所繪 · 家具隨附</span><span lang="zh-Hans">WebGL 画的房间 · 附带家具</span><span lang="en">Three walls and a floor, drawn in WebGL, furniture supplied</span></i></td><td class="pricelist__price"><span lang="zh">免費</span><span lang="zh-Hans">免费</span><span lang="en">Free</span></td><td class="pricelist__page">5</td></tr>
+              <tr><td class="pricelist__no">3</td><td class="pricelist__cut"><img src="assets/img/engraving-music-journal-960.webp" alt="" width="960" height="640" decoding="async"></td><td class="pricelist__name"><b><span lang="zh">音樂日記一冊</span><span lang="zh-Hans">音乐日记</span><span lang="en">A Music Journal</span></b><i><span lang="zh">聽專輯的時候我在想些什麼 · 即將發售</span><span lang="zh-Hans">听专辑时我在想什么 · 即将上线</span><span lang="en">What I was thinking while listening · forthcoming</span></i></td><td class="pricelist__price pricelist__price--tba"><span lang="zh">待定</span><span lang="zh-Hans">待定</span><span lang="en">T.B.A.</span></td><td class="pricelist__page">7</td></tr>
             </tbody>
           </table>
-          <p class="all-free"><small><span lang="zh">本行各貨</span><span lang="en">Every article in this book</span></small><b><span lang="zh">一律免費供應！</span><span lang="en">Free of Charge!</span></b><small><span lang="zh">EVERY ARTICLE FREE OF CHARGE</span><span lang="en">一律免費供應</span></small></p>
+          <p class="all-free"><small><span lang="zh">本行各貨</span><span lang="zh-Hans">所有作品</span><span lang="en">Every article in this book</span></small><b><span lang="zh">一律免費供應！</span><span lang="zh-Hans">全部免费！</span><span lang="en">Free of Charge!</span></b><small><span lang="zh">EVERY ARTICLE FREE OF CHARGE</span><span lang="zh-Hans">EVERY ARTICLE FREE OF CHARGE</span><span lang="en">一律免費供應</span></small></p>
           <div class="terms terms--order">
-            <p class="terms__head"><span lang="zh">訂購須知</span><span lang="en">How to Order</span></p>
+            <p class="terms__head"><span lang="zh">訂購須知</span><span lang="zh-Hans">怎么用</span><span lang="en">How to Order</span></p>
             <ul class="terms__list">
-              <li><span lang="zh">點擊各頁之票券，貨品即於新標籤頁送達。</span><span lang="en">Click the ticket on any page; the article is delivered in a new tab.</span></li>
-              <li><span lang="zh">翻頁可點書頁，或按鍵盤 ← →。</span><span lang="en">Turn the pages by clicking them, or with ← → on the keyboard.</span></li>
-              <li><span lang="zh">圖紙與源碼皆附於各件之下，歡迎查閱。</span><span lang="en">Plans and source are attached beneath each article.</span></li>
+              <li><span lang="zh">點擊各頁之票券，貨品即於新標籤頁送達。</span><span lang="zh-Hans">点每页上的票券，作品会在新标签页打开。</span><span lang="en">Click the ticket on any page; the article is delivered in a new tab.</span></li>
+              <li><span lang="zh">翻頁可點書頁，或按鍵盤 ← →。</span><span lang="zh-Hans">点书页或按键盘 ← → 翻页。</span><span lang="en">Turn the pages by clicking them, or with ← → on the keyboard.</span></li>
+              <li><span lang="zh">圖紙與源碼皆附於各件之下，歡迎查閱。</span><span lang="zh-Hans">每件作品下方都附有源码链接，欢迎查看。</span><span lang="en">Plans and source are attached beneath each article.</span></li>
             </ul>
           </div>
-          <p class="fineprint"><span lang="zh">每翻一頁即一件：左頁使用方法，右頁商品告示。印刷所與信函見末頁。</span><span lang="en">One article to a spread: how it is used on the left, the advertisement on the right. Printing works and letters on the last page.</span></p>
-          <p class="folio"><span class="folio__num">1</span><span class="folio__text"><span lang="zh">各件均免費</span><span lang="en">Every article free of charge</span></span></p>
+          <p class="fineprint"><span lang="zh">每翻一頁即一件：左頁使用方法，右頁商品告示。印刷所與信函見末頁。</span><span lang="zh-Hans">每个跨页介绍一件作品：左页讲玩法，右页是介绍。版权信息在最后一页。</span><span lang="en">One article to a spread: how it is used on the left, the advertisement on the right. Printing works and letters on the last page.</span></p>
+          <p class="folio"><span class="folio__num">1</span><span class="folio__text"><span lang="zh">各件均免費</span><span lang="zh-Hans">全部免费</span><span lang="en">Every article free of charge</span></span></p>
         </div>
       </div>
 
       <div class="face face--back paper howto" id="no1">
         <div class="page">
-          <p class="runhead"><span lang="zh">張氏商行 · 使用方法 · 第壹號</span><span lang="en">Zhang &amp; Co. · How to use · No. 1</span></p>
-          <h2 class="howto__title"><span lang="zh">使用方法</span><span lang="en">How to Use</span></h2>
-          <p class="howto__for"><span lang="zh">同詞相遇 · 遊戲規則四條</span><span lang="en">The Same-Word Game · four rules of play</span></p>
-          <p class="howto__intro"><span lang="zh">凡二人各有一瀏覽器，即可依下列四條行之。</span><span lang="en">Any two persons, each with a browser, may play by the four rules below.</span></p>
+          <p class="runhead"><span lang="zh">張氏商行 · 使用方法 · 第壹號</span><span lang="zh-Hans">张氏商行 · 使用说明 · 1 号</span><span lang="en">Zhang &amp; Co. · How to use · No. 1</span></p>
+          <h2 class="howto__title"><span lang="zh">使用方法</span><span lang="zh-Hans">使用说明</span><span lang="en">How to Use</span></h2>
+          <p class="howto__for"><span lang="zh">同詞相遇 · 遊戲規則四條</span><span lang="zh-Hans">同词相遇 · 四条规则</span><span lang="en">The Same-Word Game · four rules of play</span></p>
+          <p class="howto__intro"><span lang="zh">凡二人各有一瀏覽器，即可依下列四條行之。</span><span lang="zh-Hans">两个人，各用一个浏览器，就能按下面四条来玩。</span><span lang="en">Any two persons, each with a browser, may play by the four rules below.</span></p>
           <ol class="articles">
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">壹</span><span lang="en">I</span></span><div><h3><span lang="zh">一人開房</span><span lang="en">One opens a room</span></h3><p><span lang="zh">將四字母房碼或鏈接寄予友人。無須旁人主持，二人即可。</span><span lang="en">Send the four-letter code, or the link, to a friend. No umpire needed; two is enough.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-door"/></svg></li>
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">貳</span><span lang="en">II</span></span><div><h3><span lang="zh">二人各暗書一詞</span><span lang="en">Each writes a word in secret</span></h3><p><span lang="zh">寫畢同時揭曉。</span><span lang="en">Both are shown at once.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-quill"/></svg></li>
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">參</span><span lang="en">III</span></span><div><h3><span lang="zh">二詞相同，即為相遇</span><span lang="en">The same word: you have met</span></h3><p><span lang="zh">遊戲勝；不同，則各可選「我覺得一樣」，二人皆選亦算勝。</span><span lang="en">The game is won. If they differ, each may say “I think they are the same”; two such votes also win.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-cards"/></svg></li>
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">肆</span><span lang="en">IV</span></span><div><h3><span lang="zh">否則下一詞須連綴前二詞</span><span lang="en">Else the next word joins the two</span></h3><p><span lang="zh">「海」與「火車」之後，或可書「港口」。不得重複。數一數幾輪相遇。</span><span lang="en">After <i>sea</i> and <i>train</i>, perhaps <i>harbour</i>. Nothing twice. Count the rounds.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-meet"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">壹</span><span lang="zh-Hans">1</span><span lang="en">I</span></span><div><h3><span lang="zh">一人開房</span><span lang="zh-Hans">一人开房间</span><span lang="en">One opens a room</span></h3><p><span lang="zh">將四字母房碼或鏈接寄予友人。無須旁人主持，二人即可。</span><span lang="zh-Hans">把四个字母的房间码或链接发给朋友。不需要第三个人主持，两个人就够。</span><span lang="en">Send the four-letter code, or the link, to a friend. No umpire needed; two is enough.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-door"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">貳</span><span lang="zh-Hans">2</span><span lang="en">II</span></span><div><h3><span lang="zh">二人各暗書一詞</span><span lang="zh-Hans">两人各自偷偷写一个词</span><span lang="en">Each writes a word in secret</span></h3><p><span lang="zh">寫畢同時揭曉。</span><span lang="zh-Hans">写完同时亮出来。</span><span lang="en">Both are shown at once.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-quill"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">參</span><span lang="zh-Hans">3</span><span lang="en">III</span></span><div><h3><span lang="zh">二詞相同，即為相遇</span><span lang="zh-Hans">两人写的一样，就算相遇</span><span lang="en">The same word: you have met</span></h3><p><span lang="zh">遊戲勝；不同，則各可選「我覺得一樣」，二人皆選亦算勝。</span><span lang="zh-Hans">游戏胜利；不一样的话，两人都可以点“我觉得一样”，都点了也算赢。</span><span lang="en">The game is won. If they differ, each may say “I think they are the same”; two such votes also win.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-cards"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">肆</span><span lang="zh-Hans">4</span><span lang="en">IV</span></span><div><h3><span lang="zh">否則下一詞須連綴前二詞</span><span lang="zh-Hans">否则，下一个词要连起前两个</span><span lang="en">Else the next word joins the two</span></h3><p><span lang="zh">「海」與「火車」之後，或可書「港口」。不得重複。數一數幾輪相遇。</span><span lang="zh-Hans">比如“海”和“火车”之后，可以写“港口”。用过的词不能再用。看看几轮能相遇。</span><span lang="en">After <i>sea</i> and <i>train</i>, perhaps <i>harbour</i>. Nothing twice. Count the rounds.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-meet"/></svg></li>
           </ol>
           <figure class="specimen">
-            <figcaption><span lang="zh">對局實例</span><span lang="en">An Example of Play</span></figcaption>
+            <figcaption><span lang="zh">對局實例</span><span lang="zh-Hans">对局示例</span><span lang="en">An Example of Play</span></figcaption>
             <table class="specimen__table">
-              <thead><tr><th scope="col"><span lang="zh">回合</span><span lang="en">Round</span></th><th scope="col"><span lang="zh">甲書</span><span lang="en">A writes</span></th><th scope="col"><span lang="zh">乙書</span><span lang="en">B writes</span></th><th scope="col"><span lang="zh">結果</span><span lang="en">Result</span></th></tr></thead>
+              <thead><tr><th scope="col"><span lang="zh">回合</span><span lang="zh-Hans">回合</span><span lang="en">Round</span></th><th scope="col"><span lang="zh">甲書</span><span lang="zh-Hans">甲写</span><span lang="en">A writes</span></th><th scope="col"><span lang="zh">乙書</span><span lang="zh-Hans">乙写</span><span lang="en">B writes</span></th><th scope="col"><span lang="zh">結果</span><span lang="zh-Hans">结果</span><span lang="en">Result</span></th></tr></thead>
               <tbody>
-                <tr><td><span lang="zh">一</span><span lang="en">1</span></td><td><span lang="zh">海</span><span lang="en">sea</span></td><td><span lang="zh">火車</span><span lang="en">train</span></td><td><span lang="zh">未遇</span><span lang="en">apart</span></td></tr>
-                <tr><td><span lang="zh">二</span><span lang="en">2</span></td><td><span lang="zh">港口</span><span lang="en">harbour</span></td><td><span lang="zh">港口</span><span lang="en">harbour</span></td><td><b><span lang="zh">相遇</span><span lang="en">met!</span></b></td></tr>
+                <tr><td><span lang="zh">一</span><span lang="zh-Hans">1</span><span lang="en">1</span></td><td><span lang="zh">海</span><span lang="zh-Hans">海</span><span lang="en">sea</span></td><td><span lang="zh">火車</span><span lang="zh-Hans">火车</span><span lang="en">train</span></td><td><span lang="zh">未遇</span><span lang="zh-Hans">不同</span><span lang="en">apart</span></td></tr>
+                <tr><td><span lang="zh">二</span><span lang="zh-Hans">2</span><span lang="en">2</span></td><td><span lang="zh">港口</span><span lang="zh-Hans">港口</span><span lang="en">harbour</span></td><td><span lang="zh">港口</span><span lang="zh-Hans">港口</span><span lang="en">harbour</span></td><td><b><span lang="zh">相遇</span><span lang="zh-Hans">相遇！</span><span lang="en">met!</span></b></td></tr>
               </tbody>
             </table>
-            <p class="specimen__note"><span lang="zh">二輪而遇：「海」與「火車」之間，二人不約而同想到了「港口」。</span><span lang="en">Met in two rounds: between <i>sea</i> and <i>train</i>, both thought of <i>harbour</i>.</span></p>
+            <p class="specimen__note"><span lang="zh">二輪而遇：「海」與「火車」之間，二人不約而同想到了「港口」。</span><span lang="zh-Hans">第二轮就相遇了：在“海”和“火车”之间，两人不约而同想到了“港口”。</span><span lang="en">Met in two rounds: between <i>sea</i> and <i>train</i>, both thought of <i>harbour</i>.</span></p>
           </figure>
-          <p class="annex"><span lang="zh">☞ 附告：構築於 Cloudflare Workers 之上，每房一 Durable Object，無需專人看管。手機、電腦皆可。</span><span lang="en">☞ Note: built upon Cloudflare Workers, one Durable Object to each room, no servant needed to keep it running. Telephone or desk machine alike.</span></p>
-          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">2</span></p>
+          <p class="annex"><span lang="zh">☞ 附告：構築於 Cloudflare Workers 之上，每房一 Durable Object，無需專人看管。手機、電腦皆可。</span><span lang="zh-Hans">☞ 备注：运行在 Cloudflare Workers 上，每个房间一个 Durable Object，不用专人维护服务器。手机、电脑都能玩。</span><span lang="en">☞ Note: built upon Cloudflare Workers, one Durable Object to each room, no servant needed to keep it running. Telephone or desk machine alike.</span></p>
+          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="zh-Hans">张氏商行 · 小玩意图录</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">2</span></p>
         </div>
       </div>
     </div>
@@ -185,62 +186,62 @@
     <div class="sheet" data-sheet="2">
       <div class="face face--front paper advert advert--words">
         <div class="page">
-          <p class="runhead"><span lang="zh">張氏商行 · 室內遊戲 · 第壹號</span><span lang="en">Zhang &amp; Co. · Parlour games · No. 1</span></p>
-          <h2 class="ad-title"><span lang="zh">同詞相遇</span><span lang="en">The Same-Word Game</span></h2>
-          <p class="ad-tagline"><span lang="zh">二人對局 · 中文猜詞 · 四字母房碼</span><span lang="en">For two · in Chinese · four-letter rooms</span></p>
+          <p class="runhead"><span lang="zh">張氏商行 · 室內遊戲 · 第壹號</span><span lang="zh-Hans">张氏商行 · 小游戏 · 1 号</span><span lang="en">Zhang &amp; Co. · Parlour games · No. 1</span></p>
+          <h2 class="ad-title"><span lang="zh">同詞相遇</span><span lang="zh-Hans">同词相遇</span><span lang="en">The Same-Word Game</span></h2>
+          <p class="ad-tagline"><span lang="zh">二人對局 · 中文猜詞 · 四字母房碼</span><span lang="zh-Hans">双人对战 · 中文猜词 · 四字母房间码</span><span lang="en">For two · in Chinese · four-letter rooms</span></p>
           <div class="words">
             <figure class="words__plate">
               <a href="https://same-word.same-word.workers.dev/" target="_blank" rel="noopener" tabindex="-1"><img src="assets/img/engraving-same-word-760.webp" srcset="assets/img/engraving-same-word-760.webp 760w, assets/img/engraving-same-word.webp 1122w" sizes="(max-width: 1100px) 92vw, 380px" width="1122" height="1402" decoding="async" alt="Engraving: a lady and a gentleman at a round parlour table, chins in hand, each writing a word on a card, an ink pot and a lamp between them"></a>
-              <figcaption><span lang="zh">圖示：甲書「海」，乙書「火車」；次輪二人俱書「港口」，是為相遇。</span><span lang="en">Fig.: she writes <i>sea</i>, he writes <i>train</i>; next round both write <i>harbour</i>, and they have met.</span></figcaption>
+              <figcaption><span lang="zh">圖示：甲書「海」，乙書「火車」；次輪二人俱書「港口」，是為相遇。</span><span lang="zh-Hans">图：她写“海”，他写“火车”；下一轮两人都写了“港口”，这就是相遇。</span><span lang="en">Fig.: she writes <i>sea</i>, he writes <i>train</i>; next round both write <i>harbour</i>, and they have met.</span></figcaption>
             </figure>
             <div class="words__side">
               <div class="price price--gothic">
                 <p class="price__fig" aria-label="$0.00"><span class="price__cur">$</span><span class="price__num">0</span><span class="price__cents">00</span></p>
-                <p class="price__free"><span lang="zh">免費供應！</span><span lang="en">Free of Charge!</span></p>
-                <p class="price__was"><span lang="zh">原價：一碗麵錢</span><span lang="en">Was: one bowl of noodles</span></p>
+                <p class="price__free"><span lang="zh">免費供應！</span><span lang="zh-Hans">免费！</span><span lang="en">Free of Charge!</span></p>
+                <p class="price__was"><span lang="zh">原價：一碗麵錢</span><span lang="zh-Hans">原价：一碗面钱</span><span lang="en">Was: one bowl of noodles</span></p>
               </div>
-              <p class="copy copy--lead"><span lang="zh">每回合二人各暗書一詞；相同即勝，不同則下一詞須連綴前二詞。開房得四字母之碼，以鏈接相邀，無須註冊。</span><span lang="en">Each round both write a word in secret. The same word wins; different words must be joined by the next. A room has a four-letter code and is shared by link; nothing to sign up for.</span></p>
-              <h3 class="claim"><span lang="zh">無須旁人主持</span><span lang="en">No umpire required</span></h3>
-              <p class="copy"><span lang="zh">二人即可開局，不必另請裁判，亦不必湊足一桌。</span><span lang="en">Two may begin at once, without a referee or a full table.</span></p>
-              <h3 class="claim"><span lang="zh">手機電腦皆可</span><span lang="en">Telephone or desk</span></h3>
-              <p class="copy"><span lang="zh">有瀏覽器者即可入局，不必安裝。</span><span lang="en">Any browser will do; nothing to install.</span></p>
-              <h3 class="claim"><span lang="zh">用過之詞不重複</span><span lang="en">No word used twice</span></h3>
-              <p class="copy"><span lang="zh">每輪須連綴前二詞，愈玩愈見默契。</span><span lang="en">Each word joins the last two; the longer you play, the closer you think.</span></p>
+              <p class="copy copy--lead"><span lang="zh">每回合二人各暗書一詞；相同即勝，不同則下一詞須連綴前二詞。開房得四字母之碼，以鏈接相邀，無須註冊。</span><span lang="zh-Hans">每轮两人各偷偷写一个词，一样就赢；不一样，下一个词就要把前两个连起来。开房间会得到四个字母的房间码，发链接就能邀请朋友，不用注册。</span><span lang="en">Each round both write a word in secret. The same word wins; different words must be joined by the next. A room has a four-letter code and is shared by link; nothing to sign up for.</span></p>
+              <h3 class="claim"><span lang="zh">無須旁人主持</span><span lang="zh-Hans">不用裁判</span><span lang="en">No umpire required</span></h3>
+              <p class="copy"><span lang="zh">二人即可開局，不必另請裁判，亦不必湊足一桌。</span><span lang="zh-Hans">两个人就能开局，不用找裁判，也不用凑一桌人。</span><span lang="en">Two may begin at once, without a referee or a full table.</span></p>
+              <h3 class="claim"><span lang="zh">手機電腦皆可</span><span lang="zh-Hans">手机电脑都行</span><span lang="en">Telephone or desk</span></h3>
+              <p class="copy"><span lang="zh">有瀏覽器者即可入局，不必安裝。</span><span lang="zh-Hans">有浏览器就能玩，不用安装。</span><span lang="en">Any browser will do; nothing to install.</span></p>
+              <h3 class="claim"><span lang="zh">用過之詞不重複</span><span lang="zh-Hans">用过的词不能再用</span><span lang="en">No word used twice</span></h3>
+              <p class="copy"><span lang="zh">每輪須連綴前二詞，愈玩愈見默契。</span><span lang="zh-Hans">每轮都要连起前两个词，越玩越有默契。</span><span lang="en">Each word joins the last two; the longer you play, the closer you think.</span></p>
             </div>
           </div>
           <div class="words__foot">
-            <p class="dotbox"><span lang="zh"><small>宜</small><b>二人</b><small>對局</small><br><small>每局約</small><b>五分鐘</b></span><span lang="en"><small>for</small> <b>Two Players</b><br><small>about</small> <b>Five Minutes</b> <small>a game</small></span></p>
-            <a class="plans" href="https://github.com/SuQichen777/guess-the-same-word" target="_blank" rel="noopener"><span lang="zh">圖紙與源碼 →</span><span lang="en">Plans &amp; source →</span></a>
+            <p class="dotbox"><span lang="zh"><small>宜</small><b>二人</b><small>對局</small><br><small>每局約</small><b>五分鐘</b></span><span lang="zh-Hans"><small>适合</small><b>两人</b><small>对战</small><br><small>每局大约</small><b>五分钟</b></span><span lang="en"><small>for</small> <b>Two Players</b><br><small>about</small> <b>Five Minutes</b> <small>a game</small></span></p>
+            <a class="plans" href="https://github.com/SuQichen777/guess-the-same-word" target="_blank" rel="noopener"><span lang="zh">圖紙與源碼 →</span><span lang="zh-Hans">源码 →</span><span lang="en">Plans &amp; source →</span></a>
             <div class="order">
-              <a class="coupon" href="https://same-word.same-word.workers.dev/" target="_blank" rel="noopener"><small class="coupon__top"><span lang="zh">憑此券入局 · No. 0001</span><span lang="en">Present this coupon · No. 0001</span></small><b><span lang="zh">即刻試玩</span><span lang="en">Play It Now</span></b><small class="coupon__sub"><span lang="zh">PLAY IT NOW</span><span lang="en">即刻試玩</span></small></a>
+              <a class="coupon" href="https://same-word.same-word.workers.dev/" target="_blank" rel="noopener"><small class="coupon__top"><span lang="zh">憑此券入局 · No. 0001</span><span lang="zh-Hans">凭此券入场 · No. 0001</span><span lang="en">Present this coupon · No. 0001</span></small><b><span lang="zh">即刻試玩</span><span lang="zh-Hans">马上试玩</span><span lang="en">Play It Now</span></b><small class="coupon__sub"><span lang="zh">PLAY IT NOW</span><span lang="zh-Hans">PLAY IT NOW</span><span lang="en">即刻試玩</span></small></a>
             </div>
           </div>
-          <p class="folio"><span class="folio__num">3</span><span class="folio__text"><span lang="zh">各件均免費</span><span lang="en">Every article free of charge</span></span></p>
+          <p class="folio"><span class="folio__num">3</span><span class="folio__text"><span lang="zh">各件均免費</span><span lang="zh-Hans">全部免费</span><span lang="en">Every article free of charge</span></span></p>
         </div>
       </div>
 
       <div class="face face--back paper howto" id="no2">
         <div class="page">
-          <p class="runhead"><span lang="zh">張氏商行 · 使用方法 · 第貳號</span><span lang="en">Zhang &amp; Co. · How to use · No. 2</span></p>
-          <h2 class="howto__title"><span lang="zh">使用方法</span><span lang="en">How to Use</span></h2>
-          <p class="howto__for"><span lang="zh">空房一間 · 佈置之法四條</span><span lang="en">A Vacant Room · four directions for furnishing</span></p>
-          <p class="howto__intro"><span lang="zh">凡欲佈置一室者，依下列四條行之，不必搬運。</span><span lang="en">Whoever would furnish a room may follow these four directions; no carting required.</span></p>
+          <p class="runhead"><span lang="zh">張氏商行 · 使用方法 · 第貳號</span><span lang="zh-Hans">张氏商行 · 使用说明 · 2 号</span><span lang="en">Zhang &amp; Co. · How to use · No. 2</span></p>
+          <h2 class="howto__title"><span lang="zh">使用方法</span><span lang="zh-Hans">使用说明</span><span lang="en">How to Use</span></h2>
+          <p class="howto__for"><span lang="zh">空房一間 · 佈置之法四條</span><span lang="zh-Hans">一间空房 · 四步布置</span><span lang="en">A Vacant Room · four directions for furnishing</span></p>
+          <p class="howto__intro"><span lang="zh">凡欲佈置一室者，依下列四條行之，不必搬運。</span><span lang="zh-Hans">想布置一个房间，照下面四步做就行，不用真的搬家具。</span><span lang="en">Whoever would furnish a room may follow these four directions; no carting required.</span></p>
           <ol class="articles">
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">壹</span><span lang="en">I</span></span><div><h3><span lang="zh">擇地板或一壁</span><span lang="en">Choose the floor or a wall</span></h3><p><span lang="zh">地板承桌椅床榻，牆壁掛畫與鐘。</span><span lang="en">The floor takes tables, chairs and beds; a wall takes paintings and clocks.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-wall"/></svg></li>
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">貳</span><span lang="en">II</span></span><div><h3><span lang="zh">置入家具</span><span lang="en">Set down the furniture</span></h3><p><span lang="zh">椅、桌、床、沙發；電視與計算機可陳於桌上。</span><span lang="en">Chair, table, bed, sofa; a television or computer may stand on the table.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-chair"/></svg></li>
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">參</span><span lang="en">III</span></span><div><h3><span lang="zh">挪移、旋轉、改大小</span><span lang="en">Move, turn, resize</span></h3><p><span lang="zh">逐格移動，左右旋轉，以頂端滑桿改其大小。</span><span lang="en">A unit at a time, turned either way, sized by the slide at the top.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-move"/></svg></li>
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">肆</span><span lang="en">IV</span></span><div><h3><span lang="zh">礙眼之壁可隱去</span><span lang="en">Hide a wall in the way</span></h3><p><span lang="zh">左壁右壁皆可暫隱，看清再現。</span><span lang="en">Either side wall may be hidden for a clearer view and shown again.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-eye"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">壹</span><span lang="zh-Hans">1</span><span lang="en">I</span></span><div><h3><span lang="zh">擇地板或一壁</span><span lang="zh-Hans">选地板或一面墙</span><span lang="en">Choose the floor or a wall</span></h3><p><span lang="zh">地板承桌椅床榻，牆壁掛畫與鐘。</span><span lang="zh-Hans">地板上放桌椅和床，墙上挂画和钟。</span><span lang="en">The floor takes tables, chairs and beds; a wall takes paintings and clocks.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-wall"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">貳</span><span lang="zh-Hans">2</span><span lang="en">II</span></span><div><h3><span lang="zh">置入家具</span><span lang="zh-Hans">放入家具</span><span lang="en">Set down the furniture</span></h3><p><span lang="zh">椅、桌、床、沙發；電視與計算機可陳於桌上。</span><span lang="zh-Hans">椅子、桌子、床、沙发；电视和电脑可以放在桌上。</span><span lang="en">Chair, table, bed, sofa; a television or computer may stand on the table.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-chair"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">參</span><span lang="zh-Hans">3</span><span lang="en">III</span></span><div><h3><span lang="zh">挪移、旋轉、改大小</span><span lang="zh-Hans">移动、旋转、调大小</span><span lang="en">Move, turn, resize</span></h3><p><span lang="zh">逐格移動，左右旋轉，以頂端滑桿改其大小。</span><span lang="zh-Hans">一格一格地移动，左右旋转，用顶部的滑杆调大小。</span><span lang="en">A unit at a time, turned either way, sized by the slide at the top.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-move"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">肆</span><span lang="zh-Hans">4</span><span lang="en">IV</span></span><div><h3><span lang="zh">礙眼之壁可隱去</span><span lang="zh-Hans">挡视线的墙可以藏起来</span><span lang="en">Hide a wall in the way</span></h3><p><span lang="zh">左壁右壁皆可暫隱，看清再現。</span><span lang="zh-Hans">左右两面墙都能先藏起来，看清楚再显示。</span><span lang="en">Either side wall may be hidden for a clearer view and shown again.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-eye"/></svg></li>
           </ol>
           <figure class="specimen">
-            <figcaption><span lang="zh">家具陳設一覽</span><span lang="en">Where Each Piece Goes</span></figcaption>
+            <figcaption><span lang="zh">家具陳設一覽</span><span lang="zh-Hans">家具摆放一览</span><span lang="en">Where Each Piece Goes</span></figcaption>
             <table class="specimen__table specimen__table--three">
-              <thead><tr><th scope="col"><span lang="zh">置於地板</span><span lang="en">On the floor</span></th><th scope="col"><span lang="zh">陳於桌上</span><span lang="en">On the table</span></th><th scope="col"><span lang="zh">懸於牆壁</span><span lang="en">On a wall</span></th></tr></thead>
-              <tbody><tr><td><span lang="zh">椅 · 桌 · 床 · 沙發</span><span lang="en">chair · table · bed · sofa</span></td><td><span lang="zh">電視 · 計算機</span><span lang="en">television · computer</span></td><td><span lang="zh">畫 · 鐘</span><span lang="en">painting · clock</span></td></tr></tbody>
+              <thead><tr><th scope="col"><span lang="zh">置於地板</span><span lang="zh-Hans">放在地板</span><span lang="en">On the floor</span></th><th scope="col"><span lang="zh">陳於桌上</span><span lang="zh-Hans">放在桌上</span><span lang="en">On the table</span></th><th scope="col"><span lang="zh">懸於牆壁</span><span lang="zh-Hans">挂在墙上</span><span lang="en">On a wall</span></th></tr></thead>
+              <tbody><tr><td><span lang="zh">椅 · 桌 · 床 · 沙發</span><span lang="zh-Hans">椅 · 桌 · 床 · 沙发</span><span lang="en">chair · table · bed · sofa</span></td><td><span lang="zh">電視 · 計算機</span><span lang="zh-Hans">电视 · 电脑</span><span lang="en">television · computer</span></td><td><span lang="zh">畫 · 鐘</span><span lang="zh-Hans">画 · 钟</span><span lang="en">painting · clock</span></td></tr></tbody>
             </table>
-            <p class="specimen__note"><span lang="zh">合計八種，每件皆可挪移、旋轉、改大小。</span><span lang="en">Eight kinds in all; every piece may be moved, turned and resized.</span></p>
+            <p class="specimen__note"><span lang="zh">合計八種，每件皆可挪移、旋轉、改大小。</span><span lang="zh-Hans">一共八种，每件都能移动、旋转、调大小。</span><span lang="en">Eight kinds in all; every piece may be moved, turned and resized.</span></p>
           </figure>
-          <p class="annex"><span lang="zh">☞ 附告：全作為店主於上海紐約大學圖形學課之期末之作，未用任何引擎，純以 WebGL 手繪。以電腦觀之勝於手機。</span><span lang="en">☞ Note: the proprietor's final work for a computer-graphics course at NYU Shanghai, drawn in WebGL without any engine. Better on a desk machine than a telephone.</span></p>
-          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">4</span></p>
+          <p class="annex"><span lang="zh">☞ 附告：全作為店主於上海紐約大學圖形學課之期末之作，未用任何引擎，純以 WebGL 手繪。以電腦觀之勝於手機。</span><span lang="zh-Hans">☞ 备注：这是我在上海纽约大学图形学课上的期末作业，没用任何引擎，纯手写 WebGL。用电脑看比用手机效果好。</span><span lang="en">☞ Note: the proprietor's final work for a computer-graphics course at NYU Shanghai, drawn in WebGL without any engine. Better on a desk machine than a telephone.</span></p>
+          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="zh-Hans">张氏商行 · 小玩意图录</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">4</span></p>
         </div>
       </div>
     </div>
@@ -249,49 +250,49 @@
     <div class="sheet" data-sheet="3">
       <div class="face face--front paper advert advert--room">
         <div class="page">
-          <p class="runhead"><span lang="zh">張氏商行 · 居家用品 · 第貳號</span><span lang="en">Zhang &amp; Co. · Household goods · No. 2</span></p>
-          <h2 class="ad-title ad-title--ruled"><span lang="zh">空房一間</span><span lang="en">A Vacant Room</span></h2>
+          <p class="runhead"><span lang="zh">張氏商行 · 居家用品 · 第貳號</span><span lang="zh-Hans">张氏商行 · 家居用品 · 2 号</span><span lang="en">Zhang &amp; Co. · Household goods · No. 2</span></p>
+          <h2 class="ad-title ad-title--ruled"><span lang="zh">空房一間</span><span lang="zh-Hans">一间空房</span><span lang="en">A Vacant Room</span></h2>
           <svg class="arc" viewBox="0 0 890 64" role="img" aria-labelledby="arc-zh arc-en">
             <defs><path id="arc-path" d="M60 58 Q445 2 830 58"/></defs>
-            <text lang="zh" id="arc-zh" class="arc__zh"><textPath href="#arc-path" startOffset="50%" text-anchor="middle">三壁一地 · WebGL 所繪 · 家具隨附 · 任君佈置</textPath></text>
+            <text lang="zh" id="arc-zh" class="arc__zh"><textPath href="#arc-path" startOffset="50%" text-anchor="middle">三壁一地 · WebGL 所繪 · 家具隨附 · 任君佈置</textPath></text><text lang="zh-Hans" id="arc-zh-hans" class="arc__zh"><textPath href="#arc-path" startOffset="50%" text-anchor="middle">三面墙 · WebGL 绘制 · 附带家具 · 随你布置</textPath></text>
             <text lang="en" id="arc-en" class="arc__en"><textPath href="#arc-path" startOffset="50%" text-anchor="middle">THREE WALLS · A FLOOR · DRAWN IN WEBGL · FURNISHED</textPath></text>
           </svg>
           <figure class="room__plate">
             <a href="https://suqichen777.github.io/Mine-Decorating/" target="_blank" rel="noopener" tabindex="-1"><img src="assets/img/engraving-vacant-room-960.webp" srcset="assets/img/engraving-vacant-room-960.webp 960w, assets/img/engraving-vacant-room.webp 1448w" sizes="(max-width: 1100px) 92vw, 480px" width="1448" height="1086" decoding="async" alt="Engraving: a panelled room with a window, a landscape painting, a wall clock, a bookcase with a trailing plant, a table with two chairs and a lamp, a trunk and a patterned rug"></a>
           </figure>
           <div class="legend">
-            <p class="legend__head"><span lang="zh">隨房附送家具八種</span><span lang="en">Eight Pieces of Furniture Supplied</span></p>
+            <p class="legend__head"><span lang="zh">隨房附送家具八種</span><span lang="zh-Hans">房间附送八种家具</span><span lang="en">Eight Pieces of Furniture Supplied</span></p>
             <ul class="legend__list">
-              <li><svg aria-hidden="true"><use href="#f-chair"/></svg><span lang="zh">椅</span><span lang="en">Chair</span></li>
-              <li><svg aria-hidden="true"><use href="#f-table"/></svg><span lang="zh">桌</span><span lang="en">Table</span></li>
-              <li><svg aria-hidden="true"><use href="#f-bed"/></svg><span lang="zh">床</span><span lang="en">Bed</span></li>
-              <li><svg aria-hidden="true"><use href="#f-sofa"/></svg><span lang="zh">沙發</span><span lang="en">Sofa</span></li>
-              <li><svg aria-hidden="true"><use href="#f-tv"/></svg><span lang="zh">電視</span><span lang="en">Television</span></li>
-              <li><svg aria-hidden="true"><use href="#f-pc"/></svg><span lang="zh">計算機</span><span lang="en">Computer</span></li>
-              <li><svg aria-hidden="true"><use href="#f-frame"/></svg><span lang="zh">畫</span><span lang="en">Painting</span></li>
-              <li><svg aria-hidden="true"><use href="#f-clock"/></svg><span lang="zh">鐘</span><span lang="en">Clock</span></li>
+              <li><svg aria-hidden="true"><use href="#f-chair"/></svg><span lang="zh">椅</span><span lang="zh-Hans">椅子</span><span lang="en">Chair</span></li>
+              <li><svg aria-hidden="true"><use href="#f-table"/></svg><span lang="zh">桌</span><span lang="zh-Hans">桌子</span><span lang="en">Table</span></li>
+              <li><svg aria-hidden="true"><use href="#f-bed"/></svg><span lang="zh">床</span><span lang="zh-Hans">床</span><span lang="en">Bed</span></li>
+              <li><svg aria-hidden="true"><use href="#f-sofa"/></svg><span lang="zh">沙發</span><span lang="zh-Hans">沙发</span><span lang="en">Sofa</span></li>
+              <li><svg aria-hidden="true"><use href="#f-tv"/></svg><span lang="zh">電視</span><span lang="zh-Hans">电视</span><span lang="en">Television</span></li>
+              <li><svg aria-hidden="true"><use href="#f-pc"/></svg><span lang="zh">計算機</span><span lang="zh-Hans">电脑</span><span lang="en">Computer</span></li>
+              <li><svg aria-hidden="true"><use href="#f-frame"/></svg><span lang="zh">畫</span><span lang="zh-Hans">画</span><span lang="en">Painting</span></li>
+              <li><svg aria-hidden="true"><use href="#f-clock"/></svg><span lang="zh">鐘</span><span lang="zh-Hans">钟</span><span lang="en">Clock</span></li>
             </ul>
           </div>
           <div class="room__cols">
             <div class="room__col">
-              <h3 class="claim"><span lang="zh">可自由擺置家具</span><span lang="en">Furnish as you please</span></h3>
-              <p class="copy"><span lang="zh">擇地板或一壁，置椅、桌、床或沙發。畫與鐘可懸於壁。</span><span lang="en">Choose the floor or a wall; set down a chair, a table, a bed or a sofa. Paintings and clocks hang on the wall.</span></p>
-              <h3 class="claim"><span lang="zh">支援拖曳與旋轉</span><span lang="en">Moves and turns</span></h3>
-              <p class="copy"><span lang="zh">每件可逐格移動、旋轉。</span><span lang="en">Every piece moves a unit at a time, and turns.</span></p>
+              <h3 class="claim"><span lang="zh">可自由擺置家具</span><span lang="zh-Hans">家具随便摆</span><span lang="en">Furnish as you please</span></h3>
+              <p class="copy"><span lang="zh">擇地板或一壁，置椅、桌、床或沙發。畫與鐘可懸於壁。</span><span lang="zh-Hans">选地板或墙面，摆上桌椅、床或沙发，墙上挂画和钟。</span><span lang="en">Choose the floor or a wall; set down a chair, a table, a bed or a sofa. Paintings and clocks hang on the wall.</span></p>
+              <h3 class="claim"><span lang="zh">支援拖曳與旋轉</span><span lang="zh-Hans">能移动，能旋转</span><span lang="en">Moves and turns</span></h3>
+              <p class="copy"><span lang="zh">每件可逐格移動、旋轉。</span><span lang="zh-Hans">每件可逐格移动、旋转。</span><span lang="en">Every piece moves a unit at a time, and turns.</span></p>
             </div>
             <div class="room__mid">
               <div class="price price--tuscan">
                 <p class="price__fig" aria-label="$0.00"><span class="price__cur">$</span><span class="price__num">0</span><span class="price__cents">00</span></p>
-                <p class="price__free"><span lang="zh">免費供應！</span><span lang="en">Free of Charge!</span></p>
-                <p class="price__was"><span lang="zh">房間一間 · 家具八種</span><span lang="en">One room · eight kinds of furniture</span></p>
+                <p class="price__free"><span lang="zh">免費供應！</span><span lang="zh-Hans">免费！</span><span lang="en">Free of Charge!</span></p>
+                <p class="price__was"><span lang="zh">房間一間 · 家具八種</span><span lang="zh-Hans">一个房间 · 八种家具</span><span lang="en">One room · eight kinds of furniture</span></p>
               </div>
 
             </div>
             <div class="room__col">
-              <h3 class="claim"><span lang="zh">以頂端滑桿改大小</span><span lang="en">Sized by the slide</span></h3>
-              <p class="copy"><span lang="zh">大小隨意，以頂端滑桿調之。</span><span lang="en">Any size you like, set by the slide at the top.</span></p>
-              <h3 class="claim"><span lang="zh">礙眼之壁可隱去</span><span lang="en">Walls may be hidden</span></h3>
-              <p class="copy"><span lang="zh">左右二壁皆可暫隱，看清再現。</span><span lang="en">Either side wall may be hidden, then shown again.</span></p>
+              <h3 class="claim"><span lang="zh">以頂端滑桿改大小</span><span lang="zh-Hans">用顶部滑杆调大小</span><span lang="en">Sized by the slide</span></h3>
+              <p class="copy"><span lang="zh">大小隨意，以頂端滑桿調之。</span><span lang="zh-Hans">大小随意，用顶部的滑杆调。</span><span lang="en">Any size you like, set by the slide at the top.</span></p>
+              <h3 class="claim"><span lang="zh">礙眼之壁可隱去</span><span lang="zh-Hans">墙可以藏起来</span><span lang="en">Walls may be hidden</span></h3>
+              <p class="copy"><span lang="zh">左右二壁皆可暫隱，看清再現。</span><span lang="zh-Hans">左右两面墙可以暂时藏起来。</span><span lang="en">Either side wall may be hidden, then shown again.</span></p>
 
             </div>
           </div>
@@ -299,44 +300,44 @@
             <svg class="seal" viewBox="0 0 120 120" role="img" aria-label="Seal: drawn in pure WebGL, no engine">
               <defs><path id="seal-ring-room" d="M60 60 m-41 0 a41 41 0 1 1 82 0 a41 41 0 1 1 -82 0"/></defs>
               <circle cx="60" cy="60" r="56" class="seal__o"/><circle cx="60" cy="60" r="51.5" class="seal__i"/><circle cx="60" cy="60" r="31" class="seal__i"/>
-              <text lang="zh" class="seal__ring seal__ring--zh"><textPath href="#seal-ring-room" startOffset="0">張氏商行·品質保證·張氏商行·品質保證·</textPath></text>
+              <text lang="zh" class="seal__ring seal__ring--zh"><textPath href="#seal-ring-room" startOffset="0">張氏商行·品質保證·張氏商行·品質保證·</textPath></text><text lang="zh-Hans" class="seal__ring seal__ring--zh"><textPath href="#seal-ring-room" startOffset="0">张氏商行·品质保证·张氏商行·品质保证·</textPath></text>
               <text lang="en" class="seal__ring seal__ring--en"><textPath href="#seal-ring-room" startOffset="0">ZHANG &amp; CO. · GUARANTEED · ZHANG &amp; CO. · GUARANTEED ·</textPath></text>
-              <text lang="zh" class="seal__mid seal__mid--zh" x="60" y="54" text-anchor="middle">純 WebGL</text>
-              <text lang="zh" class="seal__mid seal__mid--zh" x="60" y="72" text-anchor="middle">不用引擎</text>
+              <text lang="zh" class="seal__mid seal__mid--zh" x="60" y="54" text-anchor="middle">純 WebGL</text><text lang="zh-Hans" class="seal__mid seal__mid--zh" x="60" y="54" text-anchor="middle">纯 WebGL</text>
+              <text lang="zh" class="seal__mid seal__mid--zh" x="60" y="72" text-anchor="middle">不用引擎</text><text lang="zh-Hans" class="seal__mid seal__mid--zh" x="60" y="72" text-anchor="middle">不用引擎</text>
               <text lang="en" class="seal__mid seal__mid--en" x="60" y="56" text-anchor="middle">PURE WEBGL</text>
               <text lang="en" class="seal__mid seal__mid--en" x="60" y="71" text-anchor="middle">NO ENGINE</text>
               </svg>
-            <a class="admit" href="https://suqichen777.github.io/Mine-Decorating/" target="_blank" rel="noopener"><span class="admit__body"><span class="admit__stub" aria-hidden="true">No. 0002</span><span class="admit__main"><b><span lang="zh">進屋一觀</span><span lang="en">Enter the Room</span></b><small><span lang="zh">ENTER THE ROOM · 一人一票</span><span lang="en">進屋一觀 · ADMIT ONE</span></small></span></span></a>
-            <a class="plans" href="https://github.com/SuQichen777/Mine-Decorating" target="_blank" rel="noopener"><span lang="zh">圖紙與源碼 →</span><span lang="en">Plans &amp; source →</span></a>
+            <a class="admit" href="https://suqichen777.github.io/Mine-Decorating/" target="_blank" rel="noopener"><span class="admit__body"><span class="admit__stub" aria-hidden="true">No. 0002</span><span class="admit__main"><b><span lang="zh">進屋一觀</span><span lang="zh-Hans">进去看看</span><span lang="en">Enter the Room</span></b><small><span lang="zh">ENTER THE ROOM · 一人一票</span><span lang="zh-Hans">ENTER THE ROOM · 一人一张</span><span lang="en">進屋一觀 · ADMIT ONE</span></small></span></span></a>
+            <a class="plans" href="https://github.com/SuQichen777/Mine-Decorating" target="_blank" rel="noopener"><span lang="zh">圖紙與源碼 →</span><span lang="zh-Hans">源码 →</span><span lang="en">Plans &amp; source →</span></a>
           </div>
-          <p class="folio"><span class="folio__num">5</span><span class="folio__text"><span lang="zh">各件均免費</span><span lang="en">Every article free of charge</span></span></p>
+          <p class="folio"><span class="folio__num">5</span><span class="folio__text"><span lang="zh">各件均免費</span><span lang="zh-Hans">全部免费</span><span lang="en">Every article free of charge</span></span></p>
         </div>
       </div>
 
       <div class="face face--back paper howto" id="no3">
         <div class="page">
-          <p class="runhead"><span lang="zh">張氏商行 · 使用方法 · 第參號</span><span lang="en">Zhang &amp; Co. · How to use · No. 3</span></p>
-          <h2 class="howto__title"><span lang="zh">使用方法</span><span lang="en">How to Use</span></h2>
-          <p class="howto__for"><span lang="zh">音樂日記 · 記錄之法四條</span><span lang="en">The Music Journal · four directions for keeping it</span></p>
-          <p class="howto__intro"><span lang="zh">凡聽專輯而欲有所記者，依下列四條行之。</span><span lang="en">Whoever listens to albums and would keep a record may follow these four directions.</span></p>
+          <p class="runhead"><span lang="zh">張氏商行 · 使用方法 · 第參號</span><span lang="zh-Hans">张氏商行 · 使用说明 · 3 号</span><span lang="en">Zhang &amp; Co. · How to use · No. 3</span></p>
+          <h2 class="howto__title"><span lang="zh">使用方法</span><span lang="zh-Hans">使用说明</span><span lang="en">How to Use</span></h2>
+          <p class="howto__for"><span lang="zh">音樂日記 · 記錄之法四條</span><span lang="zh-Hans">音乐日记 · 四步记录</span><span lang="en">The Music Journal · four directions for keeping it</span></p>
+          <p class="howto__intro"><span lang="zh">凡聽專輯而欲有所記者，依下列四條行之。</span><span lang="zh-Hans">听完专辑想记点什么，照下面四步来。</span><span lang="en">Whoever listens to albums and would keep a record may follow these four directions.</span></p>
           <ol class="articles">
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">壹</span><span lang="en">I</span></span><div><h3><span lang="zh">搜尋一次</span><span lang="en">Search once</span></h3><p><span lang="zh">同時問 Spotify 與網易雲，重複者自動合併。</span><span lang="en">Spotify and NetEase are asked together; duplicates are merged.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-glass"/></svg></li>
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">貳</span><span lang="en">II</span></span><div><h3><span lang="zh">專輯入列</span><span lang="en">Add the album</span></h3><p><span lang="zh">各人各有其列表；專輯總目則共用。</span><span lang="en">Each reader keeps a list; the catalogue of albums is shared.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-disc"/></svg></li>
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">參</span><span lang="en">III</span></span><div><h3><span lang="zh">一至十分評之</span><span lang="en">Rate it 1 to 10</span></h3><p><span lang="zh">可至小數點後一位，如八·五分。</span><span lang="en">To one decimal, 8.5 for instance.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-star"/></svg></li>
-            <li><span class="articles__no" aria-hidden="true"><span lang="zh">肆</span><span lang="en">IV</span></span><div><h3><span lang="zh">批註所思所想</span><span lang="en">Write what you thought</span></h3><p><span lang="zh">所記皆私，非贈鏈接不得見。</span><span lang="en">Private, unless you give out the link.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-lock"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">壹</span><span lang="zh-Hans">1</span><span lang="en">I</span></span><div><h3><span lang="zh">搜尋一次</span><span lang="zh-Hans">搜一次</span><span lang="en">Search once</span></h3><p><span lang="zh">同時問 Spotify 與網易雲，重複者自動合併。</span><span lang="zh-Hans">同时搜 Spotify 和网易云，重复的结果自动合并。</span><span lang="en">Spotify and NetEase are asked together; duplicates are merged.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-glass"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">貳</span><span lang="zh-Hans">2</span><span lang="en">II</span></span><div><h3><span lang="zh">專輯入列</span><span lang="zh-Hans">加入列表</span><span lang="en">Add the album</span></h3><p><span lang="zh">各人各有其列表；專輯總目則共用。</span><span lang="zh-Hans">每个人有自己的列表；专辑库是大家共用的。</span><span lang="en">Each reader keeps a list; the catalogue of albums is shared.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-disc"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">參</span><span lang="zh-Hans">3</span><span lang="en">III</span></span><div><h3><span lang="zh">一至十分評之</span><span lang="zh-Hans">打 1 到 10 分</span><span lang="en">Rate it 1 to 10</span></h3><p><span lang="zh">可至小數點後一位，如八·五分。</span><span lang="zh-Hans">可以精确到小数点后一位，比如 8.5 分。</span><span lang="en">To one decimal, 8.5 for instance.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-star"/></svg></li>
+            <li><span class="articles__no" aria-hidden="true"><span lang="zh">肆</span><span lang="zh-Hans">4</span><span lang="en">IV</span></span><div><h3><span lang="zh">批註所思所想</span><span lang="zh-Hans">写下你的想法</span><span lang="en">Write what you thought</span></h3><p><span lang="zh">所記皆私，非贈鏈接不得見。</span><span lang="zh-Hans">记录默认私密，不分享链接别人就看不到。</span><span lang="en">Private, unless you give out the link.</span></p></div><svg class="articles__cut" aria-hidden="true"><use href="#i-lock"/></svg></li>
           </ol>
           <figure class="specimen specimen--entry">
-            <figcaption><span lang="zh">日記樣張</span><span lang="en">A Specimen Entry</span></figcaption>
+            <figcaption><span lang="zh">日記樣張</span><span lang="zh-Hans">日记示例</span><span lang="en">A Specimen Entry</span></figcaption>
             <dl class="entry">
-              <div><dt><span lang="zh">專輯</span><span lang="en">Album</span></dt><dd><i>OK Computer</i> · Radiohead</dd></div>
-              <div><dt><span lang="zh">來源</span><span lang="en">Found on</span></dt><dd>Spotify</dd></div>
-              <div><dt><span lang="zh">評分</span><span lang="en">Rating</span></dt><dd><span lang="zh">八·五 / 十</span><span lang="en">8.5 of 10</span></dd></div>
-              <div><dt><span lang="zh">批註</span><span lang="en">Remarks</span></dt><dd><span lang="zh">深夜重聽一遍，比初聽時更喜歡第三首。</span><span lang="en">Heard again late at night; the third song is better than I remembered.</span></dd></div>
+              <div><dt><span lang="zh">專輯</span><span lang="zh-Hans">专辑</span><span lang="en">Album</span></dt><dd><i>OK Computer</i> · Radiohead</dd></div>
+              <div><dt><span lang="zh">來源</span><span lang="zh-Hans">来源</span><span lang="en">Found on</span></dt><dd>Spotify</dd></div>
+              <div><dt><span lang="zh">評分</span><span lang="zh-Hans">评分</span><span lang="en">Rating</span></dt><dd><span lang="zh">八·五 / 十</span><span lang="zh-Hans">8.5 / 10</span><span lang="en">8.5 of 10</span></dd></div>
+              <div><dt><span lang="zh">批註</span><span lang="zh-Hans">备注</span><span lang="en">Remarks</span></dt><dd><span lang="zh">深夜重聽一遍，比初聽時更喜歡第三首。</span><span lang="zh-Hans">深夜又听了一遍，比第一次听时更喜欢第三首。</span><span lang="en">Heard again late at night; the third song is better than I remembered.</span></dd></div>
             </dl>
-            <p class="specimen__note"><span lang="zh">此頁僅示格式；實際所記，非贈鏈接不得見。</span><span lang="en">Shown for form only; real entries stay private unless a link is given out.</span></p>
+            <p class="specimen__note"><span lang="zh">此頁僅示格式；實際所記，非贈鏈接不得見。</span><span lang="zh-Hans">这页只是示范格式；真正的记录不分享链接就看不到。</span><span lang="en">Shown for form only; real entries stay private unless a link is given out.</span></p>
           </figure>
-          <p class="annex"><span lang="zh">☞ 附告：此冊尚未到貨。圖紙連同 Docker 配件存於印刷所，性急之讀者可今日自運一份；帳戶與新界面已於今秋完成。</span><span lang="en">☞ Note: not yet in stock. The plans, with a Docker fitting, are at the printing works; the impatient may run their own copy today. Accounts and a new face were finished this autumn.</span></p>
-          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">6</span></p>
+          <p class="annex"><span lang="zh">☞ 附告：此冊尚未到貨。圖紙連同 Docker 配件存於印刷所，性急之讀者可今日自運一份；帳戶與新界面已於今秋完成。</span><span lang="zh-Hans">☞ 备注：还没正式上线。源码和 Docker 配置都在 GitHub 上，等不及的话今天就能自己跑一份；账号系统和新界面今年秋天已经做好了。</span><span lang="en">☞ Note: not yet in stock. The plans, with a Docker fitting, are at the printing works; the impatient may run their own copy today. Accounts and a new face were finished this autumn.</span></p>
+          <p class="folio"><span class="folio__text"><span lang="zh">張氏商行 · 玩物圖錄</span><span lang="zh-Hans">张氏商行 · 小玩意图录</span><span lang="en">Zhang &amp; Co. · Playthings</span></span><span class="folio__num">6</span></p>
         </div>
       </div>
     </div>
@@ -345,68 +346,68 @@
     <div class="sheet" data-sheet="4">
       <div class="face face--front paper advert advert--music">
         <div class="page">
-          <p class="runhead"><span lang="zh">張氏商行 · 文具音樂 · 第參號</span><span lang="en">Zhang &amp; Co. · Stationery &amp; music · No. 3</span></p>
+          <p class="runhead"><span lang="zh">張氏商行 · 文具音樂 · 第參號</span><span lang="zh-Hans">张氏商行 · 音乐 · 3 号</span><span lang="en">Zhang &amp; Co. · Stationery &amp; music · No. 3</span></p>
           <div class="music__top">
             <figure class="music__plate">
               <a href="https://github.com/SuQichen777/While-Listening-to-Albums" target="_blank" rel="noopener" tabindex="-1"><img src="assets/img/engraving-music-journal-960.webp" srcset="assets/img/engraving-music-journal-960.webp 960w, assets/img/engraving-music-journal.webp 1536w" sizes="(max-width: 1100px) 92vw, 420px" width="1536" height="1024" decoding="async" alt="Engraving: a horn gramophone beside a stack of records, an open journal with a ribbon marker, a fountain pen, an ink bottle and a vase of lilies"></a>
-              <span class="stamp" aria-hidden="true"><span lang="zh">尚未<br>到貨</span><span lang="en">NOT YET<br>IN STOCK</span></span>
+              <span class="stamp" aria-hidden="true"><span lang="zh">尚未<br>到貨</span><span lang="zh-Hans">暂未<br>上线</span><span lang="en">NOT YET<br>IN STOCK</span></span>
             </figure>
-            <h2 class="music__title"><span lang="zh">音樂日記</span><span lang="en">The Music Journal</span></h2>
-            <p class="music__sub"><span lang="zh">聽專輯的時候我在想些什麼</span><span lang="en">What I thought while listening to albums</span></p>
+            <h2 class="music__title"><span lang="zh">音樂日記</span><span lang="zh-Hans">音乐日记</span><span lang="en">The Music Journal</span></h2>
+            <p class="music__sub"><span lang="zh">聽專輯的時候我在想些什麼</span><span lang="zh-Hans">听专辑的时候我在想什么</span><span lang="en">What I thought while listening to albums</span></p>
           </div>
-          <p class="music__lede"><span lang="zh">君若嘗於夜深獨聽一張專輯，<br>翌日竟忘其所感，<br>此冊正為君設。</span><span lang="en">If you have ever sat up late with an album<br>and found, by morning, that you had<br>forgotten what it made you feel,<br>this journal was made for you.</span></p>
+          <p class="music__lede"><span lang="zh">君若嘗於夜深獨聽一張專輯，<br>翌日竟忘其所感，<br>此冊正為君設。</span><span lang="zh-Hans">如果你也曾在深夜一个人听完一张专辑，<br>第二天却忘了当时的感受，<br>这本日记就是为你做的。</span><span lang="en">If you have ever sat up late with an album<br>and found, by morning, that you had<br>forgotten what it made you feel,<br>this journal was made for you.</span></p>
           <div class="music__cols">
-            <p class="copy"><b><span lang="zh">一次搜尋，兩處同問。</span><span lang="en">One search, two shops.</span></b><span lang="zh">一次搜尋，同時問 Spotify 與網易雲，重複者自動合併。</span><span lang="en">One search asks Spotify and NetEase together; duplicates are merged.</span></p>
-            <p class="copy"><b><span lang="zh">以十分為度。</span><span lang="en">Marked out of ten.</span></b><span lang="zh">專輯入己之列表，以一至十分計，評分可至小數，隨時批註。</span><span lang="en">The album joins your list, is rated 1 to 10, to one decimal, and annotated at leisure.</span></p>
-            <p class="copy"><b><span lang="zh">所記皆私。</span><span lang="en">Kept private.</span></b><span lang="zh">筆記默認私密，非贈鏈接不得見。</span><span lang="en">Notes are private by default, unless a link is given out.</span></p>
-            <p class="copy"><b><span lang="zh">性急者可自運。</span><span lang="en">For the impatient.</span></b><span lang="zh">圖紙連同 Docker 配件存於印刷所，今日即可自運一份。</span><span lang="en">The plans, with a Docker fitting, may be run at home today.</span></p>
+            <p class="copy"><b><span lang="zh">一次搜尋，兩處同問。</span><span lang="zh-Hans">一次搜索，两边同查。</span><span lang="en">One search, two shops.</span></b><span lang="zh">一次搜尋，同時問 Spotify 與網易雲，重複者自動合併。</span><span lang="zh-Hans">一次搜索同时查 Spotify 和网易云，重复的自动合并。</span><span lang="en">One search asks Spotify and NetEase together; duplicates are merged.</span></p>
+            <p class="copy"><b><span lang="zh">以十分為度。</span><span lang="zh-Hans">满分十分。</span><span lang="en">Marked out of ten.</span></b><span lang="zh">專輯入己之列表，以一至十分計，評分可至小數，隨時批註。</span><span lang="zh-Hans">专辑加进自己的列表，打 1 到 10 分，可以带小数，随时写备注。</span><span lang="en">The album joins your list, is rated 1 to 10, to one decimal, and annotated at leisure.</span></p>
+            <p class="copy"><b><span lang="zh">所記皆私。</span><span lang="zh-Hans">默认私密。</span><span lang="en">Kept private.</span></b><span lang="zh">筆記默認私密，非贈鏈接不得見。</span><span lang="zh-Hans">笔记默认只有自己能看，分享链接后别人才能看到。</span><span lang="en">Notes are private by default, unless a link is given out.</span></p>
+            <p class="copy"><b><span lang="zh">性急者可自運。</span><span lang="zh-Hans">等不及？自己部署。</span><span lang="en">For the impatient.</span></b><span lang="zh">圖紙連同 Docker 配件存於印刷所，今日即可自運一份。</span><span lang="zh-Hans">源码和 Docker 配置都在 GitHub 上，今天就能自己部署一份。</span><span lang="en">The plans, with a Docker fitting, may be run at home today.</span></p>
           </div>
-          <p class="music__close"><span lang="zh">聽過的每一張，都值得記下一行。</span><span lang="en">Every album you have heard deserves a line.</span></p>
+          <p class="music__close"><span lang="zh">聽過的每一張，都值得記下一行。</span><span lang="zh-Hans">听过的每一张，都值得记下一行。</span><span lang="en">Every album you have heard deserves a line.</span></p>
           <div class="music__foot">
             <div class="music__price">
-              <p class="music__soon"><span lang="zh">即將發售</span><span lang="en">Forthcoming</span></p>
-              <p class="music__tba"><span lang="zh">PRICE TO BE ANNOUNCED</span><span lang="en">價目待定</span></p>
-              <p class="music__specs"><span lang="zh">評分 1–10 · 來源 2 處</span><span lang="en">Rated 1–10 · two sources</span></p>
+              <p class="music__soon"><span lang="zh">即將發售</span><span lang="zh-Hans">即将上线</span><span lang="en">Forthcoming</span></p>
+              <p class="music__tba"><span lang="zh">PRICE TO BE ANNOUNCED</span><span lang="zh-Hans">PRICE TO BE ANNOUNCED</span><span lang="en">價目待定</span></p>
+              <p class="music__specs"><span lang="zh">評分 1–10 · 來源 2 處</span><span lang="zh-Hans">评分 1–10 · 两个来源</span><span lang="en">Rated 1–10 · two sources</span></p>
             </div>
             <div class="music__order">
-              <a class="card" href="https://github.com/SuQichen777/While-Listening-to-Albums" target="_blank" rel="noopener"><b><span lang="zh">查閱圖紙</span><span lang="en">Inspect the Plans</span></b><small><span lang="zh">INSPECT THE PLANS</span><span lang="en">查閱圖紙</span></small></a>
-              <p class="music__note"><span lang="zh">成品尚未到貨；圖紙與源碼今已可閱。</span><span lang="en">The finished article is not yet in stock; the plans and source may be inspected now.</span></p>
+              <a class="card" href="https://github.com/SuQichen777/While-Listening-to-Albums" target="_blank" rel="noopener"><b><span lang="zh">查閱圖紙</span><span lang="zh-Hans">看看源码</span><span lang="en">Inspect the Plans</span></b><small><span lang="zh">INSPECT THE PLANS</span><span lang="zh-Hans">INSPECT THE PLANS</span><span lang="en">查閱圖紙</span></small></a>
+              <p class="music__note"><span lang="zh">成品尚未到貨；圖紙與源碼今已可閱。</span><span lang="zh-Hans">成品还没上线；源码现在就能看。</span><span lang="en">The finished article is not yet in stock; the plans and source may be inspected now.</span></p>
             </div>
           </div>
-          <p class="folio"><span class="folio__num">7</span><span class="folio__text"><span lang="zh">下單即取</span><span lang="en">Orders filled instantly</span></span></p>
+          <p class="folio"><span class="folio__num">7</span><span class="folio__text"><span lang="zh">下單即取</span><span lang="zh-Hans">点开就能用</span><span lang="en">Orders filled instantly</span></span></p>
         </div>
       </div>
 
       <div class="face face--back paper">
         <div class="page page--colophon">
-          <p class="runhead"><span lang="zh">張氏商行 · 印刷所</span><span lang="en">Zhang &amp; Co. · Printing works</span></p>
-          <h2 class="plain-title"><span lang="zh">印刷所</span><span lang="en">Printing Works</span></h2>
-          <p class="plain-sub"><span lang="zh">COLOPHON &amp; LETTERS</span><span lang="en">版權與信函</span></p>
+          <p class="runhead"><span lang="zh">張氏商行 · 印刷所</span><span lang="zh-Hans">张氏商行 · 版权页</span><span lang="en">Zhang &amp; Co. · Printing works</span></p>
+          <h2 class="plain-title"><span lang="zh">印刷所</span><span lang="zh-Hans">版权页</span><span lang="en">Printing Works</span></h2>
+          <p class="plain-sub"><span lang="zh">COLOPHON &amp; LETTERS</span><span lang="zh-Hans">COLOPHON &amp; LETTERS</span><span lang="en">版權與信函</span></p>
           <p class="letter letter--centre">
-            <span lang="zh">本圖錄由店主<b>張嘉曦</b>以 HTML 與 CSS 手工排版，錄中各件亦皆其所製。字體為思源宋體、League Gothic、Alfa Slab One、Rye、IM Fell English 與 Playfair Display；三幅圖版依店主所擬之稿，以銅版畫風格製成。勘誤、訂單及信函請寄印刷所。</span>
+            <span lang="zh">本圖錄由店主<b>張嘉曦</b>以 HTML 與 CSS 手工排版，錄中各件亦皆其所製。字體為思源宋體、League Gothic、Alfa Slab One、Rye、IM Fell English 與 Playfair Display；三幅圖版依店主所擬之稿，以銅版畫風格製成。勘誤、訂單及信函請寄印刷所。</span><span lang="zh-Hans">这本图录是我（<b>张嘉曦</b>）用 HTML 和 CSS 手工排出来的，里面的作品也都是我做的。字体用了思源宋体、League Gothic、Alfa Slab One、Rye、IM Fell English 和 Playfair Display；三幅插图照我的草稿画成铜版画风格。有错误或想聊聊，欢迎来 GitHub 找我。</span>
             <span lang="en">Set by hand in HTML and CSS by the proprietor, <b>Jiaxi Zhang</b>, who also made everything listed. The type is Noto Serif, League Gothic, Alfa Slab One, Rye, IM Fell English and Playfair Display; the three plates were made in the manner of copper engravings after the proprietor's sketches. Corrections, orders and letters to the printing works.</span>
           </p>
           <div class="orderform" aria-label="Order blank (decorative)">
-            <p class="orderform__head"><span lang="zh">訂貨單</span><span lang="en">Order Blank</span><small><span lang="zh">ORDER BLANK · PLEASE WRITE PLAINLY</span><span lang="en">訂貨單 · 請以正楷填寫</span></small></p>
+            <p class="orderform__head"><span lang="zh">訂貨單</span><span lang="zh-Hans">订购单</span><span lang="en">Order Blank</span><small><span lang="zh">ORDER BLANK · PLEASE WRITE PLAINLY</span><span lang="zh-Hans">ORDER BLANK · PLEASE WRITE PLAINLY</span><span lang="en">訂貨單 · 請以正楷填寫</span></small></p>
             <div class="orderform__rows">
-              <div><span lang="zh">台甫</span><span lang="en">Name</span></div>
-              <div><span lang="zh">寶號地址</span><span lang="en">Post office</span></div>
-              <div><span lang="zh">所訂貨號</span><span lang="en">Article No.</span></div>
-              <div><span lang="zh">數量</span><span lang="en">Quantity</span></div>
-              <div><span lang="zh">日期</span><span lang="en">Date</span></div>
-              <div><span lang="zh">備註</span><span lang="en">Remarks</span></div>
+              <div><span lang="zh">台甫</span><span lang="zh-Hans">姓名</span><span lang="en">Name</span></div>
+              <div><span lang="zh">寶號地址</span><span lang="zh-Hans">地址</span><span lang="en">Post office</span></div>
+              <div><span lang="zh">所訂貨號</span><span lang="zh-Hans">作品编号</span><span lang="en">Article No.</span></div>
+              <div><span lang="zh">數量</span><span lang="zh-Hans">数量</span><span lang="en">Quantity</span></div>
+              <div><span lang="zh">日期</span><span lang="zh-Hans">日期</span><span lang="en">Date</span></div>
+              <div><span lang="zh">備註</span><span lang="zh-Hans">备注</span><span lang="en">Remarks</span></div>
             </div>
-            <p class="orderform__note"><span lang="zh">※ 本行不辦郵購，此單留作紀念。欲取貨者，請翻回各頁點擊票券。</span><span lang="en">※ We do not fill orders by post; keep this blank as a souvenir. To take delivery, turn back and click the ticket.</span></p>
+            <p class="orderform__note"><span lang="zh">※ 本行不辦郵購，此單留作紀念。欲取貨者，請翻回各頁點擊票券。</span><span lang="zh-Hans">※ 这里不接受邮购，这张单子留作纪念就好。想玩的话，翻回前面点票券。</span><span lang="en">※ We do not fill orders by post; keep this blank as a souvenir. To take delivery, turn back and click the ticket.</span></p>
           </div>
-          <p class="links"><a href="../"><span lang="zh">主頁</span><span lang="en">The front door</span></a><a href="https://github.com/SuQichen777">GitHub</a><a href="https://www.linkedin.com/in/jiaxi-zhang-421524296/">LinkedIn</a></p>
+          <p class="links"><a href="../"><span lang="zh">主頁</span><span lang="zh-Hans">主页</span><span lang="en">The front door</span></a><a href="https://github.com/SuQichen777">GitHub</a><a href="https://www.linkedin.com/in/jiaxi-zhang-421524296/">LinkedIn</a></p>
           <svg class="seal seal--works" viewBox="0 0 120 120" role="img" aria-label="Printer's seal: Zhang &amp; Co. printing works, MMXXVI">
             <defs><path id="seal-ring-works" d="M60 60 m-41 0 a41 41 0 1 1 82 0 a41 41 0 1 1 -82 0"/></defs>
             <circle cx="60" cy="60" r="56" class="seal__o"/><circle cx="60" cy="60" r="51.5" class="seal__i"/><circle cx="60" cy="60" r="31" class="seal__i"/>
-            <text lang="zh" class="seal__ring seal__ring--zh"><textPath href="#seal-ring-works" startOffset="0">張氏商行印刷所·匹茲堡·上海·</textPath></text>
+            <text lang="zh" class="seal__ring seal__ring--zh"><textPath href="#seal-ring-works" startOffset="0">張氏商行印刷所·匹茲堡·上海·</textPath></text><text lang="zh-Hans" class="seal__ring seal__ring--zh"><textPath href="#seal-ring-works" startOffset="0">张氏商行印刷所·匹兹堡·上海·</textPath></text>
             <text lang="en" class="seal__ring seal__ring--en"><textPath href="#seal-ring-works" startOffset="0">ZHANG &amp; CO. PRINTING WORKS · PITTSBURGH · SHANGHAI ·</textPath></text>
             <text class="seal__year" x="60" y="66" text-anchor="middle">MMXXVI</text>
           </svg>
-          <p class="folio"><span class="folio__text"><span lang="zh">© 2026 張嘉曦</span><span lang="en">© 2026 Jiaxi Zhang</span></span><span class="folio__num">8</span></p>
+          <p class="folio"><span class="folio__text"><span lang="zh">© 2026 張嘉曦</span><span lang="zh-Hans">© 2026 张嘉曦</span><span lang="en">© 2026 Jiaxi Zhang</span></span><span class="folio__num">8</span></p>
         </div>
       </div>
     </div>
@@ -415,8 +416,8 @@
     <div class="sheet" data-sheet="5">
       <div class="face face--front paper">
         <div class="page page--finis">
-          <p class="finis"><span lang="zh">終</span><span lang="en">Finis</span></p>
-          <p class="finis__line"><span lang="zh">合上書，或翻回開頭。</span><span lang="en">Close the book, or turn back to the beginning.</span></p>
+          <p class="finis"><span lang="zh">終</span><span lang="zh-Hans">完</span><span lang="en">Finis</span></p>
+          <p class="finis__line"><span lang="zh">合上書，或翻回開頭。</span><span lang="zh-Hans">合上书，或者翻回开头。</span><span lang="en">Close the book, or turn back to the beginning.</span></p>
         </div>
       </div>
       <div class="face face--back cover cover--back">
@@ -433,7 +434,7 @@
   <button type="button" class="turn turn--next" data-turn="1" aria-label="Next page">›</button>
 </div>
 
-<p class="desk-foot"><span lang="zh">HTML 與 CSS 手工排版 · © 2026 張嘉曦</span><span lang="en">Set by hand in HTML &amp; CSS · © 2026 Jiaxi Zhang</span></p>
+<p class="desk-foot"><span lang="zh">HTML 與 CSS 手工排版 · © 2026 張嘉曦</span><span lang="zh-Hans">用 HTML 和 CSS 手工排版 · © 2026 张嘉曦</span><span lang="en">Set by hand in HTML &amp; CSS · © 2026 Jiaxi Zhang</span></p>
 
 <script>
   (function () {
@@ -442,10 +443,10 @@
 
     /* ---------- language ---------- */
     var buttons = document.querySelectorAll('[data-set-lang]');
-    var TITLE = { zh: '張氏商行 · 玩物圖錄', en: 'Zhang & Co. — Catalogue of Playthings' };
+    var TITLE = { zh: '張氏商行 · 玩物圖錄', 'zh-Hans': '张氏商行 · 小玩意图录', en: 'Zhang & Co. — Catalogue of Playthings' };
     function applyLang(lang) {
       root.setAttribute('data-lang', lang);
-      root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : 'en');
+      root.setAttribute('lang', lang === 'zh' ? 'zh-Hant' : lang);
       document.title = TITLE[lang];
       buttons.forEach(function (b) {
         var on = b.getAttribute('data-set-lang') === lang;
@@ -455,7 +456,7 @@
       try { localStorage.setItem('catalogue-lang', lang); } catch (e) {}
     }
     buttons.forEach(function (b) { b.addEventListener('click', function () { applyLang(b.getAttribute('data-set-lang')); }); });
-    applyLang(root.getAttribute('data-lang') === 'en' ? 'en' : 'zh');
+    applyLang(TITLE[root.getAttribute('data-lang')] ? root.getAttribute('data-lang') : 'zh');
 
     /* ---------- the book ---------- */
     var book = document.querySelector('.book');

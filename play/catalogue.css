@@ -57,8 +57,12 @@ img { display: block; max-width: 100%; height: auto; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 b { font-weight: 700; }
 
-html[data-lang="zh"] [lang="en"],
-html[data-lang="en"] [lang="zh"] { display: none !important; }
+/* three editions: the original (zh, Traditional), today's Simplified (zh-Hans), and English */
+html[data-lang="zh"] [lang="en"], html[data-lang="zh"] [lang="zh-Hans"],
+html[data-lang="zh-Hans"] [lang="en"], html[data-lang="zh-Hans"] [lang="zh"],
+html[data-lang="en"] [lang|="zh"] { display: none !important; }
+/* the Simplified edition is set in the same serif, in its Simplified face */
+html[data-lang="zh-Hans"] { --zh: "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif; }
 
 /* ---------- desk furniture ---------- */
 .desk-bar, .desk-foot {
@@ -66,7 +70,7 @@ html[data-lang="en"] [lang="zh"] { display: none !important; }
   display: flex; justify-content: space-between; align-items: center; gap: 24px;
   font-family: var(--fell-sc); font-size: 14px; letter-spacing: .14em; color: #c9b58e;
 }
-html[data-lang="zh"] .desk-bar, html[data-lang="zh"] .desk-foot { font-family: var(--zh); font-size: 13px; letter-spacing: .22em; }
+html[data-lang|="zh"] .desk-bar, html[data-lang|="zh"] .desk-foot { font-family: var(--zh); font-size: 13px; letter-spacing: .22em; }
 .desk-foot { justify-content: center; padding: 10px 28px 36px; font-size: 12px; color: #8c7a59; }
 .desk-bar a { text-decoration: none; }
 .desk-bar a:hover, .desk-bar button:hover { color: #efe1c2; }
@@ -282,7 +286,7 @@ html[data-lang="en"] .plans { font-style: italic; letter-spacing: 0; }
 
 /* ---------- advertisement titles ---------- */
 .ad-title { text-align: center; margin-top: calc(var(--u) * 1.4); line-height: 1; color: var(--ink); }
-.ad-title > [lang="zh"] { display: inline-block; font: 900 calc(var(--u) * 15.5) / 1 var(--zh); letter-spacing: .03em; transform: scaleX(.94); text-shadow: 0 0 calc(var(--u) * .15) rgba(36, 26, 16, .45); }
+.ad-title > [lang|="zh"] { display: inline-block; font: 900 calc(var(--u) * 15.5) / 1 var(--zh); letter-spacing: .03em; transform: scaleX(.94); text-shadow: 0 0 calc(var(--u) * .15) rgba(36, 26, 16, .45); }
 .ad-title > [lang="en"] { display: inline-block; font: 400 calc(var(--u) * 13) / .9 var(--gothic); text-transform: uppercase; letter-spacing: .01em; }
 .ad-tagline {
   margin-top: calc(var(--u) * 1.3); padding: calc(var(--u) * .75) 0 calc(var(--u) * .65);
@@ -358,7 +362,7 @@ html[data-lang="en"] .coupon__sub { font: 700 max(var(--min-xs), calc(var(--u) *
 /* ---------- No. 2: the room across the page, a key of furniture below ---------- */
 .ad-title--ruled { display: flex; align-items: center; gap: calc(var(--u) * 2.4); }
 .ad-title--ruled::before, .ad-title--ruled::after { content: ""; flex: 1; height: calc(var(--u) * 1.1); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
-.advert--room .ad-title > [lang="zh"] { font-size: calc(var(--u) * 13); }
+.advert--room .ad-title > [lang|="zh"] { font-size: calc(var(--u) * 13); }
 .advert--room .ad-title > [lang="en"] { font-size: calc(var(--u) * 12); }
 .arc { display: block; width: 100%; height: auto; margin-top: calc(var(--u) * .1); overflow: visible; }
 .arc text { fill: var(--ink-2); }
