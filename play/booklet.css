@@ -1,0 +1,364 @@
+/* 張氏商行 · 玩物圖錄 — the pocket edition: a small booklet bound at the top, for phones.
+   Switched on by data-booklet on <html> (set before first paint, kept by booklet.js); without it
+   nothing here applies and the stacked pages of catalogue.css are what a narrow screen gets.
+
+   Geometry, in px of the cut images (the booklet is 928 x 1456; --k turns one into screen px):
+     the top sheet   x 24..897, y 107..1369 (its head, the hinge, at y 109.6)
+     the cover board x 25..909, y 104..1419 (its head at y 106.9)
+     eyelets         y 138, x 153.5 276.5 405 533 660.5 784
+     the print       44 in from either side of the sheet, 72 below its top, 40 above its foot
+   Every size inside a page is in --u (8.8 image px), so a page is one print at any booklet size. */
+
+html[data-booklet] {
+  --bk-chrome: calc(108px + env(safe-area-inset-bottom, 0px));
+  --bw: min(calc(100vw - 16px), calc((100vh - var(--bk-chrome)) * .6374), 640px);
+  --k: calc(var(--bw) / 928);
+  --u: calc(var(--k) * 8.8);
+  overscroll-behavior: none;
+}
+@supports (height: 100svh) {
+  html[data-booklet] { --bw: min(calc(100vw - 16px), calc((100svh - var(--bk-chrome)) * .6374), 640px); }
+}
+html[data-booklet] body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100svh; overscroll-behavior: none; }
+
+/* ---------- around the booklet ---------- */
+html[data-booklet] .desk-bar { padding: 10px 14px 0; font-size: 12px; gap: 12px; flex-wrap: nowrap; }
+html[data-booklet][data-lang|="zh"] .desk-bar { font-size: 12.5px; letter-spacing: .14em; }
+html[data-booklet] .desk-bar__lang { white-space: nowrap; }
+html[data-booklet] .desk-bar__lang i { padding: 0 1px; }
+html[data-booklet] .desk-bar > a { white-space: nowrap; }
+@media (max-width: 420px) {
+  html[data-booklet][data-lang="en"] .desk-bar { font-size: 11.5px; letter-spacing: .03em; gap: 8px; padding-left: 10px; padding-right: 10px; }
+  html[data-booklet][data-lang="en"] .desk-bar__lang button { padding: 2px 3px; }
+}
+html[data-booklet] .desk-foot { display: none; }
+html[data-booklet] .stage {
+  flex: 1; display: grid; grid-template-columns: 1fr auto 1fr; grid-template-areas: "book book book" "prev ind next";
+  align-content: center; justify-items: center; row-gap: 4px; column-gap: 18px;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+}
+html[data-booklet] .turn { display: grid; grid-area: prev; justify-self: end; width: 46px; height: 46px; font-size: 28px; }
+html[data-booklet] .turn--next { grid-area: next; justify-self: start; }
+.booklet__ind, .booklet__live { display: none; }
+html[data-booklet] .booklet__ind {
+  display: block; grid-area: ind; align-self: center; min-width: 64px; text-align: center;
+  font: 400 15px/1 var(--gothic); letter-spacing: .1em; color: #8c7a59;
+}
+html[data-booklet] .booklet__ind b { font-weight: 400; color: #e3d3ae; font-size: 19px; }
+html[data-booklet] .booklet__ind i { font-style: normal; padding: 0 5px; }
+html[data-booklet] .booklet__live { display: block; position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- the booklet ---------- */
+html[data-booklet] .book {
+  grid-area: book; position: relative; display: block; width: var(--bw); height: calc(var(--k) * 1456);
+  transform: none !important; transition: none; perspective: none; transform-style: flat; filter: none; gap: 0;
+  touch-action: pinch-zoom; -webkit-tap-highlight-color: transparent;
+}
+html[data-booklet] .book__shadow, html[data-booklet] .book__block, html[data-booklet] .book__cast { display: none !important; }
+html[data-booklet] .sheet { display: contents; }
+html[data-booklet] .sheet::before, html[data-booklet] .sheet::after { display: none !important; }
+.booklet__backing, .booklet__binding, .booklet__cast, .leaf__light { display: none; }
+
+/* the board, the brass and the edges of the block: the photograph, whole */
+html[data-booklet] .booklet__backing {
+  display: block; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: url("assets/img/booklet-backing.webp") 0 0 / 100% 100% no-repeat;
+  filter: drop-shadow(0 calc(var(--k) * 16) calc(var(--k) * 22) rgba(0, 0, 0, .55)) drop-shadow(0 2px 3px rgba(0, 0, 0, .4));
+}
+/* the header strip and the cords, over every leaf: a leaf turns beneath them */
+html[data-booklet] .booklet__binding {
+  display: block; position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--k) * 142); z-index: 300; pointer-events: none;
+  background: url("assets/img/booklet-binding.webp") 0 0 / 100% 100% no-repeat;
+}
+/* the shadow a turning leaf throws on the page beneath, kept to that page's paper */
+html[data-booklet] .booklet__cast {
+  position: absolute; left: calc(var(--k) * 24); top: calc(var(--k) * 107); width: calc(var(--k) * 873); height: calc(var(--k) * 1262);
+  overflow: hidden; pointer-events: none;
+  -webkit-mask: url("assets/img/booklet-sheet.webp") 0 0 / 100% 100% no-repeat; mask: url("assets/img/booklet-sheet.webp") 0 0 / 100% 100% no-repeat;
+}
+html[data-booklet] .booklet__cast.is-on { display: block; }
+html[data-booklet] .booklet__cast.on-cover {
+  left: calc(var(--k) * 25); top: calc(var(--k) * 104); width: calc(var(--k) * 884); height: calc(var(--k) * 1315);
+  -webkit-mask-image: url("assets/img/booklet-cover.webp"); mask-image: url("assets/img/booklet-cover.webp");
+}
+.booklet__cast i {
+  position: absolute; left: 0; right: 0; top: 0; height: 24%; transform-origin: 50% 0; opacity: 0;
+  background: linear-gradient(180deg, rgba(26, 13, 3, .58), rgba(26, 13, 3, .27) 16%, rgba(26, 13, 3, .1) 44%, rgba(26, 13, 3, 0));
+}
+
+/* ---------- leaves ---------- */
+html[data-booklet] .face {
+  position: absolute; inset: auto; left: calc(var(--k) * 24); top: calc(var(--k) * 107); width: calc(var(--k) * 873); height: calc(var(--k) * 1262);
+  background: url("assets/img/booklet-sheet.webp") 0 0 / 100% 100% no-repeat;
+  clip-path: none; overflow: hidden; border-radius: 0; box-shadow: none;
+  transform: none; transform-origin: 50% calc(var(--k) * 2.6);
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  visibility: hidden; cursor: default; color: var(--ink);
+  /* the page's own unit, let down a step by the script if a page would run over */
+  --u: calc(var(--k) * 8.8 * var(--fit, 1));
+  --fs-xs: calc(var(--u) * 2.6); --fs-sm: calc(var(--u) * 2.9); --fs-body: calc(var(--u) * 3.3);
+}
+html[data-booklet] .face.is-current, html[data-booklet] .face.is-turning, html[data-booklet] .face.is-under { visibility: visible; }
+/* before the script has run, the booklet lies shut */
+html[data-booklet] .book:not(.is-booklet) .sheet[data-sheet="0"] > .face--front { visibility: visible; }
+html[data-booklet] .face.is-turning { will-change: transform; }
+html[data-booklet] .paper::before, html[data-booklet] .face::after { display: none; }
+/* a turning leaf catches the lamp, then falls into the binding's shade */
+html[data-booklet] .face.is-turning .leaf__light {
+  display: block; position: absolute; inset: 0; z-index: 6; pointer-events: none; opacity: 0;
+  -webkit-mask: url("assets/img/booklet-sheet.webp") 0 0 / 100% 100% no-repeat; mask: url("assets/img/booklet-sheet.webp") 0 0 / 100% 100% no-repeat;
+}
+html[data-booklet] .face.cover.is-turning .leaf__light { -webkit-mask-image: url("assets/img/booklet-cover.webp"); mask-image: url("assets/img/booklet-cover.webp"); }
+.leaf__light--hi { background: linear-gradient(180deg, rgba(255, 248, 232, .05), rgba(255, 248, 232, .22) 55%, rgba(255, 248, 232, .34)); }
+.leaf__light--lo { background: linear-gradient(180deg, rgba(30, 16, 4, .62), rgba(30, 16, 4, .3) 45%, rgba(30, 16, 4, .42)); }
+
+/* the print: ink multiplied onto the photographed paper, so its grain shows through the type */
+html[data-booklet] .page {
+  position: absolute; inset: auto; left: calc(var(--k) * 44); right: calc(var(--k) * 44); top: calc(var(--k) * 72); bottom: calc(var(--k) * 40);
+  margin: 0; min-height: 0; padding-bottom: calc(var(--u) * 6); mix-blend-mode: multiply;
+}
+html[data-booklet] .face.is-scroll .page { overflow-y: auto; overscroll-behavior: contain; -webkit-mask: linear-gradient(#000 calc(100% - 3.5em), transparent); mask: linear-gradient(#000 calc(100% - 3.5em), transparent); }
+html[data-booklet] .page::after { bottom: calc(var(--u) * 4.2); }
+html[data-booklet] .face .folio { font-size: calc(var(--u) * 2.4); letter-spacing: .24em; }
+html[data-booklet] .face .folio__num { font-size: calc(var(--u) * 3.4); }
+html[data-booklet] .face .runhead { font-size: calc(var(--u) * 2.45); letter-spacing: .26em; gap: calc(var(--u) * 1.6); white-space: nowrap; }
+html[data-booklet][data-lang="en"] .face .runhead { font-size: calc(var(--u) * 2.5); letter-spacing: .1em; }
+
+/* body type */
+html[data-booklet] .face .copy { font-size: calc(var(--u) * 3.3); line-height: 1.62; }
+html[data-booklet][data-lang="en"] .face .copy { font-size: calc(var(--u) * 3.4); line-height: 1.3; }
+html[data-booklet] .face .claim { font-size: calc(var(--u) * 3.8); margin-top: calc(var(--u) * 1.4); }
+html[data-booklet][data-lang="en"] .face .claim { font-size: calc(var(--u) * 4.6); }
+html[data-booklet] .face .plans { font-size: calc(var(--u) * 2.9); }
+
+/* ---------- the covers ---------- */
+html[data-booklet] .face.cover {
+  left: calc(var(--k) * 25); top: calc(var(--k) * 104); width: calc(var(--k) * 884); height: calc(var(--k) * 1315);
+  background: url("assets/img/booklet-cover.webp") 0 0 / 100% 100% no-repeat; transform-origin: 50% calc(var(--k) * 2.9);
+}
+html[data-booklet] .cover__board { inset: 0; background: none; box-shadow: none; border-radius: 0; }
+html[data-booklet] .cover__board::before, html[data-booklet] .cover__corner { display: none; }
+/* the label pasted on the board, cut from the same paper as the leaves */
+html[data-booklet] .cover__label {
+  left: 15%; right: 15%; top: 21%; bottom: 12%; padding: calc(var(--u) * 4) calc(var(--u) * 3.4);
+  background: url("assets/img/booklet-sheet.webp") 38% 62% / 290% auto no-repeat, var(--paper);
+  box-shadow: 0 calc(var(--u) * .5) calc(var(--u) * 1.4) rgba(0, 0, 0, .55), inset 0 0 calc(var(--u) * 2) rgba(96, 60, 22, .25);
+}
+html[data-booklet] .face .eyebrow { font-size: calc(var(--u) * 2.4); letter-spacing: .2em; }
+html[data-booklet] .face .brand { margin-top: calc(var(--u) * 2.4); font-size: calc(var(--u) * 12.5); }
+html[data-booklet][data-lang="en"] .face .brand { font-size: calc(var(--u) * 9.2); }
+html[data-booklet] .face .brand__latin { margin-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 2.9); letter-spacing: .18em; }
+html[data-booklet][data-lang="en"] .face .brand__latin { font-size: calc(var(--u) * 2.4); letter-spacing: .2em; }
+html[data-booklet] .face .rule { margin: calc(var(--u) * 2.4) auto; }
+html[data-booklet] .face .brand__sub { font-size: calc(var(--u) * 7); }
+html[data-booklet][data-lang="en"] .face .brand__sub { font-size: calc(var(--u) * 6.6); }
+html[data-booklet] .face .brand__slab { margin-top: calc(var(--u) * 1.4); font-size: calc(var(--u) * 2.7); letter-spacing: .12em; }
+html[data-booklet][data-lang="en"] .face .brand__slab { font-size: calc(var(--u) * 2.4); letter-spacing: .2em; }
+html[data-booklet] .face .brand__season { margin-top: calc(var(--u) * 2.4); font-size: calc(var(--u) * 2.6); letter-spacing: .2em; }
+html[data-booklet] .face .cover__claim { margin-top: calc(var(--u) * 2.6); font-size: calc(var(--u) * 2.95); line-height: 1.7; letter-spacing: .04em; }
+html[data-booklet][data-lang="en"] .face .cover__claim { font-size: calc(var(--u) * 3.1); line-height: 1.32; }
+html[data-booklet] .face .cover__open { margin-top: calc(var(--u) * 2.8); font-size: calc(var(--u) * 3.1); letter-spacing: .2em; }
+html[data-booklet][data-lang="en"] .face .cover__open { font-size: calc(var(--u) * 3); }
+/* the back board: the house mark blind-stamped into the leather */
+html[data-booklet] .cover--back .cover__back-mark {
+  bottom: 13%; font-size: calc(var(--u) * 6.5); color: rgba(16, 7, 2, .45); text-shadow: 0 1px 0 rgba(255, 214, 160, .16), 0 -1px 0 rgba(0, 0, 0, .25);
+}
+
+/* ---------- front matter ---------- */
+html[data-booklet] .face .plain-title { margin-top: calc(var(--u) * 1.8); font-size: calc(var(--u) * 7.4); }
+html[data-booklet][data-lang="en"] .face .plain-title { font-size: calc(var(--u) * 8.4); }
+html[data-booklet] .face .plain-title--big { font-size: calc(var(--u) * 10); }
+html[data-booklet] .face .plain-sub { margin-top: calc(var(--u) * 1); padding-bottom: calc(var(--u) * 1.2); font-size: calc(var(--u) * 2.4); letter-spacing: .2em; }
+html[data-booklet][data-lang="en"] .face .plain-sub { font-size: calc(var(--u) * 2.5); letter-spacing: .3em; }
+html[data-booklet] .face .letter { margin-top: calc(var(--u) * 2.2); font-size: calc(var(--u) * 3.3); line-height: 1.72; }
+html[data-booklet][data-lang="en"] .face .letter { font-size: calc(var(--u) * 3.35); line-height: 1.34; }
+html[data-booklet] .face .letter--centre { font-size: calc(var(--u) * 3.15); }
+html[data-booklet][data-lang="en"] .face .letter--centre { font-size: calc(var(--u) * 3.2); }
+html[data-booklet] .face .letter--more { margin-top: calc(var(--u) * .8); }
+html[data-booklet] .face.paper .page--letter .letter:not(.letter--more)::first-letter { font-size: calc(var(--u) * 6.4); margin: calc(var(--u) * .5) calc(var(--u) * 1.4) 0 0; padding: calc(var(--u) * .5) calc(var(--u) * .9); }
+html[data-booklet][data-lang="en"] .face.paper .page--letter .letter:not(.letter--more)::first-letter { font-size: calc(var(--u) * 6.4); padding: calc(var(--u) * .2) calc(var(--u) * 1) calc(var(--u) * .4); }
+html[data-booklet] .face .signoff-row { margin-top: calc(var(--u) * 1.6); gap: calc(var(--u) * 2.4); }
+html[data-booklet] .face .signoff { font-size: calc(var(--u) * 3.1); line-height: 1.55; }
+html[data-booklet] .face .signoff small { font-size: calc(var(--u) * 2.7); }
+html[data-booklet] .face .chop { width: calc(var(--u) * 9.4); height: calc(var(--u) * 9.4); font-size: calc(var(--u) * 3.4); }
+html[data-booklet] .face .terms { padding: calc(var(--u) * 1.1) calc(var(--u) * .4) calc(var(--u) * .9); }
+html[data-booklet] .face .terms__head { font-size: calc(var(--u) * 3.1); }
+html[data-booklet][data-lang="en"] .face .terms__head { font-size: calc(var(--u) * 3.8); }
+html[data-booklet] .face .terms__list li { padding: calc(var(--u) * .3) 0 calc(var(--u) * .3) calc(var(--u) * 4); font-size: calc(var(--u) * 2.95); line-height: 1.5; }
+html[data-booklet][data-lang="en"] .face .terms__list li { font-size: calc(var(--u) * 3.05); line-height: 1.28; }
+html[data-booklet] .face .terms__list li::before { top: calc(var(--u) * .3); }
+html[data-booklet] .face .bookplate { width: 46%; margin-bottom: calc(var(--u) * .6); padding: calc(var(--u) * 1) calc(var(--u) * 1.6); }
+html[data-booklet] .face .bookplate__head { font-size: calc(var(--u) * 2.2); }
+html[data-booklet] .face .bookplate__name { font-size: calc(var(--u) * 3.4); }
+
+/* contents: the price list */
+html[data-booklet] .face .pricelist { margin-top: calc(var(--u) * 1.8); }
+html[data-booklet] .face .pricelist th { font-size: calc(var(--u) * 2.4); letter-spacing: .16em; padding: calc(var(--u) * .4) calc(var(--u) * .5); }
+html[data-booklet] .face .pricelist td { padding: calc(var(--u) * 1) calc(var(--u) * .5); }
+html[data-booklet] .face .pricelist__cut { width: calc(var(--u) * 14); padding-right: calc(var(--u) * 1) !important; }
+html[data-booklet] .face .pricelist__cut img { width: calc(var(--u) * 13); height: calc(var(--u) * 10); }
+html[data-booklet] .face .pricelist__no { width: calc(var(--u) * 5); font-size: calc(var(--u) * 4.6); }
+html[data-booklet] .face .pricelist__name b { font-size: calc(var(--u) * 3.7); }
+html[data-booklet][data-lang="en"] .face .pricelist__name b { font-size: calc(var(--u) * 3.4); }
+html[data-booklet] .face .pricelist__name i { font-size: calc(var(--u) * 2.8); line-height: 1.35; }
+html[data-booklet] .face .pricelist__price { font-size: calc(var(--u) * 3.3); }
+html[data-booklet][data-lang="en"] .face .pricelist__price { font-size: calc(var(--u) * 4); }
+html[data-booklet] .face .pricelist__page { width: calc(var(--u) * 5); font-size: calc(var(--u) * 3.6); }
+html[data-booklet] .face .all-free { margin-top: calc(var(--u) * 2.6); }
+html[data-booklet] .face .all-free small { font-size: calc(var(--u) * 2.7); letter-spacing: .3em; }
+html[data-booklet] .face .all-free small:last-child { font-size: calc(var(--u) * 2.5); letter-spacing: .14em; }
+html[data-booklet] .face .all-free b { font-size: calc(var(--u) * 7.4); }
+html[data-booklet][data-lang="en"] .face .all-free b { font-size: calc(var(--u) * 9); }
+/* the note on how a spread is laid out belongs to the large book */
+html[data-booklet] .face .fineprint { display: none; }
+
+/* ---------- how-to pages ---------- */
+html[data-booklet] .face .howto__title { margin-top: calc(var(--u) * 1.4); font-size: calc(var(--u) * 7.6); }
+html[data-booklet][data-lang="en"] .face .howto__title { font-size: calc(var(--u) * 8.6); }
+html[data-booklet] .face .howto__for { margin-top: calc(var(--u) * 1); padding: calc(var(--u) * .6) 0 calc(var(--u) * .5); font-size: calc(var(--u) * 2.75); letter-spacing: .22em; }
+html[data-booklet][data-lang="en"] .face .howto__for { font-size: calc(var(--u) * 2.5); letter-spacing: .08em; }
+html[data-booklet] .face .howto__intro { margin-top: calc(var(--u) * 1.4); font-size: calc(var(--u) * 3.1); letter-spacing: .04em; line-height: 1.5; }
+html[data-booklet][data-lang="en"] .face .howto__intro { font-size: calc(var(--u) * 3.2); line-height: 1.3; }
+html[data-booklet] .face .articles { margin-top: calc(var(--u) * 1.8); }
+html[data-booklet] .face .articles li { grid-template-columns: calc(var(--u) * 6.6) minmax(0, 1fr) calc(var(--u) * 8.4); gap: 0 calc(var(--u) * 2); }
+html[data-booklet] .face .articles li + li { margin-top: calc(var(--u) * 1.4); padding-top: calc(var(--u) * 1.4); }
+html[data-booklet] .face .articles__no { font-size: calc(var(--u) * 4.8); padding: calc(var(--u) * .8) 0 calc(var(--u) * .9); }
+html[data-booklet] .face .articles h3 { font-size: calc(var(--u) * 3.6); line-height: 1.3; }
+html[data-booklet][data-lang="en"] .face .articles h3 { font-size: calc(var(--u) * 3.5); line-height: 1.15; }
+html[data-booklet] .face .articles p { margin-top: calc(var(--u) * .3); font-size: calc(var(--u) * 3.15); line-height: 1.5; }
+html[data-booklet][data-lang="en"] .face .articles p { font-size: calc(var(--u) * 3.2); line-height: 1.26; }
+html[data-booklet] .face .articles__cut { width: calc(var(--u) * 8.4); height: calc(var(--u) * 7.6); }
+html[data-booklet] .face .specimen { margin-top: auto; padding-top: calc(var(--u) * 1.3); }
+html[data-booklet] .face .specimen figcaption { font-size: calc(var(--u) * 3); letter-spacing: .4em; }
+html[data-booklet][data-lang="en"] .face .specimen figcaption { font-size: calc(var(--u) * 3.1); letter-spacing: .12em; }
+html[data-booklet] .face .specimen__table { width: 100%; margin-top: calc(var(--u) * .8); font-size: calc(var(--u) * 3); }
+html[data-booklet] .face .specimen__table th { font-size: calc(var(--u) * 2.7); letter-spacing: .14em; padding: calc(var(--u) * .4) calc(var(--u) * .3); }
+html[data-booklet] .face .specimen__table td { padding: calc(var(--u) * .45) calc(var(--u) * .3); }
+html[data-booklet] .face .specimen__table--three td { font-size: calc(var(--u) * 2.75); letter-spacing: 0; }
+html[data-booklet] .face .specimen__note { margin-top: calc(var(--u) * .7); font-size: calc(var(--u) * 2.75); line-height: 1.45; }
+html[data-booklet] .face .entry { width: 100%; margin-top: calc(var(--u) * .6); }
+html[data-booklet] .face .entry > div { grid-template-columns: calc(var(--u) * 10) minmax(0, 1fr); gap: calc(var(--u) * 1.6); padding: calc(var(--u) * .4) 0; }
+html[data-booklet][data-lang="en"] .face .entry > div { grid-template-columns: calc(var(--u) * 17) minmax(0, 1fr); }
+html[data-booklet][data-lang="en"] .face .entry dt { letter-spacing: .04em; white-space: nowrap; }
+html[data-booklet] .face .entry dt { font-size: calc(var(--u) * 2.8); letter-spacing: .2em; }
+html[data-booklet] .face .entry dd { font-size: calc(var(--u) * 3); line-height: 1.4; }
+html[data-booklet] .face .annex { margin-top: 0; padding-top: calc(var(--u) * 1.4); margin-bottom: 0; font-size: calc(var(--u) * 2.75); line-height: 1.5; }
+html[data-booklet][data-lang="en"] .face .annex { font-size: calc(var(--u) * 2.85); line-height: 1.28; }
+
+/* ---------- advertisements ----------
+   A spread shows each article twice: how it is used (left) and the advertisement (right), whose
+   prose restates the rules. In the booklet those two are consecutive pages, so an advertisement
+   keeps its headline, engraving, price, claims and ticket, and leaves the restated prose to the
+   page before it. */
+html[data-booklet] .face .ad-title { margin-top: calc(var(--u) * 1.2); }
+html[data-booklet] .face .ad-title > [lang|="zh"] { font-size: calc(var(--u) * 12.5); }
+html[data-booklet] .face .ad-title > [lang="en"] { font-size: calc(var(--u) * 11); }
+html[data-booklet] .face .ad-tagline { margin-top: calc(var(--u) * 1.2); padding: calc(var(--u) * .7) 0 calc(var(--u) * .6); font-size: calc(var(--u) * 2.7); letter-spacing: .24em; }
+html[data-booklet][data-lang="en"] .face .ad-tagline { font-size: calc(var(--u) * 2.5); letter-spacing: .1em; }
+html[data-booklet] .face .price__was { margin-top: calc(var(--u) * .4); font-size: calc(var(--u) * 2.75); letter-spacing: .1em; line-height: 1.3; }
+html[data-booklet] .face .price__free, html[data-booklet] .face .price--tuscan .price__free { font-size: calc(var(--u) * 4.4); }
+html[data-booklet][data-lang="en"] .face .price__free, html[data-booklet][data-lang="en"] .face .price--tuscan .price__free { font-size: calc(var(--u) * 5.2); }
+
+/* No. 1 */
+html[data-booklet] .face .words { grid-template-columns: 52% minmax(0, 1fr); gap: 0 calc(var(--u) * 2.4); margin-top: calc(var(--u) * 1.6); }
+html[data-booklet] .face .words__plate { width: auto; margin: 0 0 0 calc(var(--u) * -1); }
+html[data-booklet] .face .words__plate figcaption, html[data-booklet] .face .words__side .copy { display: none; }
+html[data-booklet] .face .words__side { padding-top: calc(var(--u) * .6); }
+html[data-booklet] .face .words__side .claim { margin-top: calc(var(--u) * 1.6); padding-top: calc(var(--u) * 1.4); border-top: 1px solid var(--rule-soft); font-size: calc(var(--u) * 3.7); line-height: 1.3; }
+html[data-booklet][data-lang="en"] .face .words__side .claim { font-size: calc(var(--u) * 4.4); line-height: 1; }
+html[data-booklet] .face .price--gothic .price__cur { font-size: calc(var(--u) * 6); margin-top: calc(var(--u) * 1.4); }
+html[data-booklet] .face .price--gothic .price__num { font-size: calc(var(--u) * 18); }
+html[data-booklet] .face .price--gothic .price__cents { font-size: calc(var(--u) * 7); margin-top: calc(var(--u) * 1.4); }
+html[data-booklet] .face .words__foot { flex-wrap: wrap; justify-content: space-between; gap: calc(var(--u) * 1.6) calc(var(--u) * 2); padding-top: calc(var(--u) * 1.4); }
+html[data-booklet] .face .words__foot .plans { flex-basis: 100%; order: 3; text-align: center; }
+html[data-booklet] .face .dotbox { padding: calc(var(--u) * 1) calc(var(--u) * 1.8); }
+html[data-booklet] .face .dotbox small { font-size: calc(var(--u) * 2.7); letter-spacing: .12em; }
+html[data-booklet] .face .dotbox b { font-size: calc(var(--u) * 3.9); }
+html[data-booklet][data-lang="en"] .face .dotbox b { font-size: calc(var(--u) * 4.2); }
+html[data-booklet] .face .coupon { padding: calc(var(--u) * 1.6) calc(var(--u) * 3) calc(var(--u) * 1.3); }
+html[data-booklet] .face .coupon__top { font-size: calc(var(--u) * 2.4); letter-spacing: .1em; white-space: nowrap; }
+html[data-booklet] .face .coupon b { font-size: calc(var(--u) * 5); letter-spacing: .24em; margin-right: -.24em; }
+html[data-booklet][data-lang="en"] .face .coupon b { font-size: calc(var(--u) * 5.8); letter-spacing: .05em; margin-right: 0; }
+html[data-booklet] .face .coupon__sub { font-size: calc(var(--u) * 2.2); letter-spacing: .2em; }
+
+/* No. 2 */
+html[data-booklet] .face .advert--room .ad-title > [lang|="zh"] { font-size: calc(var(--u) * 11.5); }
+html[data-booklet] .face .advert--room .ad-title > [lang="en"] { font-size: calc(var(--u) * 10.5); }
+html[data-booklet] .face .arc { margin-top: calc(var(--u) * .4); }
+html[data-booklet] .face .room__plate { width: 86%; margin-top: calc(var(--u) * .2); }
+html[data-booklet] .face .legend, html[data-booklet] .face .room__col .copy { display: none; }
+html[data-booklet] .face .room__cols { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 0 calc(var(--u) * 2); margin-top: calc(var(--u) * 1.4); align-items: center; }
+html[data-booklet] .face .room__col .claim { margin-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 3.1); line-height: 1.3; letter-spacing: .02em; text-align: center; }
+html[data-booklet] .face .room__col .claim:first-child { margin-top: 0; }
+html[data-booklet][data-lang="en"] .face .room__col .claim { font-size: calc(var(--u) * 4.2); line-height: 1; }
+html[data-booklet] .face .room__mid { order: 0; border: 0; border-left: 1px solid var(--rule-soft); border-right: 1px solid var(--rule-soft); padding: 0 calc(var(--u) * 2); margin: 0; }
+html[data-booklet] .face .room__col + .room__col { margin-top: 0; }
+html[data-booklet] .face .price--tuscan .price__cur { font-size: calc(var(--u) * 4.4); }
+html[data-booklet] .face .price--tuscan .price__num { font-size: calc(var(--u) * 12); }
+html[data-booklet] .face .price--tuscan .price__cents { font-size: calc(var(--u) * 4.6); }
+html[data-booklet] .face .room__mid .price__was { white-space: nowrap; letter-spacing: .02em; font-size: calc(var(--u) * 2.5); }
+html[data-booklet][data-lang="en"] .face .room__mid .price__was { white-space: normal; max-width: calc(var(--u) * 20); margin: calc(var(--u) * .4) auto 0; }
+html[data-booklet] .face .room__foot { grid-template-columns: auto 1fr; grid-template-areas: "seal ticket" "seal plans"; margin-top: auto; padding-top: calc(var(--u) * 1.4); gap: calc(var(--u) * .8) calc(var(--u) * 3); }
+html[data-booklet] .face .room__foot .seal { grid-area: seal; width: calc(var(--u) * 15); height: calc(var(--u) * 15); }
+html[data-booklet] .face .room__foot .admit { grid-area: ticket; justify-self: stretch; }
+html[data-booklet] .face .room__foot .plans { grid-area: plans; grid-column: auto; justify-self: center; }
+html[data-booklet] .face .admit__body { justify-content: center; }
+html[data-booklet] .face .admit__stub { font-size: calc(var(--u) * 2); padding: calc(var(--u) * .8) calc(var(--u) * .9) calc(var(--u) * .8) calc(var(--u) * .5); }
+html[data-booklet] .face .admit__main { padding: calc(var(--u) * 1.1) calc(var(--u) * 2.4) calc(var(--u) * 1); }
+html[data-booklet] .face .admit__main b { font-size: calc(var(--u) * 5); letter-spacing: .2em; margin-right: -.2em; }
+html[data-booklet][data-lang="en"] .face .admit__main b { font-size: calc(var(--u) * 5.8); letter-spacing: .04em; margin-right: 0; }
+html[data-booklet] .face .admit__main small { font-size: calc(var(--u) * 2.2); letter-spacing: .1em; white-space: nowrap; }
+html[data-booklet][data-lang="en"] .face .admit__main small { font-size: calc(var(--u) * 2.3); letter-spacing: .2em; }
+
+/* No. 3 */
+html[data-booklet] .face .music__top { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "plate sub title"; gap: 0 calc(var(--u) * 1.6); margin-top: calc(var(--u) * 1.6); }
+html[data-booklet] .face .music__plate { margin-left: calc(var(--u) * -1); }
+html[data-booklet] .face .music__title { font-size: calc(var(--u) * 10.4); }
+html[data-booklet] .face .music__sub { padding-top: calc(var(--u) * 4); font-size: calc(var(--u) * 2.9); letter-spacing: .22em; }
+html[data-booklet][data-lang="en"] .face .music__top { grid-template-columns: minmax(0, 1fr); grid-template-areas: "title" "plate" "sub"; grid-template-rows: auto; }
+html[data-booklet][data-lang="en"] .face .music__title { text-align: center; font-size: calc(var(--u) * 10.5); padding-top: 0; }
+html[data-booklet][data-lang="en"] .face .music__plate { width: 74%; justify-self: center; margin: calc(var(--u) * 1) 0 0; }
+html[data-booklet][data-lang="en"] .face .music__sub { text-align: center; border-top: 0; margin-top: calc(var(--u) * .6); padding-top: 0; font-size: calc(var(--u) * 3.3); letter-spacing: 0; }
+html[data-booklet] .face .stamp { width: calc(var(--u) * 16); height: calc(var(--u) * 16); font-size: calc(var(--u) * 3.3); }
+html[data-booklet][data-lang="en"] .face .stamp { font-size: calc(var(--u) * 2.1); }
+html[data-booklet] .face .music__lede { margin-top: calc(var(--u) * 2); font-size: calc(var(--u) * 3.5); line-height: 1.72; }
+html[data-booklet][data-lang="en"] .face .music__lede { font-size: calc(var(--u) * 3.5); line-height: 1.32; }
+html[data-booklet] .face .music__lede::before, html[data-booklet] .face .music__lede::after { font-size: calc(var(--u) * 3); }
+html[data-booklet] .face .music__cols { display: none; }
+html[data-booklet] .face .music__close { margin-top: auto; padding-top: calc(var(--u) * 1.6); font-size: calc(var(--u) * 3.6); }
+html[data-booklet][data-lang="en"] .face .music__close { font-size: calc(var(--u) * 3.7); }
+html[data-booklet] .face .music__foot { grid-template-columns: minmax(0, 1fr) auto; justify-items: stretch; text-align: left; gap: calc(var(--u) * 2.4); margin-top: calc(var(--u) * 1.8); padding-top: calc(var(--u) * 1.6); }
+html[data-booklet] .face .music__soon { font-size: calc(var(--u) * 6); }
+html[data-booklet][data-lang="en"] .face .music__soon { font-size: calc(var(--u) * 5.6); }
+html[data-booklet] .face .music__tba { font-size: calc(var(--u) * 2.3); letter-spacing: .12em; }
+html[data-booklet] .face .music__specs { font-size: calc(var(--u) * 2.8); letter-spacing: .1em; }
+html[data-booklet] .face .music__order { max-width: calc(var(--u) * 40); }
+html[data-booklet] .face .card { padding: calc(var(--u) * 1.3) calc(var(--u) * 2.6) calc(var(--u) * 1.1); }
+html[data-booklet] .face .card b { font-size: calc(var(--u) * 4.4); letter-spacing: .2em; margin-right: -.2em; }
+html[data-booklet][data-lang="en"] .face .card b { font-size: calc(var(--u) * 4.1); letter-spacing: 0; margin: 0; }
+html[data-booklet] .face .card small { font-size: calc(var(--u) * 2.1); letter-spacing: .14em; }
+html[data-booklet] .face .music__note { font-size: calc(var(--u) * 2.6); line-height: 1.4; max-width: calc(var(--u) * 30); }
+
+/* ---------- back matter ---------- */
+html[data-booklet] .face .orderform { margin-top: calc(var(--u) * 2.2); padding: calc(var(--u) * 1.4) calc(var(--u) * 2.4) calc(var(--u) * 1.4); }
+html[data-booklet] .face .orderform__head { font-size: calc(var(--u) * 3.8); }
+html[data-booklet][data-lang="en"] .face .orderform__head { font-size: calc(var(--u) * 3.4); }
+html[data-booklet] .face .orderform__head small { font-size: calc(var(--u) * 2.2); letter-spacing: .14em; }
+html[data-booklet] .face .orderform__rows { display: grid; grid-template-columns: 1fr 1fr; column-gap: calc(var(--u) * 3); margin-top: calc(var(--u) * .6); }
+html[data-booklet] .face .orderform__rows div { grid-template-columns: auto 1fr; padding: calc(var(--u) * 1.8) 0 calc(var(--u) * .3); font-size: calc(var(--u) * 2.8); letter-spacing: .1em; }
+html[data-booklet][data-lang="en"] .face .orderform__rows div { grid-template-columns: auto 1fr; font-size: calc(var(--u) * 2.8); letter-spacing: .04em; }
+html[data-booklet] .face .orderform__rows div::after { height: calc(var(--u) * 2.4); }
+html[data-booklet] .face .orderform__note { margin-top: calc(var(--u) * 1.4); font-size: calc(var(--u) * 2.6); line-height: 1.4; }
+html[data-booklet] .face .links { margin-top: calc(var(--u) * 2.4); gap: calc(var(--u) * 3.4); font-size: calc(var(--u) * 3.3); }
+html[data-booklet][data-lang="en"] .face .links { font-size: calc(var(--u) * 4); }
+html[data-booklet] .face .links a { padding: calc(var(--u) * .8) 0; }
+html[data-booklet] .face .seal--works { margin-top: auto; width: calc(var(--u) * 17); height: calc(var(--u) * 17); }
+html[data-booklet] .face .finis { font-size: calc(var(--u) * 15); }
+html[data-booklet][data-lang="en"] .face .finis { font-size: calc(var(--u) * 10); }
+html[data-booklet] .face .finis__line { margin-top: calc(var(--u) * 2.6); font-size: calc(var(--u) * 3.3); }
+html[data-booklet] .face .page--finis { padding-bottom: 0; }
+
+/* ---------- the reader who would rather not see things move ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html[data-booklet] .face.is-turning { will-change: auto; }
+}

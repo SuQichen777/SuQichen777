@@ -676,7 +676,8 @@ html[data-lang="en"] .cover__open { font: 400 calc(var(--u) * 2.4) / 1 var(--fel
   .book { width: var(--pw); height: auto; perspective: none; transform: none !important; display: grid; gap: 18px; filter: drop-shadow(0 14px 22px rgba(0, 0, 0, .6)); }
   .book::before, .book::after { display: none !important; }
   .sheet { position: static; width: 100%; height: auto; transform: none !important; transition: none; display: grid; gap: 18px; }
-  .face { position: relative; inset: auto; transform: none !important; backface-visibility: visible; -webkit-backface-visibility: visible; cursor: default; }
+  .face { position: relative; inset: auto; backface-visibility: visible; -webkit-backface-visibility: visible; cursor: default; }
+  html:not([data-booklet]) .face { transform: none !important; } /* the booklet (booklet.css) turns its leaves */
   .face::after { display: none; }
   .paper { clip-path: var(--outline); }
   .book__block, .book__cast, .sheet::before, .sheet::after { display: none !important; }
